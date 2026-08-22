@@ -1,0 +1,13 @@
+# Local config overrides (never commit credentials)
+config/local.php
+
+# Uploaded files (keep the folder, ignore contents)
+assets/uploads/*
+!assets/uploads/.gitkeep
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/

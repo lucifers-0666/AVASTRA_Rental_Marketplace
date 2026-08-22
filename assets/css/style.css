@@ -1,0 +1,21 @@
+/* SpaceShare — global styles (Bootstrap 5 extensions) */
+
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  border: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+.match-badge {
+  font-size: 1rem;
+}
+
+/* Space card images keep a consistent ratio */
+.space-card-img {
+  object-fit: cover;
+  height: 180px;
+  width: 100%;
+}
