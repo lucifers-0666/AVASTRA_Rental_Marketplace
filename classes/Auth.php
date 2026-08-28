@@ -36,7 +36,9 @@ class Auth {
 
     public static function requireLogin(): void {
         if (!self::isLoggedIn()) {
-            header("Location: " . APP_URL . "/public/login.php?redirect=" . urlencode($_SERVER['REQUEST_URI']));
+            $isAdminRoute = (strpos($_SERVER['REQUEST_URI'] ?? '', '/admin') !== false);
+            $loginUrl = $isAdminRoute ? APP_URL . "/admin/login.php" : APP_URL . "/public/login.php";
+            header("Location: " . $loginUrl . "?redirect=" . urlencode($_SERVER['REQUEST_URI']));
             exit;
         }
     }
