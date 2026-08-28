@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Default Admin Account: admin@spaceshare.com / admin123
 INSERT INTO `users` (`id`, `role_id`, `full_name`, `email`, `password_hash`, `phone`, `status`, `email_verified`) VALUES
-(1, 1, 'System Administrator', 'admin@spaceshare.com', '$2y$10$4y9pI./N1iB7nBvP.yD6/eN/20G4aT96/X9jF48j.2Sg1kZqGgH/O', '+91 9876543210', 'active', 1),
-(2, 2, 'Jay Patel', 'jay@example.com', '$2y$10$4y9pI./N1iB7nBvP.yD6/eN/20G4aT96/X9jF48j.2Sg1kZqGgH/O', '+91 9876543211', 'active', 1),
-(3, 2, 'Rahul Sharma', 'rahul@example.com', '$2y$10$4y9pI./N1iB7nBvP.yD6/eN/20G4aT96/X9jF48j.2Sg1kZqGgH/O', '+91 9876543212', 'active', 1);
+(1, 1, 'System Administrator', 'admin@spaceshare.com', '$2y$10$xbwmT/NkMoC8.SE7f3LZn.Y7e1h0NirkSs8DsmpoQCU5oEE5xVBT.', '+91 9876543210', 'active', 1),
+(2, 2, 'Jay Patel', 'jay@example.com', '$2y$10$xbwmT/NkMoC8.SE7f3LZn.Y7e1h0NirkSs8DsmpoQCU5oEE5xVBT.', '+91 9876543211', 'active', 1),
+(3, 2, 'Rahul Sharma', 'rahul@example.com', '$2y$10$xbwmT/NkMoC8.SE7f3LZn.Y7e1h0NirkSs8DsmpoQCU5oEE5xVBT.', '+91 9876543212', 'active', 1);
 
 -- -----------------------------------------------------------------------------
 -- 3. Categories Table
