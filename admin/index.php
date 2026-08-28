@@ -9,6 +9,6 @@ if (Auth::isAdmin()) {
     header("Location: dashboard.php");
     exit;
 } else {
-    header("Location: " . APP_URL . "/public/login.php?redirect=" . urlencode(APP_URL . "/admin/dashboard.php"));
+    header("Location: login.php");
     exit;
 }
