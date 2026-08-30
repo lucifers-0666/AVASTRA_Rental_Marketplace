@@ -86,21 +86,21 @@ code, .font-mono {
 }
 
 #admin-sidebar .sidebar-brand img {
-    height: 46px;
+    height: 38px;
     width: auto;
-    max-width: 155px;
+    max-width: 150px;
     object-fit: contain;
     display: block;
 }
 
-/* ADMIN Pill Badge matching reference image */
+/* ADMIN Pill Badge */
 #admin-sidebar .sidebar-brand .brand-tag {
     background: #E7F5EC;
     color: #1B5E3A;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 800;
-    padding: 0.35rem 0.85rem;
-    border-radius: 12px;
+    padding: 0.25rem 0.65rem;
+    border-radius: 8px;
     letter-spacing: 0.5px;
     flex-shrink: 0;
 }
