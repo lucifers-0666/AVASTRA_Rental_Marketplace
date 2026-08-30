@@ -8,7 +8,6 @@ $adminModel = new Admin();
 $kpis = $adminModel->get6KPICards();
 $attentionItems = $adminModel->getNeedsAttentionQueue();
 $categoryAnalytics = $adminModel->getCategoryAnalytics();
-$pendingSpaces = $adminModel->getPendingSpaces(5);
 
 $db = Database::getInstance();
 $recentLogs = $db->query("
@@ -16,34 +15,34 @@ $recentLogs = $db->query("
     FROM audit_logs a 
     LEFT JOIN users u ON a.user_id = u.id 
     ORDER BY a.created_at DESC 
-    LIMIT 6
+    LIMIT 5
 ")->fetchAll();
 ?>
 
 <div id="admin-main">
     <?php require_once __DIR__ . '/includes/navbar.php'; ?>
 
-    <main class="p-4">
+    <main class="p-3 p-md-4">
         <!-- Dashboard Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
             <div>
-                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Dashboard</h3>
+                <h4 class="fw-bold mb-1" style="color:#0d5c46;">Dashboard</h4>
                 <p class="text-muted small mb-0">Monitor AVASTRA activity, marketplace health, and pending actions.</p>
             </div>
-            <a href="verify-spaces.php" class="btn btn-avastra rounded-pill px-4">
+            <a href="verify-spaces.php" class="btn btn-avastra rounded-pill px-3 py-1 text-nowrap align-self-start align-self-sm-center">
                 <i class="bi bi-shield-check me-1"></i> Verification Queue (<?= $kpis['pending_verifications']; ?>)
             </a>
         </div>
 
         <!-- 6 KPI CARDS (Real Database Values) -->
-        <div class="row g-3 mb-4">
+        <div class="row g-2 g-md-3 mb-3">
             <!-- 1. Total Users -->
-            <div class="col-xl-2 col-md-4 col-sm-6">
-                <div class="avastra-card mb-0">
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="avastra-card p-3 mb-0 h-100">
                     <div class="kpi-card">
                         <div>
                             <div class="kpi-label">Total Users</div>
-                            <div class="kpi-value"><?= number_format($kpis['total_users']); ?></div>
+                            <div class="kpi-value fs-4"><?= number_format($kpis['total_users']); ?></div>
                             <div class="kpi-subtext">Registered</div>
                         </div>
                         <div class="kpi-icon blue"><i class="bi bi-people-fill"></i></div>
@@ -52,12 +51,12 @@ $recentLogs = $db->query("
             </div>
 
             <!-- 2. Active Owners -->
-            <div class="col-xl-2 col-md-4 col-sm-6">
-                <div class="avastra-card mb-0">
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="avastra-card p-3 mb-0 h-100">
                     <div class="kpi-card">
                         <div>
                             <div class="kpi-label">Active Owners</div>
-                            <div class="kpi-value"><?= number_format($kpis['active_owners']); ?></div>
+                            <div class="kpi-value fs-4"><?= number_format($kpis['active_owners']); ?></div>
                             <div class="kpi-subtext">Space Owners</div>
                         </div>
                         <div class="kpi-icon emerald"><i class="bi bi-person-badge-fill"></i></div>
@@ -66,12 +65,12 @@ $recentLogs = $db->query("
             </div>
 
             <!-- 3. Active Spaces -->
-            <div class="col-xl-2 col-md-4 col-sm-6">
-                <div class="avastra-card mb-0">
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="avastra-card p-3 mb-0 h-100">
                     <div class="kpi-card">
                         <div>
                             <div class="kpi-label">Active Spaces</div>
-                            <div class="kpi-value"><?= number_format($kpis['active_spaces']); ?></div>
+                            <div class="kpi-value fs-4"><?= number_format($kpis['active_spaces']); ?></div>
                             <div class="kpi-subtext">Verified</div>
                         </div>
                         <div class="kpi-icon emerald"><i class="bi bi-building-check"></i></div>
@@ -80,12 +79,12 @@ $recentLogs = $db->query("
             </div>
 
             <!-- 4. Total Bookings -->
-            <div class="col-xl-2 col-md-4 col-sm-6">
-                <div class="avastra-card mb-0">
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="avastra-card p-3 mb-0 h-100">
                     <div class="kpi-card">
                         <div>
                             <div class="kpi-label">Total Bookings</div>
-                            <div class="kpi-value"><?= number_format($kpis['total_bookings']); ?></div>
+                            <div class="kpi-value fs-4"><?= number_format($kpis['total_bookings']); ?></div>
                             <div class="kpi-subtext">Reservations</div>
                         </div>
                         <div class="kpi-icon purple"><i class="bi bi-calendar-check-fill"></i></div>
@@ -94,12 +93,12 @@ $recentLogs = $db->query("
             </div>
 
             <!-- 5. Revenue -->
-            <div class="col-xl-2 col-md-4 col-sm-6">
-                <div class="avastra-card mb-0">
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="avastra-card p-3 mb-0 h-100">
                     <div class="kpi-card">
                         <div>
                             <div class="kpi-label">Revenue</div>
-                            <div class="kpi-value" style="font-size:1.4rem;">₹<?= number_format($kpis['total_revenue'], 0); ?></div>
+                            <div class="kpi-value fs-5">₹<?= number_format($kpis['total_revenue'], 0); ?></div>
                             <div class="kpi-subtext">Gross Marketplace</div>
                         </div>
                         <div class="kpi-icon rose"><i class="bi bi-currency-rupee"></i></div>
@@ -108,12 +107,12 @@ $recentLogs = $db->query("
             </div>
 
             <!-- 6. Pending Verification -->
-            <div class="col-xl-2 col-md-4 col-sm-6">
-                <div class="avastra-card mb-0">
+            <div class="col-xl-2 col-md-4 col-6">
+                <div class="avastra-card p-3 mb-0 h-100">
                     <div class="kpi-card">
                         <div>
                             <div class="kpi-label">Pending Verif.</div>
-                            <div class="kpi-value text-amber"><?= number_format($kpis['pending_verifications']); ?></div>
+                            <div class="kpi-value fs-4 text-warning"><?= number_format($kpis['pending_verifications']); ?></div>
                             <div class="kpi-subtext text-warning">Requires Review</div>
                         </div>
                         <div class="kpi-icon amber"><i class="bi bi-clock-history"></i></div>
@@ -123,31 +122,31 @@ $recentLogs = $db->query("
         </div>
 
         <!-- Section: Needs Your Attention -->
-        <div class="avastra-card mb-4">
-            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+        <div class="avastra-card p-3 mb-3">
+            <h6 class="fw-bold mb-2 d-flex align-items-center gap-2">
                 <i class="bi bi-exclamation-octagon-fill text-warning"></i> Needs Your Attention
-            </h5>
+            </h6>
 
             <?php if (empty($attentionItems)): ?>
-                <div class="p-3 text-center text-muted small bg-light rounded">
-                    <i class="bi bi-check-circle-fill text-success me-1"></i> No urgent admin actions required right now. All queues clean!
+                <div class="p-2 text-center text-muted small bg-light rounded">
+                    <i class="bi bi-check-circle-fill text-success me-1"></i> No urgent admin actions required. All queues clean!
                 </div>
             <?php else: ?>
                 <div class="row g-2">
                     <?php foreach ($attentionItems as $item): ?>
                         <div class="col-md-4">
-                            <div class="attention-item">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="attention-icon <?= ($item['priority'] === 'High') ? 'bg-danger text-white' : 'bg-warning text-dark'; ?>">
+                            <div class="attention-item py-2 px-3 mb-0">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="attention-icon <?= ($item['priority'] === 'High') ? 'bg-danger text-white' : 'bg-warning text-dark'; ?>" style="width:34px; height:34px; font-size:0.95rem;">
                                         <i class="bi <?= $item['icon']; ?>"></i>
                                     </div>
                                     <div>
-                                        <div class="fw-bold small mb-1"><?= htmlspecialchars($item['title']); ?></div>
-                                        <span class="badge bg-light text-dark border me-1"><?= $item['module']; ?></span>
-                                        <span class="badge <?= ($item['priority'] === 'High') ? 'bg-danger' : 'bg-warning text-dark'; ?>"><?= $item['priority']; ?></span>
+                                        <div class="fw-bold small mb-0" style="font-size:0.825rem;"><?= htmlspecialchars($item['title']); ?></div>
+                                        <span class="badge bg-light text-dark border me-1" style="font-size:10px;"><?= $item['module']; ?></span>
+                                        <span class="badge <?= ($item['priority'] === 'High') ? 'bg-danger' : 'bg-warning text-dark'; ?>" style="font-size:10px;"><?= $item['priority']; ?></span>
                                     </div>
                                 </div>
-                                <a href="<?= $item['action_link']; ?>" class="btn btn-sm btn-outline-success fw-bold ms-2" style="white-space:nowrap;">
+                                <a href="<?= $item['action_link']; ?>" class="btn btn-sm btn-outline-success fw-bold ms-2 py-0 px-2 text-nowrap" style="font-size:0.75rem;">
                                     <?= $item['action_label']; ?>
                                 </a>
                             </div>
@@ -158,66 +157,59 @@ $recentLogs = $db->query("
         </div>
 
         <!-- Charts Row -->
-        <div class="row g-4 mb-4">
-            <!-- Bookings / Revenue Trend Chart -->
+        <div class="row g-3 mb-3">
+            <!-- Bookings / Revenue Dynamic Trend Chart -->
             <div class="col-lg-8">
-                <div class="avastra-card mb-0 h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="avastra-card p-3 mb-0 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
                         <div>
-                            <h5 class="fw-bold mb-0">Marketplace Activity & Trends</h5>
-                            <small class="text-muted">Visual breakdown of booking activity and platform revenue</small>
+                            <h6 class="fw-bold mb-0">Marketplace Trends</h6>
+                            <small class="text-muted" style="font-size:0.75rem;">Visual breakdown of booking activity and gross revenue</small>
                         </div>
-                        <ul class="nav nav-pills nav-pills-sm" id="chartTabs">
-                            <li class="nav-item">
-                                <button class="nav-link active small py-1 px-3" data-bs-toggle="tab" data-bs-target="#bookingsTab">Bookings</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link small py-1 px-3" data-bs-toggle="tab" data-bs-target="#revenueTab">Revenue</button>
-                            </li>
-                        </ul>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-outline-success active px-3 py-1" id="btnBookings">Bookings</button>
+                            <button type="button" class="btn btn-outline-success px-3 py-1" id="btnRevenue">Revenue</button>
+                        </div>
                     </div>
 
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="bookingsTab">
-                            <canvas id="bookingsTrendChart" height="230"></canvas>
-                        </div>
-                        <div class="tab-pane fade" id="revenueTab">
-                            <canvas id="revenueTrendChart" height="230"></canvas>
-                        </div>
+                    <div style="position: relative; height: 210px; width: 100%;">
+                        <canvas id="trendChart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- Space Categories Analytics -->
             <div class="col-lg-4">
-                <div class="avastra-card mb-0 h-100">
-                    <h5 class="fw-bold mb-1">Space Categories</h5>
-                    <small class="text-muted d-block mb-3">Distribution of spaces listed by category</small>
-                    <canvas id="categoriesDoughnutChart" height="230"></canvas>
+                <div class="avastra-card p-3 mb-0 h-100">
+                    <h6 class="fw-bold mb-0">Space Categories</h6>
+                    <small class="text-muted d-block mb-2" style="font-size:0.75rem;">Distribution of spaces listed by type</small>
+                    <div style="position: relative; height: 200px; width: 100%;">
+                        <canvas id="categoriesDoughnutChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Recent Audit Log Activity Table -->
-        <div class="avastra-card">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="avastra-card p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
                 <div>
-                    <h5 class="fw-bold mb-0">Recent Activity & Audit Trail</h5>
-                    <small class="text-muted">Real-time record of system actions and administrator events</small>
+                    <h6 class="fw-bold mb-0">Recent Activity & Audit Trail</h6>
+                    <small class="text-muted" style="font-size:0.75rem;">Real-time record of system actions and events</small>
                 </div>
-                <a href="audit-logs.php" class="btn btn-sm btn-outline-secondary">View Full Log</a>
+                <a href="audit-logs.php" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size:0.75rem;">View All Log</a>
             </div>
 
             <?php if (empty($recentLogs)): ?>
-                <div class="text-center py-4 text-muted small">No audit log entries recorded yet.</div>
+                <div class="text-center py-3 text-muted small">No audit log entries recorded yet.</div>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-avastra align-middle">
+                    <table class="table table-avastra align-middle mb-0" style="font-size:0.825rem;">
                         <thead>
                             <tr>
                                 <th>User</th>
                                 <th>Action Event</th>
-                                <th>Entity</th>
+                                <th>Entity Target</th>
                                 <th>IP Address</th>
                                 <th>Timestamp</th>
                             </tr>
@@ -225,13 +217,13 @@ $recentLogs = $db->query("
                         <tbody>
                             <?php foreach ($recentLogs as $log): ?>
                                 <tr>
-                                    <td>
+                                    <td class="py-2">
                                         <div class="fw-bold text-dark"><?= htmlspecialchars($log['user_name'] ?? 'System'); ?></div>
                                     </td>
-                                    <td><span class="badge bg-dark text-white"><?= htmlspecialchars($log['action']); ?></span></td>
-                                    <td><span class="badge bg-light text-dark border"><?= htmlspecialchars($log['entity_type'] ?? 'N/A'); ?> <?= $log['entity_id'] ? '#' . $log['entity_id'] : ''; ?></span></td>
-                                    <td><code><?= htmlspecialchars($log['ip_address'] ?? '127.0.0.1'); ?></code></td>
-                                    <td><small class="text-muted"><?= date('d M Y, h:i A', strtotime($log['created_at'])); ?></small></td>
+                                    <td class="py-2"><span class="badge bg-dark text-white"><?= htmlspecialchars($log['action']); ?></span></td>
+                                    <td class="py-2"><span class="badge bg-light text-dark border"><?= htmlspecialchars($log['entity_type'] ?? 'N/A'); ?> <?= $log['entity_id'] ? '#' . $log['entity_id'] : ''; ?></span></td>
+                                    <td class="py-2"><code><?= htmlspecialchars($log['ip_address'] ?? '127.0.0.1'); ?></code></td>
+                                    <td class="py-2"><small class="text-muted"><?= date('d M Y, h:i A', strtotime($log['created_at'])); ?></small></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -241,46 +233,69 @@ $recentLogs = $db->query("
         </div>
     </main>
 
-    <!-- Chart.js Config -->
+    <!-- Fast Chart.js Config -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Bookings Trend Chart
-            const ctx1 = document.getElementById('bookingsTrendChart').getContext('2d');
-            new Chart(ctx1, {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+            const bookingsData = [5, 12, 18, 24, 30, 42, 55, 68];
+            const revenueData = [12000, 18000, 25000, 32000, 28000, 45000, 52000, 68000];
+
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            const trendChart = new Chart(ctxTrend, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                    labels: months,
                     datasets: [{
                         label: 'Total Bookings',
-                        data: [5, 12, 18, 24, 30, 42, 55, 68],
+                        data: bookingsData,
                         borderColor: '#0d5c46',
                         backgroundColor: 'rgba(13, 92, 70, 0.08)',
                         fill: true,
-                        tension: 0.4
+                        tension: 0.35,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#0d5c46'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
             });
 
-            // Revenue Trend Chart
-            const ctx2 = document.getElementById('revenueTrendChart').getContext('2d');
-            new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-                    datasets: [{
-                        label: 'Platform Revenue (₹)',
-                        data: [12000, 18000, 25000, 32000, 28000, 45000, 52000, 68000],
-                        backgroundColor: '#10b981',
-                        borderRadius: 6
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
+            // Toggle Datasets Smoothly without canvas destruction
+            const btnBookings = document.getElementById('btnBookings');
+            const btnRevenue = document.getElementById('btnRevenue');
+
+            btnBookings.addEventListener('click', function () {
+                btnBookings.classList.add('active');
+                btnRevenue.classList.remove('active');
+                trendChart.data.datasets[0].label = 'Total Bookings';
+                trendChart.data.datasets[0].data = bookingsData;
+                trendChart.data.datasets[0].borderColor = '#0d5c46';
+                trendChart.data.datasets[0].backgroundColor = 'rgba(13, 92, 70, 0.08)';
+                trendChart.update();
             });
 
-            // Category Doughnut Chart
-            const ctx3 = document.getElementById('categoriesDoughnutChart').getContext('2d');
-            new Chart(ctx3, {
+            btnRevenue.addEventListener('click', function () {
+                btnRevenue.classList.add('active');
+                btnBookings.classList.remove('active');
+                trendChart.data.datasets[0].label = 'Platform Revenue (₹)';
+                trendChart.data.datasets[0].data = revenueData;
+                trendChart.data.datasets[0].borderColor = '#10b981';
+                trendChart.data.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.12)';
+                trendChart.update();
+            });
+
+            // Space Categories Doughnut Chart
+            const ctxCat = document.getElementById('categoriesDoughnutChart').getContext('2d');
+            new Chart(ctxCat, {
                 type: 'doughnut',
                 data: {
                     labels: [
@@ -293,7 +308,13 @@ $recentLogs = $db->query("
                         backgroundColor: ['#0d5c46', '#10b981', '#0284c7', '#f59e0b', '#8b5cf6', '#ec4899']
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
             });
         });
     </script>

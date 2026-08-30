@@ -1,6 +1,6 @@
 <?php
 /**
- * SpaceShare / AVASTRA — Admin Data & Operations Model
+ * SpaceShare / AVASTRA — Admin Data & Operations Model (Optimized)
  */
 
 require_once __DIR__ . '/Database.php';
@@ -14,30 +14,53 @@ class Admin {
     }
 
     /**
-     * Get 6 High-Level KPI Cards Metrics for Dashboard (Real Database Values)
+     * Get 6 High-Level KPI Cards Metrics (Optimized Single Database Query)
      */
     public function get6KPICards(): array {
-        $kpis = [
-            'total_users'          => 0,
-            'active_owners'        => 0,
-            'active_spaces'        => 0,
-            'total_bookings'       => 0,
-            'total_revenue'        => 0.00,
-            'pending_verifications'=> 0,
-        ];
-
         try {
-            $kpis['total_users']           = (int) $this->db->query("SELECT COUNT(*) FROM users WHERE role_id = 2")->fetchColumn();
-            $kpis['active_owners']         = (int) $this->db->query("SELECT COUNT(DISTINCT owner_id) FROM spaces WHERE is_active = 1")->fetchColumn();
-            $kpis['active_spaces']         = (int) $this->db->query("SELECT COUNT(*) FROM spaces WHERE verification_status = 'approved' AND is_active = 1")->fetchColumn();
-            $kpis['total_bookings']        = (int) $this->db->query("SELECT COUNT(*) FROM bookings")->fetchColumn();
-            $kpis['total_revenue']         = (float) ($this->db->query("SELECT SUM(amount) FROM payments WHERE status = 'completed'")->fetchColumn() ?? 0.00);
-            $kpis['pending_verifications'] = (int) $this->db->query("SELECT COUNT(*) FROM spaces WHERE verification_status = 'pending'")->fetchColumn();
+            $sql = "
+                SELECT 
+                    (SELECT COUNT(*) FROM users WHERE role_id = 2) AS total_users,
+                    (SELECT COUNT(DISTINCT owner_id) FROM spaces WHERE is_active = 1) AS active_owners,
+                    (SELECT COUNT(*) FROM spaces WHERE verification_status = 'approved' AND is_active = 1) AS active_spaces,
+                    (SELECT COUNT(*) FROM bookings) AS total_bookings,
+                    COALESCE((SELECT SUM(amount) FROM payments WHERE status = 'completed'), 0.00) AS total_revenue,
+                    (SELECT COUNT(*) FROM spaces WHERE verification_status = 'pending') AS pending_verifications
+            ";
+            $row = $this->db->query($sql)->fetch();
+            if ($row) {
+                return [
+                    'total_users'           => (int) $row['total_users'],
+                    'active_owners'         => (int) $row['active_owners'],
+                    'active_spaces'         => (int) $row['active_spaces'],
+                    'total_bookings'        => (int) $row['total_bookings'],
+                    'total_revenue'         => (float) $row['total_revenue'],
+                    'pending_verifications' => (int) $row['pending_verifications'],
+                ];
+            }
         } catch (Exception $e) {
             // Error handling fallback
         }
 
-        return $kpis;
+        return [
+            'total_users'           => 0,
+            'active_owners'         => 0,
+            'active_spaces'         => 0,
+            'total_bookings'        => 0,
+            'total_revenue'         => 0.00,
+            'pending_verifications' => 0,
+        ];
+    }
+
+    /**
+     * Get Only Pending Verification Count (Ultra-Fast for Sidebar Badge)
+     */
+    public function getPendingVerificationCount(): int {
+        try {
+            return (int) $this->db->query("SELECT COUNT(*) FROM spaces WHERE verification_status = 'pending'")->fetchColumn();
+        } catch (Exception $e) {
+            return 0;
+        }
     }
 
     /**
@@ -54,7 +77,7 @@ class Admin {
         $items = [];
 
         // 1. Spaces awaiting verification
-        $pendingSpacesCount = (int) $this->db->query("SELECT COUNT(*) FROM spaces WHERE verification_status = 'pending'")->fetchColumn();
+        $pendingSpacesCount = $this->getPendingVerificationCount();
         if ($pendingSpacesCount > 0) {
             $items[] = [
                 'icon'        => 'bi-building-check',

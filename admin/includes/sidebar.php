@@ -4,7 +4,7 @@
  */
 $currentScript = basename($_SERVER['PHP_SELF']);
 $adminModel = new Admin();
-$pendingVerificationCount = $adminModel->get6KPICards()['pending_verifications'] ?? 0;
+$pendingVerificationCount = $adminModel->getPendingVerificationCount();
 $currentUser = Auth::getUser();
 ?>
 <aside id="admin-sidebar">
@@ -58,7 +58,7 @@ $currentUser = Auth::getUser();
                 <i class="bi bi-shield-check-fill"></i>
                 <span>Verification</span>
                 <?php if ($pendingVerificationCount > 0): ?>
-                    <span class="badge bg-amber text-dark rounded-pill ms-auto" style="background:#f59e0b; font-size:10px; font-weight:800;"><?= $pendingVerificationCount; ?></span>
+                    <span class="badge bg-warning text-dark rounded-pill ms-auto" style="font-size:10px; font-weight:800;"><?= $pendingVerificationCount; ?></span>
                 <?php endif; ?>
             </a>
         </li>
