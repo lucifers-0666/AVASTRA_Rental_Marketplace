@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Complaints & Disputes';
+$pageTitle = 'Reports & Issues';
 require_once __DIR__ . '/../classes/Admin.php';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['complaint_id'], $_POS
     $stmt = $db->prepare("UPDATE complaints SET status = :status, resolution_notes = :notes WHERE id = :id");
     if ($stmt->execute([':status' => $status, ':notes' => $notes, ':id' => $cId])) {
         $adminModel->logAction($currentUser['id'], 'RESOLVE_COMPLAINT', 'COMPLAINT', $cId, "Status updated to {$status}");
-        $message = "Complaint #{$cId} updated to " . strtoupper($status);
+        $message = "Report ticket #CMP-{$cId} updated to " . strtoupper($status);
     }
 }
 
@@ -36,8 +36,8 @@ $complaints = $db->query($sql)->fetchAll();
     <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">Disputes & Complaints</h3>
-                <p class="text-muted small mb-0">Handle customer and space owner disputes, investigate tickets, and record resolutions.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Reports & Complaints</h3>
+                <p class="text-muted small mb-0">Manage reported space listings, booking disputes, and user tickets.</p>
             </div>
         </div>
 
@@ -48,24 +48,24 @@ $complaints = $db->query($sql)->fetchAll();
             </div>
         <?php endif; ?>
 
-        <div class="admin-card">
+        <div class="avastra-card">
             <?php if (empty($complaints)): ?>
                 <div class="text-center py-5 text-muted">
                     <i class="bi bi-shield-check fs-1 text-success d-block mb-2"></i>
-                    No active complaint tickets. All marketplace transactions running smoothly!
+                    No open reports or dispute tickets recorded.
                 </div>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-custom align-middle">
+                    <table class="table table-avastra align-middle">
                         <thead>
                             <tr>
-                                <th>Ticket ID</th>
-                                <th>User</th>
-                                <th>Booking Ref</th>
+                                <th>Report Ref</th>
+                                <th>Reporter</th>
+                                <th>Booking Code</th>
                                 <th>Subject</th>
                                 <th>Status</th>
-                                <th>Date Filed</th>
-                                <th>Action</th>
+                                <th>Filed Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,16 +76,16 @@ $complaints = $db->query($sql)->fetchAll();
                                         <div class="fw-semibold"><?= htmlspecialchars($comp['user_name']); ?></div>
                                         <small class="text-muted"><?= htmlspecialchars($comp['user_email']); ?></small>
                                     </td>
-                                    <td><code class="text-primary"><?= htmlspecialchars($comp['booking_code']); ?></code></td>
+                                    <td><code class="text-success"><?= htmlspecialchars($comp['booking_code']); ?></code></td>
                                     <td>
                                         <div class="fw-bold"><?= htmlspecialchars($comp['subject']); ?></div>
-                                        <small class="text-muted"><?= htmlspecialchars(substr($comp['description'], 0, 60)); ?>...</small>
+                                        <small class="text-muted"><?= htmlspecialchars(substr($comp['description'], 0, 50)); ?>...</small>
                                     </td>
                                     <td><span class="badge-status <?= $comp['status']; ?>"><?= ucfirst(str_replace('_', ' ', $comp['status'])); ?></span></td>
                                     <td><small class="text-muted"><?= date('d M Y', strtotime($comp['created_at'])); ?></small></td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#resolveModal<?= $comp['id']; ?>">
-                                            Manage Ticket
+                                        <button class="btn btn-sm btn-avastra" data-bs-toggle="modal" data-bs-target="#resolveModal<?= $comp['id']; ?>">
+                                            Manage Report
                                         </button>
 
                                         <!-- Resolve Modal -->
@@ -94,13 +94,13 @@ $complaints = $db->query($sql)->fetchAll();
                                                 <div class="modal-content">
                                                     <form method="POST" action="">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title fw-bold">Manage Dispute Ticket #CMP-<?= $comp['id']; ?></h5>
+                                                            <h5 class="modal-title fw-bold">Manage Report Ticket #CMP-<?= $comp['id']; ?></h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <input type="hidden" name="complaint_id" value="<?= $comp['id']; ?>">
                                                             <div class="mb-3">
-                                                                <label class="form-label fw-bold">Ticket Description</label>
+                                                                <label class="form-label fw-bold">Issue Description</label>
                                                                 <div class="p-3 bg-light rounded border small"><?= nl2br(htmlspecialchars($comp['description'])); ?></div>
                                                             </div>
 
@@ -115,13 +115,13 @@ $complaints = $db->query($sql)->fetchAll();
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label class="form-label fw-bold">Resolution Notes / Action Taken</label>
-                                                                <textarea name="resolution_notes" class="form-control" rows="3" placeholder="Enter findings, refund details, or resolution summary..."><?= htmlspecialchars($comp['resolution_notes'] ?? ''); ?></textarea>
+                                                                <label class="form-label fw-bold">Resolution Notes</label>
+                                                                <textarea name="resolution_notes" class="form-control" rows="3" placeholder="Enter findings or resolution details..."><?= htmlspecialchars($comp['resolution_notes'] ?? ''); ?></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save Ticket Changes</button>
+                                                            <button type="submit" class="btn btn-avastra">Save Ticket</button>
                                                         </div>
                                                     </form>
                                                 </div>

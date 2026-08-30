@@ -10,7 +10,6 @@ $adminModel = new Admin();
 $message = '';
 $error = '';
 
-// Add New Category
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     $name = trim($_POST['name'] ?? '');
     $icon = trim($_POST['icon'] ?? 'bi-building');
@@ -29,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     }
 }
 
-// Add New Amenity
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_amenity'])) {
     $name = trim($_POST['amenity_name'] ?? '');
     $icon = trim($_POST['amenity_icon'] ?? 'bi-check-circle');
@@ -56,14 +54,14 @@ $amenities = $db->query("SELECT * FROM amenities ORDER BY name ASC")->fetchAll()
     <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">Categories & Amenities Management</h3>
-                <p class="text-muted small mb-0">Configure space types and searchable property amenities across SpaceShare.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Space Categories & Amenities</h3>
+                <p class="text-muted small mb-0">Configure space types and master property amenities across AVASTRA.</p>
             </div>
             <div class="d-flex gap-2">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                <button class="btn btn-avastra" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
                     <i class="bi bi-plus-lg me-1"></i> Add Category
                 </button>
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAmenityModal">
+                <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addAmenityModal">
                     <i class="bi bi-plus-lg me-1"></i> Add Amenity
                 </button>
             </div>
@@ -84,12 +82,11 @@ $amenities = $db->query("SELECT * FROM amenities ORDER BY name ASC")->fetchAll()
         <?php endif; ?>
 
         <div class="row g-4">
-            <!-- Categories Column -->
             <div class="col-lg-7">
-                <div class="admin-card">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-tags me-2 text-primary"></i> Space Categories</h5>
+                <div class="avastra-card">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-tags me-2 text-success"></i> Categories</h5>
                     <div class="table-responsive">
-                        <table class="table table-custom align-middle">
+                        <table class="table table-avastra align-middle">
                             <thead>
                                 <tr>
                                     <th>Icon</th>
@@ -102,7 +99,7 @@ $amenities = $db->query("SELECT * FROM amenities ORDER BY name ASC")->fetchAll()
                             <tbody>
                                 <?php foreach ($categories as $cat): ?>
                                     <tr>
-                                        <td><i class="bi <?= htmlspecialchars($cat['icon']); ?> fs-4 text-primary"></i></td>
+                                        <td><i class="bi <?= htmlspecialchars($cat['icon']); ?> fs-4 text-success"></i></td>
                                         <td>
                                             <div class="fw-bold text-dark"><?= htmlspecialchars($cat['name']); ?></div>
                                             <small class="text-muted"><?= htmlspecialchars($cat['description']); ?></small>
@@ -122,9 +119,8 @@ $amenities = $db->query("SELECT * FROM amenities ORDER BY name ASC")->fetchAll()
                 </div>
             </div>
 
-            <!-- Amenities Column -->
             <div class="col-lg-5">
-                <div class="admin-card">
+                <div class="avastra-card">
                     <h5 class="fw-bold mb-3"><i class="bi bi-check2-square me-2 text-success"></i> Master Amenities</h5>
                     <div class="list-group list-group-flush">
                         <?php foreach ($amenities as $am): ?>
@@ -148,7 +144,7 @@ $amenities = $db->query("SELECT * FROM amenities ORDER BY name ASC")->fetchAll()
             <div class="modal-content">
                 <form method="POST" action="">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Add Space Category</h5>
+                        <h5 class="modal-title fw-bold">Add Category</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -158,17 +154,17 @@ $amenities = $db->query("SELECT * FROM amenities ORDER BY name ASC")->fetchAll()
                             <input type="text" name="name" class="form-control" placeholder="e.g. Recording Studio" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Bootstrap Icon Class</label>
+                            <label class="form-label fw-bold">Bootstrap Icon</label>
                             <input type="text" name="icon" class="form-control" value="bi-building" placeholder="e.g. bi-mic">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Short Description</label>
-                            <textarea name="description" class="form-control" rows="2" placeholder="Brief summary..."></textarea>
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="description" class="form-control" rows="2"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Create Category</button>
+                        <button type="submit" class="btn btn-avastra">Create Category</button>
                     </div>
                 </form>
             </div>
@@ -188,16 +184,16 @@ $amenities = $db->query("SELECT * FROM amenities ORDER BY name ASC")->fetchAll()
                         <input type="hidden" name="add_amenity" value="1">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Amenity Name</label>
-                            <input type="text" name="amenity_name" class="form-control" placeholder="e.g. EV Charging Station" required>
+                            <input type="text" name="amenity_name" class="form-control" placeholder="e.g. EV Charger" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Bootstrap Icon Class</label>
+                            <label class="form-label fw-bold">Bootstrap Icon</label>
                             <input type="text" name="amenity_icon" class="form-control" value="bi-ev-station" placeholder="e.g. bi-ev-station">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-success">Create Amenity</button>
+                        <button type="submit" class="btn btn-avastra">Create Amenity</button>
                     </div>
                 </form>
             </div>

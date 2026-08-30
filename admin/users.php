@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'User Management';
+$pageTitle = 'Users';
 require_once __DIR__ . '/../classes/Admin.php';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
@@ -10,12 +10,12 @@ $adminModel = new Admin();
 $message = '';
 $error = '';
 
-// Handle Status Toggle (Block / Activate User)
+// Handle Status Toggle (Block / Activate / Suspend User)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'], $_POST['new_status'])) {
     $userId = (int) $_POST['user_id'];
     $newStatus = $_POST['new_status'];
 
-    if (in_array($newStatus, ['active', 'blocked', 'inactive'])) {
+    if (in_array($newStatus, ['active', 'blocked', 'inactive', 'suspended'])) {
         $stmt = $db->prepare("UPDATE users SET status = :status WHERE id = :id AND role_id != 1");
         if ($stmt->execute([':status' => $newStatus, ':id' => $userId])) {
             $adminModel->logAction($currentUser['id'], 'USER_STATUS_CHANGE', 'USER', $userId, "Status changed to {$newStatus}");
@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'], $_POST['ne
 // Search & Filter Query
 $search = trim($_GET['q'] ?? '');
 $roleFilter = $_GET['role'] ?? 'all';
+$statusFilter = $_GET['status'] ?? 'all';
 
 $whereClauses = ["1=1"];
 $params = [];
@@ -41,6 +42,11 @@ if (!empty($search)) {
 if ($roleFilter !== 'all') {
     $whereClauses[] = "r.role_name = :role";
     $params[':role'] = $roleFilter;
+}
+
+if ($statusFilter !== 'all') {
+    $whereClauses[] = "u.status = :status";
+    $params[':status'] = $statusFilter;
 }
 
 $sql = "
@@ -63,8 +69,8 @@ $users = $stmt->fetchAll();
     <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">User Management</h3>
-                <p class="text-muted small mb-0">Manage registered accounts, view activity metrics, and control account status.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Users Management</h3>
+                <p class="text-muted small mb-0">Manage registered user accounts, view activity, and control user permissions.</p>
             </div>
         </div>
 
@@ -75,41 +81,56 @@ $users = $stmt->fetchAll();
             </div>
         <?php endif; ?>
 
+        <?php if ($error): ?>
+            <div class="alert alert-danger alert-dismissible fade show mb-4">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> <?= htmlspecialchars($error); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+
         <!-- Search & Filter Card -->
-        <div class="admin-card mb-4">
+        <div class="avastra-card mb-4">
             <form method="GET" action="" class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                         <input type="text" name="q" class="form-control" placeholder="Search by name, email, or phone..." value="<?= htmlspecialchars($search); ?>">
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <select name="role" class="form-select">
                         <option value="all" <?= ($roleFilter === 'all') ? 'selected' : ''; ?>>All Roles</option>
-                        <option value="user" <?= ($roleFilter === 'user') ? 'selected' : ''; ?>>Registered User (Seeker/Owner)</option>
+                        <option value="user" <?= ($roleFilter === 'user') ? 'selected' : ''; ?>>Registered User</option>
                         <option value="admin" <?= ($roleFilter === 'admin') ? 'selected' : ''; ?>>Admin</option>
                     </select>
                 </div>
+                <div class="col-md-2">
+                    <select name="status" class="form-select">
+                        <option value="all" <?= ($statusFilter === 'all') ? 'selected' : ''; ?>>All Statuses</option>
+                        <option value="active" <?= ($statusFilter === 'active') ? 'selected' : ''; ?>>Active</option>
+                        <option value="blocked" <?= ($statusFilter === 'blocked') ? 'selected' : ''; ?>>Suspended / Blocked</option>
+                        <option value="pending" <?= ($statusFilter === 'pending') ? 'selected' : ''; ?>>Pending</option>
+                    </select>
+                </div>
                 <div class="col-md-2 d-grid">
-                    <button type="submit" class="btn btn-primary">Filter Users</button>
+                    <button type="submit" class="btn btn-avastra">Filter Users</button>
                 </div>
             </form>
         </div>
 
         <!-- Users Table Card -->
-        <div class="admin-card">
+        <div class="avastra-card">
             <div class="table-responsive">
-                <table class="table table-custom align-middle">
+                <table class="table table-avastra align-middle">
                     <thead>
                         <tr>
                             <th>User Name</th>
                             <th>Role</th>
                             <th>Contact Info</th>
-                            <th>Spaces Listed</th>
-                            <th>Bookings Made</th>
+                            <th>Spaces</th>
+                            <th>Bookings</th>
+                            <th>Joined Date</th>
                             <th>Status</th>
-                            <th>Registered Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -122,9 +143,9 @@ $users = $stmt->fetchAll();
                                 </td>
                                 <td>
                                     <?php if ($u['role_name'] === 'admin'): ?>
-                                        <span class="badge bg-purple text-white px-2 py-1" style="background:#6b21a8;"><i class="bi bi-shield-lock-fill me-1"></i> Admin</span>
+                                        <span class="badge bg-dark text-white px-2 py-1"><i class="bi bi-shield-lock-fill me-1"></i> Admin</span>
                                     <?php else: ?>
-                                        <span class="badge bg-secondary text-white px-2 py-1"><i class="bi bi-person me-1"></i> User</span>
+                                        <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-person me-1"></i> User</span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
@@ -133,16 +154,16 @@ $users = $stmt->fetchAll();
                                 </td>
                                 <td><span class="badge bg-light text-dark border"><?= $u['spaces_count']; ?> spaces</span></td>
                                 <td><span class="badge bg-light text-dark border"><?= $u['bookings_count']; ?> bookings</span></td>
+                                <td><small class="text-muted"><?= date('d M Y', strtotime($u['created_at'])); ?></small></td>
                                 <td>
                                     <?php if ($u['status'] === 'active'): ?>
                                         <span class="badge-status active"><i class="bi bi-check-circle"></i> Active</span>
-                                    <?php elseif ($u['status'] === 'blocked'): ?>
-                                        <span class="badge-status blocked"><i class="bi bi-slash-circle"></i> Blocked</span>
+                                    <?php elseif ($u['status'] === 'blocked' || $u['status'] === 'suspended'): ?>
+                                        <span class="badge-status blocked"><i class="bi bi-slash-circle"></i> Suspended</span>
                                     <?php else: ?>
                                         <span class="badge-status pending"><?= ucfirst($u['status']); ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td><small class="text-muted"><?= date('d M Y', strtotime($u['created_at'])); ?></small></td>
                                 <td>
                                     <?php if ($u['role_name'] !== 'admin'): ?>
                                         <form method="POST" action="" class="d-inline">
@@ -150,7 +171,7 @@ $users = $stmt->fetchAll();
                                             <?php if ($u['status'] === 'active'): ?>
                                                 <input type="hidden" name="new_status" value="blocked">
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-slash-circle me-1"></i> Block User
+                                                    <i class="bi bi-slash-circle me-1"></i> Suspend
                                                 </button>
                                             <?php else: ?>
                                                 <input type="hidden" name="new_status" value="active">
@@ -160,7 +181,7 @@ $users = $stmt->fetchAll();
                                             <?php endif; ?>
                                         </form>
                                     <?php else: ?>
-                                        <span class="text-muted small">Protected</span>
+                                        <span class="text-muted small">System Admin</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>

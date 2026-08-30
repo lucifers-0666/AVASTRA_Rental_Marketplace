@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Booking Management';
+$pageTitle = 'Bookings';
 require_once __DIR__ . '/../classes/Admin.php';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
@@ -36,30 +36,30 @@ $bookings = $stmt->fetchAll();
     <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">Booking Management</h3>
-                <p class="text-muted small mb-0">Monitor system bookings, date ranges, total calculated fees, and status timelines.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Bookings Management</h3>
+                <p class="text-muted small mb-0">Monitor system reservations, rental duration dates, renter & owner details, and status timelines.</p>
             </div>
             <div class="btn-group">
-                <a href="bookings.php?status=all" class="btn btn-sm <?= ($statusFilter === 'all') ? 'btn-primary' : 'btn-outline-secondary'; ?>">All</a>
-                <a href="bookings.php?status=pending" class="btn btn-sm <?= ($statusFilter === 'pending') ? 'btn-primary' : 'btn-outline-secondary'; ?>">Pending</a>
-                <a href="bookings.php?status=confirmed" class="btn btn-sm <?= ($statusFilter === 'confirmed') ? 'btn-primary' : 'btn-outline-secondary'; ?>">Confirmed</a>
-                <a href="bookings.php?status=completed" class="btn btn-sm <?= ($statusFilter === 'completed') ? 'btn-primary' : 'btn-outline-secondary'; ?>">Completed</a>
+                <a href="bookings.php?status=all" class="btn btn-sm <?= ($statusFilter === 'all') ? 'btn-success fw-bold' : 'btn-outline-secondary'; ?>">All</a>
+                <a href="bookings.php?status=pending" class="btn btn-sm <?= ($statusFilter === 'pending') ? 'btn-warning text-dark fw-bold' : 'btn-outline-secondary'; ?>">Pending</a>
+                <a href="bookings.php?status=confirmed" class="btn btn-sm <?= ($statusFilter === 'confirmed') ? 'btn-success fw-bold' : 'btn-outline-secondary'; ?>">Confirmed</a>
+                <a href="bookings.php?status=completed" class="btn btn-sm <?= ($statusFilter === 'completed') ? 'btn-info text-white fw-bold' : 'btn-outline-secondary'; ?>">Completed</a>
             </div>
         </div>
 
-        <div class="admin-card">
+        <div class="avastra-card">
             <?php if (empty($bookings)): ?>
                 <div class="text-center py-5 text-muted">No bookings found for the selected status.</div>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-custom align-middle">
+                    <table class="table table-avastra align-middle">
                         <thead>
                             <tr>
                                 <th>Booking Code</th>
+                                <th>Renter / Seeker</th>
                                 <th>Space Title</th>
-                                <th>Seeker</th>
-                                <th>Owner</th>
-                                <th>Rental Period</th>
+                                <th>Space Owner</th>
+                                <th>Rental Duration</th>
                                 <th>Total Amount</th>
                                 <th>Status</th>
                             </tr>
@@ -71,10 +71,13 @@ $bookings = $stmt->fetchAll();
                                         <div class="fw-bold text-dark"><?= htmlspecialchars($b['booking_code']); ?></div>
                                         <small class="text-muted"><?= date('d M Y', strtotime($b['created_at'])); ?></small>
                                     </td>
-                                    <td><?= htmlspecialchars($b['space_title']); ?></td>
                                     <td>
                                         <div class="fw-semibold"><?= htmlspecialchars($b['seeker_name']); ?></div>
                                         <small class="text-muted"><?= htmlspecialchars($b['seeker_email']); ?></small>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold"><?= htmlspecialchars($b['space_title']); ?></div>
+                                        <small class="text-muted">Purpose: <?= htmlspecialchars($b['purpose']); ?></small>
                                     </td>
                                     <td><?= htmlspecialchars($b['owner_name']); ?></td>
                                     <td>

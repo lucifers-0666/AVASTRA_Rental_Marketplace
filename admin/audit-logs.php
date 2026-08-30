@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Security Audit Logs';
+$pageTitle = 'Audit Logs';
 require_once __DIR__ . '/../classes/Admin.php';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
@@ -22,25 +22,25 @@ $logs = $db->query($sql)->fetchAll();
     <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">Security Audit Logs</h3>
-                <p class="text-muted small mb-0">Immutable record of administrative actions, verification approvals, and system state modifications.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Admin Activity & Audit Logs</h3>
+                <p class="text-muted small mb-0">Immutable system activity trail recording verification actions, role changes, and system events.</p>
             </div>
         </div>
 
-        <div class="admin-card">
+        <div class="avastra-card">
             <?php if (empty($logs)): ?>
                 <div class="text-center py-5 text-muted">No audit log entries recorded yet.</div>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-custom align-middle">
+                    <table class="table table-avastra align-middle">
                         <thead>
                             <tr>
                                 <th>Timestamp</th>
-                                <th>User / Performer</th>
+                                <th>Administrator / Performer</th>
                                 <th>Action Event</th>
-                                <th>Entity</th>
+                                <th>Entity Target</th>
                                 <th>IP Address</th>
-                                <th>Event Details</th>
+                                <th>Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,7 +48,7 @@ $logs = $db->query($sql)->fetchAll();
                                 <tr>
                                     <td><small class="text-muted fw-bold"><?= date('d M Y, h:i:s A', strtotime($l['created_at'])); ?></small></td>
                                     <td>
-                                        <div class="fw-semibold"><?= htmlspecialchars($l['full_name'] ?? 'System / Automated'); ?></div>
+                                        <div class="fw-semibold text-dark"><?= htmlspecialchars($l['full_name'] ?? 'System'); ?></div>
                                         <small class="text-muted"><?= htmlspecialchars($l['email'] ?? ''); ?></small>
                                     </td>
                                     <td><span class="badge bg-dark text-white"><?= htmlspecialchars($l['action']); ?></span></td>

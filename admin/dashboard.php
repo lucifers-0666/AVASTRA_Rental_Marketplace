@@ -1,210 +1,237 @@
 <?php
-$pageTitle = 'Admin Overview & Analytics';
+$pageTitle = 'Dashboard';
 require_once __DIR__ . '/../classes/Admin.php';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
 
 $adminModel = new Admin();
-$stats = $adminModel->getDashboardStats();
+$kpis = $adminModel->get6KPICards();
+$attentionItems = $adminModel->getNeedsAttentionQueue();
+$categoryAnalytics = $adminModel->getCategoryAnalytics();
 $pendingSpaces = $adminModel->getPendingSpaces(5);
 
-// Handle Quick Space Actions (Approve / Reject)
-$message = '';
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $spaceId = (int) ($_POST['space_id'] ?? 0);
-    if ($_POST['action'] === 'approve') {
-        if ($adminModel->approveSpace($spaceId, $currentUser['id'])) {
-            $message = "Space #{$spaceId} approved successfully!";
-        } else {
-            $error = "Failed to approve space.";
-        }
-    } elseif ($_POST['action'] === 'reject') {
-        $reason = trim($_POST['rejection_reason'] ?? 'Listing specifications incomplete.');
-        if ($adminModel->rejectSpace($spaceId, $reason, $currentUser['id'])) {
-            $message = "Space #{$spaceId} rejected.";
-        } else {
-            $error = "Failed to reject space.";
-        }
-    }
-    // Refresh stats
-    $stats = $adminModel->getDashboardStats();
-    $pendingSpaces = $adminModel->getPendingSpaces(5);
-}
+$db = Database::getInstance();
+$recentLogs = $db->query("
+    SELECT a.*, u.full_name AS user_name 
+    FROM audit_logs a 
+    LEFT JOIN users u ON a.user_id = u.id 
+    ORDER BY a.created_at DESC 
+    LIMIT 6
+")->fetchAll();
 ?>
 
 <div id="admin-main">
     <?php require_once __DIR__ . '/includes/navbar.php'; ?>
 
     <main class="p-4">
-        <!-- Page Title & Header -->
+        <!-- Dashboard Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">System Overview & Analytics</h3>
-                <p class="text-muted small mb-0">Welcome back, <?= htmlspecialchars($currentUser['full_name']); ?>! Here is what is happening across SpaceShare today.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Dashboard</h3>
+                <p class="text-muted small mb-0">Monitor AVASTRA activity, marketplace health, and pending actions.</p>
             </div>
-            <a href="verify-spaces.php" class="btn btn-primary rounded-pill px-4">
-                <i class="bi bi-shield-check me-2"></i> Review Pending Spaces (<?= $stats['pending_spaces']; ?>)
+            <a href="verify-spaces.php" class="btn btn-avastra rounded-pill px-4">
+                <i class="bi bi-shield-check me-1"></i> Verification Queue (<?= $kpis['pending_verifications']; ?>)
             </a>
         </div>
 
-        <?php if ($message): ?>
-            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> <?= htmlspecialchars($message); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php endif; ?>
-
-        <?php if ($error): ?>
-            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i> <?= htmlspecialchars($error); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php endif; ?>
-
-        <!-- Stat Widgets Row -->
+        <!-- 6 KPI CARDS (Real Database Values) -->
         <div class="row g-3 mb-4">
-            <div class="col-md-3">
-                <div class="admin-card mb-0">
-                    <div class="stat-widget">
+            <!-- 1. Total Users -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+                <div class="avastra-card mb-0">
+                    <div class="kpi-card">
                         <div>
-                            <div class="stat-label">Registered Users</div>
-                            <div class="stat-value mt-1"><?= number_format($stats['total_users']); ?></div>
+                            <div class="kpi-label">Total Users</div>
+                            <div class="kpi-value"><?= number_format($kpis['total_users']); ?></div>
+                            <div class="kpi-subtext">Registered</div>
                         </div>
-                        <div class="stat-icon primary">
-                            <i class="bi bi-people-fill"></i>
-                        </div>
+                        <div class="kpi-icon blue"><i class="bi bi-people-fill"></i></div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="admin-card mb-0">
-                    <div class="stat-widget">
+            <!-- 2. Active Owners -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+                <div class="avastra-card mb-0">
+                    <div class="kpi-card">
                         <div>
-                            <div class="stat-label">Total Spaces Listed</div>
-                            <div class="stat-value mt-1"><?= number_format($stats['total_spaces']); ?></div>
+                            <div class="kpi-label">Active Owners</div>
+                            <div class="kpi-value"><?= number_format($kpis['active_owners']); ?></div>
+                            <div class="kpi-subtext">Space Owners</div>
                         </div>
-                        <div class="stat-icon success">
-                            <i class="bi bi-building"></i>
-                        </div>
+                        <div class="kpi-icon emerald"><i class="bi bi-person-badge-fill"></i></div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="admin-card mb-0">
-                    <div class="stat-widget">
+            <!-- 3. Active Spaces -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+                <div class="avastra-card mb-0">
+                    <div class="kpi-card">
                         <div>
-                            <div class="stat-label">Pending Verification</div>
-                            <div class="stat-value mt-1 text-warning"><?= number_format($stats['pending_spaces']); ?></div>
+                            <div class="kpi-label">Active Spaces</div>
+                            <div class="kpi-value"><?= number_format($kpis['active_spaces']); ?></div>
+                            <div class="kpi-subtext">Verified</div>
                         </div>
-                        <div class="stat-icon warning">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
+                        <div class="kpi-icon emerald"><i class="bi bi-building-check"></i></div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
-                <div class="admin-card mb-0">
-                    <div class="stat-widget">
+            <!-- 4. Total Bookings -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+                <div class="avastra-card mb-0">
+                    <div class="kpi-card">
                         <div>
-                            <div class="stat-label">Total Revenue</div>
-                            <div class="stat-value mt-1 text-purple">₹<?= number_format($stats['total_revenue'], 2); ?></div>
+                            <div class="kpi-label">Total Bookings</div>
+                            <div class="kpi-value"><?= number_format($kpis['total_bookings']); ?></div>
+                            <div class="kpi-subtext">Reservations</div>
                         </div>
-                        <div class="stat-icon purple">
-                            <i class="bi bi-currency-rupee"></i>
+                        <div class="kpi-icon purple"><i class="bi bi-calendar-check-fill"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Revenue -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+                <div class="avastra-card mb-0">
+                    <div class="kpi-card">
+                        <div>
+                            <div class="kpi-label">Revenue</div>
+                            <div class="kpi-value" style="font-size:1.4rem;">₹<?= number_format($kpis['total_revenue'], 0); ?></div>
+                            <div class="kpi-subtext">Gross Marketplace</div>
                         </div>
+                        <div class="kpi-icon rose"><i class="bi bi-currency-rupee"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Pending Verification -->
+            <div class="col-xl-2 col-md-4 col-sm-6">
+                <div class="avastra-card mb-0">
+                    <div class="kpi-card">
+                        <div>
+                            <div class="kpi-label">Pending Verif.</div>
+                            <div class="kpi-value text-amber"><?= number_format($kpis['pending_verifications']); ?></div>
+                            <div class="kpi-subtext text-warning">Requires Review</div>
+                        </div>
+                        <div class="kpi-icon amber"><i class="bi bi-clock-history"></i></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Charts & Activity Row -->
-        <div class="row g-4 mb-4">
-            <div class="col-lg-8">
-                <div class="admin-card mb-0 h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0">Booking & Revenue Trends</h5>
-                        <span class="badge bg-light text-dark border">Year 2026</span>
-                    </div>
-                    <canvas id="revenueChart" height="250"></canvas>
-                </div>
-            </div>
+        <!-- Section: Needs Your Attention -->
+        <div class="avastra-card mb-4">
+            <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-exclamation-octagon-fill text-warning"></i> Needs Your Attention
+            </h5>
 
-            <div class="col-lg-4">
-                <div class="admin-card mb-0 h-100">
-                    <h5 class="fw-bold mb-3">Space Categories</h5>
-                    <canvas id="categoryChart" height="250"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pending Verifications Table -->
-        <div class="admin-card">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div>
-                    <h5 class="fw-bold mb-0">Spaces Awaiting Verification</h5>
-                    <small class="text-muted">Listings submitted by space owners requiring admin review before public publishing.</small>
-                </div>
-                <a href="verify-spaces.php" class="btn btn-sm btn-outline-secondary">View All Queue</a>
-            </div>
-
-            <?php if (empty($pendingSpaces)): ?>
-                <div class="text-center py-4 text-muted">
-                    <i class="bi bi-check2-circle fs-2 d-block mb-2 text-success"></i>
-                    No pending space verification requests right now. All caught up!
+            <?php if (empty($attentionItems)): ?>
+                <div class="p-3 text-center text-muted small bg-light rounded">
+                    <i class="bi bi-check-circle-fill text-success me-1"></i> No urgent admin actions required right now. All queues clean!
                 </div>
             <?php else: ?>
+                <div class="row g-2">
+                    <?php foreach ($attentionItems as $item): ?>
+                        <div class="col-md-4">
+                            <div class="attention-item">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="attention-icon <?= ($item['priority'] === 'High') ? 'bg-danger text-white' : 'bg-warning text-dark'; ?>">
+                                        <i class="bi <?= $item['icon']; ?>"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold small mb-1"><?= htmlspecialchars($item['title']); ?></div>
+                                        <span class="badge bg-light text-dark border me-1"><?= $item['module']; ?></span>
+                                        <span class="badge <?= ($item['priority'] === 'High') ? 'bg-danger' : 'bg-warning text-dark'; ?>"><?= $item['priority']; ?></span>
+                                    </div>
+                                </div>
+                                <a href="<?= $item['action_link']; ?>" class="btn btn-sm btn-outline-success fw-bold ms-2" style="white-space:nowrap;">
+                                    <?= $item['action_label']; ?>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row g-4 mb-4">
+            <!-- Bookings / Revenue Trend Chart -->
+            <div class="col-lg-8">
+                <div class="avastra-card mb-0 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="fw-bold mb-0">Marketplace Activity & Trends</h5>
+                            <small class="text-muted">Visual breakdown of booking activity and platform revenue</small>
+                        </div>
+                        <ul class="nav nav-pills nav-pills-sm" id="chartTabs">
+                            <li class="nav-item">
+                                <button class="nav-link active small py-1 px-3" data-bs-toggle="tab" data-bs-target="#bookingsTab">Bookings</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link small py-1 px-3" data-bs-toggle="tab" data-bs-target="#revenueTab">Revenue</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="bookingsTab">
+                            <canvas id="bookingsTrendChart" height="230"></canvas>
+                        </div>
+                        <div class="tab-pane fade" id="revenueTab">
+                            <canvas id="revenueTrendChart" height="230"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Space Categories Analytics -->
+            <div class="col-lg-4">
+                <div class="avastra-card mb-0 h-100">
+                    <h5 class="fw-bold mb-1">Space Categories</h5>
+                    <small class="text-muted d-block mb-3">Distribution of spaces listed by category</small>
+                    <canvas id="categoriesDoughnutChart" height="230"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Audit Log Activity Table -->
+        <div class="avastra-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h5 class="fw-bold mb-0">Recent Activity & Audit Trail</h5>
+                    <small class="text-muted">Real-time record of system actions and administrator events</small>
+                </div>
+                <a href="audit-logs.php" class="btn btn-sm btn-outline-secondary">View Full Log</a>
+            </div>
+
+            <?php if (empty($recentLogs)): ?>
+                <div class="text-center py-4 text-muted small">No audit log entries recorded yet.</div>
+            <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-custom align-middle">
+                    <table class="table table-avastra align-middle">
                         <thead>
                             <tr>
-                                <th>Space Title</th>
-                                <th>Category</th>
-                                <th>Owner</th>
-                                <th>Location</th>
-                                <th>Size & Rate</th>
-                                <th>Actions</th>
+                                <th>User</th>
+                                <th>Action Event</th>
+                                <th>Entity</th>
+                                <th>IP Address</th>
+                                <th>Timestamp</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($pendingSpaces as $space): ?>
+                            <?php foreach ($recentLogs as $log): ?>
                                 <tr>
                                     <td>
-                                        <div class="fw-bold text-dark"><?= htmlspecialchars($space['title']); ?></div>
-                                        <small class="text-muted">ID: #<?= $space['id']; ?> | Created: <?= date('d M Y', strtotime($space['created_at'])); ?></small>
+                                        <div class="fw-bold text-dark"><?= htmlspecialchars($log['user_name'] ?? 'System'); ?></div>
                                     </td>
-                                    <td><span class="badge bg-info text-dark"><?= htmlspecialchars($space['category_name']); ?></span></td>
-                                    <td>
-                                        <div class="fw-semibold"><?= htmlspecialchars($space['owner_name']); ?></div>
-                                        <small class="text-muted"><?= htmlspecialchars($space['owner_email']); ?></small>
-                                    </td>
-                                    <td><?= htmlspecialchars($space['city']); ?>, <?= htmlspecialchars($space['state']); ?></td>
-                                    <td>
-                                        <div class="fw-bold"><?= $space['total_sqft']; ?> sq.ft</div>
-                                        <small class="text-success fw-semibold">₹<?= number_format($space['daily_rate'], 2); ?> / day</small>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <form method="POST" action="" class="d-inline">
-                                                <input type="hidden" name="space_id" value="<?= $space['id']; ?>">
-                                                <input type="hidden" name="action" value="approve">
-                                                <button type="submit" class="btn btn-sm btn-success px-3">
-                                                    <i class="bi bi-check-lg"></i> Approve
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="" class="d-inline">
-                                                <input type="hidden" name="space_id" value="<?= $space['id']; ?>">
-                                                <input type="hidden" name="action" value="reject">
-                                                <button type="submit" class="btn btn-sm btn-outline-danger px-3">
-                                                    <i class="bi bi-x-lg"></i> Reject
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <td><span class="badge bg-dark text-white"><?= htmlspecialchars($log['action']); ?></span></td>
+                                    <td><span class="badge bg-light text-dark border"><?= htmlspecialchars($log['entity_type'] ?? 'N/A'); ?> <?= $log['entity_id'] ? '#' . $log['entity_id'] : ''; ?></span></td>
+                                    <td><code><?= htmlspecialchars($log['ip_address'] ?? '127.0.0.1'); ?></code></td>
+                                    <td><small class="text-muted"><?= date('d M Y, h:i A', strtotime($log['created_at'])); ?></small></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -214,19 +241,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         </div>
     </main>
 
+    <!-- Chart.js Config -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Revenue Chart
-            const ctx1 = document.getElementById('revenueChart').getContext('2d');
+            // Bookings Trend Chart
+            const ctx1 = document.getElementById('bookingsTrendChart').getContext('2d');
             new Chart(ctx1, {
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
                     datasets: [{
-                        label: 'Revenue (₹)',
-                        data: [12000, 19000, 25000, 32000, 28000, 45000, 52000, 68000],
-                        borderColor: '#0284c7',
-                        backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                        label: 'Total Bookings',
+                        data: [5, 12, 18, 24, 30, 42, 55, 68],
+                        borderColor: '#0d5c46',
+                        backgroundColor: 'rgba(13, 92, 70, 0.08)',
                         fill: true,
                         tension: 0.4
                     }]
@@ -234,15 +262,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 options: { responsive: true, maintainAspectRatio: false }
             });
 
-            // Category Distribution Chart
-            const ctx2 = document.getElementById('categoryChart').getContext('2d');
+            // Revenue Trend Chart
+            const ctx2 = document.getElementById('revenueTrendChart').getContext('2d');
             new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                    datasets: [{
+                        label: 'Platform Revenue (₹)',
+                        data: [12000, 18000, 25000, 32000, 28000, 45000, 52000, 68000],
+                        backgroundColor: '#10b981',
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // Category Doughnut Chart
+            const ctx3 = document.getElementById('categoriesDoughnutChart').getContext('2d');
+            new Chart(ctx3, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Warehouse', 'Office', 'Event Space', 'Workshop', 'Pop-up Shop'],
+                    labels: [
+                        <?php foreach ($categoryAnalytics as $cat) { echo "'" . addslashes($cat['name']) . "',"; } ?>
+                    ],
                     datasets: [{
-                        data: [40, 25, 15, 12, 8],
-                        backgroundColor: ['#0284c7', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899']
+                        data: [
+                            <?php foreach ($categoryAnalytics as $cat) { echo $cat['total_spaces'] . ","; } ?>
+                        ],
+                        backgroundColor: ['#0d5c46', '#10b981', '#0284c7', '#f59e0b', '#8b5cf6', '#ec4899']
                     }]
                 },
                 options: { responsive: true, maintainAspectRatio: false }

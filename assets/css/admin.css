@@ -1,39 +1,40 @@
 /* =============================================================================
-   SpaceShare — Admin Panel Premium CSS Design System
-   Modern Aesthetics: Vibrant Gradients, Glassmorphism, Smooth Micro-Animations
+   AVASTRA — Flexible Space Rental Marketplace
+   Admin Panel CSS Design System (Aligned to Approved Figma Design)
    ============================================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    --admin-primary: #0052cc;
-    --admin-primary-hover: #0747a6;
-    --admin-accent: #00b8d9;
-    --admin-dark-bg: #091e42;
-    --admin-sidebar-bg: #0f172a;
-    --admin-sidebar-hover: #1e293b;
-    --admin-sidebar-text: #94a3b8;
-    --admin-sidebar-active: #38bdf8;
-    --admin-body-bg: #f8fafc;
-    --admin-card-bg: #ffffff;
-    --admin-text-main: #1e293b;
-    --admin-text-muted: #64748b;
-    --admin-border-color: #e2e8f0;
-    --admin-radius: 12px;
-    --admin-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-    --admin-glass-bg: rgba(255, 255, 255, 0.75);
-    --admin-glass-border: rgba(255, 255, 255, 0.18);
+    /* AVASTRA Brand Palette */
+    --avastra-primary: #0d5c46;
+    --avastra-primary-hover: #094434;
+    --avastra-primary-light: #e6f4f0;
+    --avastra-accent: #10b981;
+    --avastra-sidebar-bg: #091310;
+    --avastra-sidebar-hover: rgba(255, 255, 255, 0.06);
+    --avastra-sidebar-text: #94a3b8;
+    --avastra-body-bg: #f8faf9;
+    --avastra-card-bg: #ffffff;
+    --avastra-text-main: #0f172a;
+    --avastra-text-muted: #64748b;
+    --avastra-border-color: #e2e8f0;
+    --avastra-radius-sm: 8px;
+    --avastra-radius-md: 12px;
+    --avastra-radius-lg: 16px;
+    --avastra-shadow: 0 4px 20px -2px rgba(13, 92, 70, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+    --avastra-shadow-hover: 0 12px 30px -4px rgba(13, 92, 70, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
 }
 
 body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--admin-body-bg);
-    color: var(--admin-text-main);
+    background-color: var(--avastra-body-bg);
+    color: var(--avastra-text-main);
     overflow-x: hidden;
 }
 
 /* -----------------------------------------------------------------------------
-   Layout Wrapper
+   Layout Wrapper & Shell
    ----------------------------------------------------------------------------- */
 #admin-wrapper {
     display: flex;
@@ -41,11 +42,11 @@ body {
 }
 
 /* -----------------------------------------------------------------------------
-   Sidebar Component
+   Sidebar Navigation Component (Figma Proportions: ~250px)
    ----------------------------------------------------------------------------- */
 #admin-sidebar {
-    width: 260px;
-    background: var(--admin-sidebar-bg);
+    width: 250px;
+    background: var(--avastra-sidebar-bg);
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -55,34 +56,27 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 #admin-sidebar .sidebar-brand {
-    padding: 1.5rem 1.25rem;
+    padding: 1.25rem 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 #admin-sidebar .sidebar-brand img {
-    height: 38px;
+    height: 34px;
     object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
-#admin-sidebar .sidebar-brand .brand-title {
-    font-weight: 800;
-    font-size: 1.15rem;
-    color: #ffffff;
-    letter-spacing: -0.5px;
-}
-
-#admin-sidebar .sidebar-brand .brand-badge {
-    background: linear-gradient(135deg, #0284c7, #0ea5e9);
+#admin-sidebar .sidebar-brand .brand-tag {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
     font-size: 0.65rem;
-    font-weight: 700;
+    font-weight: 800;
     padding: 2px 6px;
     border-radius: 4px;
     text-transform: uppercase;
@@ -91,62 +85,109 @@ body {
 
 #admin-sidebar .sidebar-menu {
     list-style: none;
-    padding: 1rem 0.75rem;
+    padding: 0.85rem 0.75rem;
     margin: 0;
     flex-grow: 1;
     overflow-y: auto;
 }
 
 #admin-sidebar .menu-header {
-    font-size: 0.7rem;
-    font-weight: 700;
+    font-size: 0.65rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #475569;
-    padding: 1rem 0.75rem 0.5rem;
+    padding: 1rem 0.75rem 0.35rem;
 }
 
 #admin-sidebar .nav-link {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
-    padding: 0.75rem 1rem;
-    color: var(--admin-sidebar-text);
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    color: var(--avastra-sidebar-text);
     font-weight: 500;
-    font-size: 0.9rem;
-    border-radius: 8px;
+    font-size: 0.875rem;
+    border-radius: var(--avastra-radius-sm);
     transition: all 0.2s ease;
     text-decoration: none;
     margin-bottom: 2px;
 }
 
 #admin-sidebar .nav-link i {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     transition: transform 0.2s ease;
 }
 
 #admin-sidebar .nav-link:hover {
     color: #ffffff;
-    background: var(--admin-sidebar-hover);
-    transform: translateX(4px);
+    background: var(--avastra-sidebar-hover);
+    transform: translateX(3px);
 }
 
+/* Active Nav Link: AVASTRA Soft Light-Green Treatment */
 #admin-sidebar .nav-link.active {
-    color: #ffffff;
-    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);
+    color: var(--avastra-primary);
+    background: var(--avastra-primary-light);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(13, 92, 70, 0.15);
 }
 
 #admin-sidebar .nav-link.active i {
+    color: var(--avastra-primary);
+}
+
+/* Sidebar User Footer Card */
+#admin-sidebar .sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#admin-sidebar .user-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+#admin-sidebar .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--avastra-primary);
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+#admin-sidebar .user-info {
+    line-height: 1.2;
+    min-width: 0;
+}
+
+#admin-sidebar .user-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#admin-sidebar .user-role {
+    font-size: 0.725rem;
+    color: #94a3b8;
 }
 
 /* -----------------------------------------------------------------------------
-   Main Content Container
+   Main Content Area
    ----------------------------------------------------------------------------- */
 #admin-main {
-    margin-left: 260px;
+    margin-left: 250px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -155,14 +196,13 @@ body {
 }
 
 /* -----------------------------------------------------------------------------
-   Navbar Top Bar
+   Top Header Bar Component
    ----------------------------------------------------------------------------- */
 .admin-navbar {
-    height: 70px;
-    background: var(--admin-glass-bg);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--admin-border-color);
-    padding: 0 1.75rem;
+    height: 66px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--avastra-border-color);
+    padding: 0 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -171,16 +211,29 @@ body {
     z-index: 900;
 }
 
+.admin-navbar .page-title-header h4 {
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--avastra-text-main);
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+.admin-navbar .page-breadcrumb {
+    font-size: 0.75rem;
+    color: var(--avastra-text-muted);
+}
+
 .admin-navbar .navbar-search {
     position: relative;
-    width: 320px;
+    width: 300px;
 }
 
 .admin-navbar .navbar-search input {
-    background: var(--admin-body-bg);
-    border: 1px solid var(--admin-border-color);
+    background: var(--avastra-body-bg);
+    border: 1px solid var(--avastra-border-color);
     border-radius: 20px;
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    padding: 0.45rem 1rem 0.45rem 2.4rem;
     font-size: 0.85rem;
     width: 100%;
     transition: all 0.2s ease;
@@ -188,137 +241,211 @@ body {
 
 .admin-navbar .navbar-search input:focus {
     outline: none;
-    border-color: #0284c7;
-    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    border-color: var(--avastra-primary);
+    box-shadow: 0 0 0 3px rgba(13, 92, 70, 0.12);
     background: #ffffff;
 }
 
 .admin-navbar .navbar-search i {
     position: absolute;
-    left: 1rem;
+    left: 0.9rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--admin-text-muted);
+    color: var(--avastra-text-muted);
 }
 
 /* -----------------------------------------------------------------------------
-   Cards & Widgets
+   Cards & Widgets System
    ----------------------------------------------------------------------------- */
-.admin-card {
-    background: var(--admin-card-bg);
-    border-radius: var(--admin-radius);
-    border: 1px solid var(--admin-border-color);
-    box-shadow: var(--admin-shadow);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+.avastra-card {
+    background: var(--avastra-card-bg);
+    border-radius: var(--avastra-radius-md);
+    border: 1px solid var(--avastra-border-color);
+    box-shadow: var(--avastra-shadow);
+    padding: 1.35rem;
+    margin-bottom: 1.25rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.admin-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08);
+.avastra-card:hover {
+    box-shadow: var(--avastra-shadow-hover);
 }
 
-.stat-widget {
+/* 6 KPI Cards Styling */
+.kpi-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.stat-widget .stat-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-}
-
-.stat-icon.primary { background: rgba(2, 132, 199, 0.1); color: #0284c7; }
-.stat-icon.success { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-.stat-icon.warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-.stat-icon.purple  { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
-
-.stat-widget .stat-value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    color: var(--admin-text-main);
-    line-height: 1.2;
-}
-
-.stat-widget .stat-label {
-    font-size: 0.825rem;
-    font-weight: 600;
-    color: var(--admin-text-muted);
+.kpi-card .kpi-label {
+    font-size: 0.775rem;
+    font-weight: 700;
+    color: var(--avastra-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
+.kpi-card .kpi-value {
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--avastra-text-main);
+    line-height: 1.25;
+    margin-top: 2px;
+}
+
+.kpi-card .kpi-subtext {
+    font-size: 0.725rem;
+    font-weight: 600;
+    color: var(--avastra-primary);
+    margin-top: 4px;
+}
+
+.kpi-card .kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--avastra-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+}
+
+.kpi-icon.emerald { background: rgba(13, 92, 70, 0.1); color: var(--avastra-primary); }
+.kpi-icon.blue    { background: rgba(2, 132, 199, 0.1); color: #0284c7; }
+.kpi-icon.purple  { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+.kpi-icon.amber   { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.kpi-icon.rose    { background: rgba(225, 29, 72, 0.1); color: #e11d48; }
+
 /* -----------------------------------------------------------------------------
-   Tables & Badges
+   "Needs Your Attention" Queue Component
    ----------------------------------------------------------------------------- */
-.table-custom {
+.attention-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--avastra-border-color);
+    border-radius: var(--avastra-radius-sm);
+    margin-bottom: 0.65rem;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.attention-item:hover {
+    border-color: var(--avastra-primary);
+    background: #fafdfc;
+}
+
+.attention-item .attention-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Tables & Badges System
+   ----------------------------------------------------------------------------- */
+.table-avastra {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
 }
 
-.table-custom th {
-    background: #f1f5f9;
-    color: var(--admin-text-muted);
+.table-avastra th {
+    background: #f8fafc;
+    color: var(--avastra-text-muted);
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: 0.725rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--admin-border-color);
+    border-bottom: 1px solid var(--avastra-border-color);
 }
 
-.table-custom td {
-    padding: 1rem;
-    border-bottom: 1px solid var(--admin-border-color);
+.table-avastra td {
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid var(--avastra-border-color);
     vertical-align: middle;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
 }
 
-.table-custom tr:last-child td {
+.table-avastra tr:last-child td {
     border-bottom: none;
 }
 
+.table-avastra tr:hover td {
+    background: #fcfdfd;
+}
+
 .badge-status {
-    padding: 0.35em 0.75em;
+    padding: 0.3em 0.7em;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.725rem;
     font-weight: 700;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.2px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
 }
 
-.badge-status.approved, .badge-status.active, .badge-status.completed {
-    background: #dcfce7;
-    color: #15803d;
+.badge-status.approved, .badge-status.active, .badge-status.published, .badge-status.completed, .badge-status.paid {
+    background: #ecfdf5;
+    color: #065f46;
 }
 
-.badge-status.pending {
-    background: #fef3c7;
+.badge-status.pending, .badge-status.draft, .badge-status.in_progress {
+    background: #fffbe6;
     color: #b45309;
 }
 
-.badge-status.rejected, .badge-status.blocked, .badge-status.cancelled {
-    background: #ffe4e6;
-    color: #be123c;
+.badge-status.rejected, .badge-status.blocked, .badge-status.suspended, .badge-status.cancelled, .badge-status.failed {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+/* Buttons */
+.btn-avastra {
+    background: var(--avastra-primary);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--avastra-radius-sm);
+    padding: 0.5rem 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.btn-avastra:hover {
+    background: var(--avastra-primary-hover);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(13, 92, 70, 0.25);
 }
 
 /* Footer Styling */
 .admin-footer {
-    padding: 1.25rem 1.75rem;
-    border-top: 1px solid var(--admin-border-color);
+    padding: 1.15rem 1.5rem;
+    border-top: 1px solid var(--avastra-border-color);
     background: #ffffff;
-    font-size: 0.825rem;
-    color: var(--admin-text-muted);
+    font-size: 0.8rem;
+    color: var(--avastra-text-muted);
     margin-top: auto;
+}
+
+/* Responsive Drawer adjustments */
+@media (max-width: 991.98px) {
+    #admin-sidebar {
+        left: -250px;
+    }
+    #admin-sidebar.show {
+        left: 0;
+    }
+    #admin-main {
+        margin-left: 0;
+    }
 }

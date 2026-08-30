@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Platform Settings';
+$pageTitle = 'Settings';
 require_once __DIR__ . '/../classes/Admin.php';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
@@ -39,8 +39,8 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
     <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">Platform & Commission Settings</h3>
-                <p class="text-muted small mb-0">Configure marketplace revenue shares, security deposit policies, and contact information.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Platform Settings</h3>
+                <p class="text-muted small mb-0">Grouped marketplace configurations, revenue commission shares, and support contact details.</p>
             </div>
         </div>
 
@@ -60,19 +60,19 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
 
         <div class="row">
             <div class="col-lg-8">
-                <div class="admin-card">
+                <div class="avastra-card">
                     <form method="POST" action="">
                         <input type="hidden" name="save_settings" value="1">
 
-                        <h5 class="fw-bold mb-3">Revenue & Fees</h5>
+                        <h5 class="fw-bold mb-3"><i class="bi bi-cash-stack me-2 text-success"></i> Revenue & Fees Configuration</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Platform Fee (%)</label>
+                                <label class="form-label fw-bold">Platform Commission Fee (%)</label>
                                 <div class="input-group">
                                     <input type="number" step="0.1" name="platform_fee_percent" class="form-control" value="<?= htmlspecialchars($settings['platform_fee_percent'] ?? 5.00); ?>" required>
                                     <span class="input-group-text">%</span>
                                 </div>
-                                <small class="text-muted">Fee added to booking price for marketplace maintenance.</small>
+                                <small class="text-muted">Fee percentage retained by AVASTRA on completed bookings.</small>
                             </div>
 
                             <div class="col-md-6">
@@ -81,16 +81,16 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
                                     <input type="number" step="0.1" name="deposit_percent" class="form-control" value="<?= htmlspecialchars($settings['deposit_percent'] ?? 10.00); ?>" required>
                                     <span class="input-group-text">%</span>
                                 </div>
-                                <small class="text-muted">Refundable deposit percentage held during active rentals.</small>
+                                <small class="text-muted">Security deposit held during active rental durations.</small>
                             </div>
                         </div>
 
                         <hr class="my-4">
 
-                        <h5 class="fw-bold mb-3">Payouts & Support</h5>
+                        <h5 class="fw-bold mb-3"><i class="bi bi-wallet2 me-2 text-success"></i> Payouts & Marketplace Support</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Minimum Owner Payout (₹)</label>
+                                <label class="form-label fw-bold">Minimum Owner Payout Threshold (₹)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">₹</span>
                                     <input type="number" step="100" name="min_payout_amount" class="form-control" value="<?= htmlspecialchars($settings['min_payout_amount'] ?? 500.00); ?>" required>
@@ -98,13 +98,13 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Support Contact Email</label>
+                                <label class="form-label fw-bold">Platform Support Email</label>
                                 <input type="email" name="contact_email" class="form-control" value="<?= htmlspecialchars($settings['contact_email'] ?? 'support@spaceshare.com'); ?>" required>
                             </div>
                         </div>
 
                         <div class="text-end">
-                            <button type="submit" class="btn btn-primary px-4">
+                            <button type="submit" class="btn btn-avastra px-4">
                                 <i class="bi bi-save me-1"></i> Save Platform Settings
                             </button>
                         </div>

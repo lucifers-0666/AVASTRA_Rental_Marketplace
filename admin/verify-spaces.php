@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Space Verification Queue';
+$pageTitle = 'Verification';
 require_once __DIR__ . '/../classes/Admin.php';
 require_once __DIR__ . '/includes/header.php';
 require_once __DIR__ . '/includes/sidebar.php';
@@ -21,10 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     } elseif ($_POST['action'] === 'reject') {
         $reason = trim($_POST['rejection_reason'] ?? 'Space specifications do not comply with marketplace standards.');
         if ($adminModel->rejectSpace($spaceId, $reason, $currentUser['id'])) {
-            $message = "Space #{$spaceId} has been rejected with reason logged.";
+            $message = "Space #{$spaceId} has been rejected.";
         } else {
             $error = "Failed to reject space.";
         }
+    } elseif ($_POST['action'] === 'request_info') {
+        $infoDetails = trim($_POST['info_details'] ?? '');
+        $adminModel->logAction($currentUser['id'], 'REQUEST_INFO', 'SPACE', $spaceId, "Information requested: {$infoDetails}");
+        $message = "Requested additional information from space owner for Space #{$spaceId}.";
     }
 }
 
@@ -49,13 +53,13 @@ $spaces = $stmt->fetchAll();
     <main class="p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h3 class="fw-bold mb-1">Space Listing Verification</h3>
-                <p class="text-muted small mb-0">Verify and approve new space listings before they appear on the public marketplace.</p>
+                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Verification Queue</h3>
+                <p class="text-muted small mb-0">Review pending space listings, inspect specifications, approve, or request further information.</p>
             </div>
 
             <div class="btn-group" role="group">
                 <a href="verify-spaces.php?status=pending" class="btn btn-sm <?= ($statusFilter === 'pending') ? 'btn-warning text-dark fw-bold' : 'btn-outline-secondary'; ?>">
-                    Pending (<?= $adminModel->getDashboardStats()['pending_spaces']; ?>)
+                    Pending Review (<?= $adminModel->get6KPICards()['pending_verifications']; ?>)
                 </a>
                 <a href="verify-spaces.php?status=approved" class="btn btn-sm <?= ($statusFilter === 'approved') ? 'btn-success fw-bold' : 'btn-outline-secondary'; ?>">
                     Approved
@@ -73,22 +77,29 @@ $spaces = $stmt->fetchAll();
             </div>
         <?php endif; ?>
 
-        <div class="admin-card">
+        <?php if ($error): ?>
+            <div class="alert alert-danger alert-dismissible fade show mb-4">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> <?= htmlspecialchars($error); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+
+        <div class="avastra-card">
             <?php if (empty($spaces)): ?>
                 <div class="text-center py-5 text-muted">
-                    <i class="bi bi-inbox fs-1 text-secondary mb-2 d-block"></i>
-                    No listings found under <strong><?= htmlspecialchars(strtoupper($statusFilter)); ?></strong> status.
+                    <i class="bi bi-shield-check fs-1 text-success d-block mb-2"></i>
+                    No space listings currently under <strong><?= htmlspecialchars(strtoupper($statusFilter)); ?></strong> queue.
                 </div>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-custom align-middle">
+                    <table class="table table-avastra align-middle">
                         <thead>
                             <tr>
-                                <th>Space Title & Details</th>
+                                <th>Applicant & Space</th>
                                 <th>Category</th>
-                                <th>Owner</th>
                                 <th>Location</th>
-                                <th>Pricing Structure</th>
+                                <th>Size & Rates</th>
+                                <th>Submitted Date</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -98,24 +109,15 @@ $spaces = $stmt->fetchAll();
                                 <tr>
                                     <td>
                                         <div class="fw-bold text-dark fs-6"><?= htmlspecialchars($s['title']); ?></div>
-                                        <small class="text-muted">Size: <strong><?= $s['total_sqft']; ?> sq.ft</strong> | Submitted: <?= date('d M Y, h:i A', strtotime($s['created_at'])); ?></small>
+                                        <small class="text-muted">Owner: <strong><?= htmlspecialchars($s['owner_name']); ?></strong> (<?= htmlspecialchars($s['owner_email']); ?>)</small>
                                     </td>
                                     <td><span class="badge bg-light text-dark border"><?= htmlspecialchars($s['category_name']); ?></span></td>
+                                    <td><?= htmlspecialchars($s['city']); ?>, <?= htmlspecialchars($s['state']); ?></td>
                                     <td>
-                                        <div class="fw-semibold"><?= htmlspecialchars($s['owner_name']); ?></div>
-                                        <small class="text-muted d-block"><?= htmlspecialchars($s['owner_email']); ?></small>
-                                        <small class="text-muted"><?= htmlspecialchars($s['owner_phone']); ?></small>
+                                        <div class="fw-bold"><?= $s['total_sqft']; ?> sq.ft</div>
+                                        <small class="text-success fw-bold">₹<?= number_format($s['daily_rate'], 2); ?> / day</small>
                                     </td>
-                                    <td>
-                                        <div class="small fw-semibold"><?= htmlspecialchars($s['city']); ?>, <?= htmlspecialchars($s['state']); ?></div>
-                                        <small class="text-muted"><?= htmlspecialchars($s['zip_code']); ?></small>
-                                    </td>
-                                    <td>
-                                        <div class="text-success fw-bold">₹<?= number_format($s['daily_rate'], 2); ?> <small class="text-muted fw-normal">/ day</small></div>
-                                        <?php if ($s['monthly_rate']): ?>
-                                            <small class="text-muted">₹<?= number_format($s['monthly_rate'], 2); ?> / month</small>
-                                        <?php endif; ?>
-                                    </td>
+                                    <td><small class="text-muted"><?= date('d M Y', strtotime($s['created_at'])); ?></small></td>
                                     <td>
                                         <?php if ($s['verification_status'] === 'approved'): ?>
                                             <span class="badge-status approved"><i class="bi bi-check-circle"></i> Approved</span>
@@ -127,16 +129,46 @@ $spaces = $stmt->fetchAll();
                                     </td>
                                     <td>
                                         <?php if ($s['verification_status'] === 'pending'): ?>
-                                            <div class="d-flex gap-2">
-                                                <form method="POST" action="">
+                                            <div class="d-flex gap-1">
+                                                <form method="POST" action="" class="d-inline">
                                                     <input type="hidden" name="space_id" value="<?= $s['id']; ?>">
                                                     <input type="hidden" name="action" value="approve">
-                                                    <button type="submit" class="btn btn-sm btn-success px-3">Approve</button>
+                                                    <button type="submit" class="btn btn-sm btn-avastra">Approve</button>
                                                 </form>
 
-                                                <button type="button" class="btn btn-sm btn-outline-danger px-3" data-bs-toggle="modal" data-bs-target="#rejectModal<?= $s['id']; ?>">
+                                                <button type="button" class="btn btn-sm btn-outline-warning text-dark" data-bs-toggle="modal" data-bs-target="#reqInfoModal<?= $s['id']; ?>">
+                                                    Req Info
+                                                </button>
+
+                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rejectModal<?= $s['id']; ?>">
                                                     Reject
                                                 </button>
+                                            </div>
+
+                                            <!-- Request Info Modal -->
+                                            <div class="modal fade" id="reqInfoModal<?= $s['id']; ?>" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form method="POST" action="">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title fw-bold">Request Information for #<?= $s['id']; ?></h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <input type="hidden" name="space_id" value="<?= $s['id']; ?>">
+                                                                <input type="hidden" name="action" value="request_info">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label fw-bold">Details Requested</label>
+                                                                    <textarea name="info_details" class="form-control" rows="3" required placeholder="Describe additional photos, certificates, or documents needed..."></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-warning">Send Request</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <!-- Reject Modal -->
@@ -153,7 +185,7 @@ $spaces = $stmt->fetchAll();
                                                                 <input type="hidden" name="action" value="reject">
                                                                 <div class="mb-3">
                                                                     <label class="form-label fw-bold">Reason for Rejection</label>
-                                                                    <textarea name="rejection_reason" class="form-control" rows="3" required placeholder="Specify missing information or guidelines violation..."></textarea>
+                                                                    <textarea name="rejection_reason" class="form-control" rows="3" required placeholder="Specify guidelines violation or missing criteria..."></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
