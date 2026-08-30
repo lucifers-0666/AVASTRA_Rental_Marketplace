@@ -1,36 +1,51 @@
 /* =============================================================================
    AVASTRA — Flexible Space Rental Marketplace
-   Admin Panel CSS Design System (Approved Figma Visual Alignment)
+   Admin Operational Control Center CSS (White Sidebar & Light-Green Theme)
    ============================================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
 
 :root {
-    /* AVASTRA Centralized Color Palette */
-    --avastra-forest: #0B2A18;       /* Deep Forest Green (Sidebar & Dark Headers) */
-    --avastra-primary: #145C4A;      /* Primary Brand Green (Buttons, Links, Main Accents) */
-    --avastra-primary-hover: #0B2A18;
-    --avastra-accent: #56B978;       /* Accent Green (Active states, Success highlights) */
-    --avastra-warm-white: #F7F7F7;   /* Body Background */
-    --avastra-dark-neutral: #17201B; /* Main Text Color */
-    --avastra-text-muted: #64748B;
+    /* AVASTRA Core Design System Tokens */
+    --avastra-primary: #1B5E3A;          /* Deep AVASTRA Green */
+    --avastra-primary-light: #4CAF6D;    /* Vibrant Accent Green */
+    --avastra-light-green: #E7F5EC;     /* Active Nav & Highlight Background */
+    --avastra-supporting-green: #9FD4B4;
+    --avastra-soft-neutral: #DCE6E0;    /* Border & Divider Tints */
+    --avastra-muted: #5C6B62;           /* Subtitle & Secondary Labels */
+    --avastra-ink: #1A1F1C;             /* Body Headings & Dark Text */
+    --avastra-white: #FFFFFF;
+    --avastra-warning: #E8A33D;         /* Amber Attention & Pending */
     
     /* Layout Tokens */
-    --avastra-body-bg: #F7F7F7;
+    --avastra-body-bg: #F4F9F6;         /* Very Light Green / Neutral Background */
+    --avastra-sidebar-bg: #FFFFFF;      /* Clean White Sidebar */
+    --avastra-header-bg: #FFFFFF;       /* Clean White Header */
     --avastra-card-bg: #FFFFFF;
-    --avastra-border-color: #E5E7EB;
+    --avastra-border-color: #E2E8F0;
     --avastra-radius-sm: 6px;
     --avastra-radius-md: 10px;
-    --avastra-radius-lg: 14px;
-    --avastra-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-    --avastra-shadow-md: 0 4px 12px -2px rgba(11, 42, 24, 0.06);
+    --avastra-radius-lg: 12px;           /* ~12px Card Corner Radius */
+    --avastra-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --avastra-shadow-md: 0 4px 12px -2px rgba(27, 94, 58, 0.05);
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--avastra-body-bg);
-    color: var(--avastra-dark-neutral);
+    color: var(--avastra-ink);
     overflow-x: hidden;
+}
+
+/* Typography Classes */
+h1, h2, h3, .serif-heading {
+    font-family: 'DM Serif Display', Georgia, serif;
+    color: var(--avastra-ink);
+    letter-spacing: -0.2px;
+}
+
+code, .font-mono {
+    font-family: 'DM Mono', monospace;
 }
 
 /* -----------------------------------------------------------------------------
@@ -42,12 +57,12 @@ body {
 }
 
 /* -----------------------------------------------------------------------------
-   Sidebar Navigation Component (Fixed ~248px, #0B2A18 Background)
+   White Sidebar Navigation Component (~248px, White Background)
    ----------------------------------------------------------------------------- */
 #admin-sidebar {
     width: 248px;
-    background: var(--avastra-forest);
-    color: #ffffff;
+    background: var(--avastra-sidebar-bg);
+    color: var(--avastra-ink);
     display: flex;
     flex-direction: column;
     transition: all 0.25s ease;
@@ -56,15 +71,16 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid var(--avastra-border-color);
 }
 
 #admin-sidebar .sidebar-brand {
-    padding: 1.25rem 1.15rem;
+    padding: 1.15rem 1.15rem;
     display: flex;
     align-items: center;
     gap: 0.65rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--avastra-border-color);
+    background: #FFFFFF;
 }
 
 #admin-sidebar .sidebar-brand img {
@@ -73,8 +89,8 @@ body {
 }
 
 #admin-sidebar .sidebar-brand .brand-tag {
-    background: rgba(86, 185, 120, 0.18);
-    color: var(--avastra-accent);
+    background: var(--avastra-light-green);
+    color: var(--avastra-primary);
     font-size: 0.65rem;
     font-weight: 800;
     padding: 2px 6px;
@@ -95,7 +111,7 @@ body {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #64748b;
+    color: var(--avastra-muted);
     padding: 0.9rem 0.65rem 0.3rem;
 }
 
@@ -104,28 +120,30 @@ body {
     align-items: center;
     gap: 0.7rem;
     padding: 0.55rem 0.75rem;
-    color: #94a3b8;
+    color: var(--avastra-muted);
     font-weight: 500;
     font-size: 0.85rem;
     border-radius: var(--avastra-radius-sm);
     transition: all 0.15s ease;
     text-decoration: none;
     margin-bottom: 2px;
+    position: relative;
 }
 
 #admin-sidebar .nav-link i {
     font-size: 1.05rem;
+    color: var(--avastra-muted);
 }
 
 #admin-sidebar .nav-link:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.06);
+    color: var(--avastra-primary);
+    background: var(--avastra-body-bg);
 }
 
-/* Active Nav Link: AVASTRA Light Green Background (#e6f4f0) */
+/* Active Nav Link: White Sidebar Active Pill (#E7F5EC bg, #1B5E3A text) */
 #admin-sidebar .nav-link.active {
-    color: var(--avastra-forest);
-    background: #e6f4f0;
+    color: var(--avastra-primary);
+    background: var(--avastra-light-green);
     font-weight: 700;
 }
 
@@ -133,11 +151,22 @@ body {
     color: var(--avastra-primary);
 }
 
+#admin-sidebar .nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--avastra-primary);
+    border-radius: 0 3px 3px 0;
+}
+
 /* Sidebar User Footer Card */
 #admin-sidebar .sidebar-footer {
     padding: 0.85rem 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid var(--avastra-border-color);
+    background: var(--avastra-body-bg);
 }
 
 #admin-sidebar .user-card {
@@ -168,7 +197,7 @@ body {
 #admin-sidebar .user-name {
     font-weight: 700;
     font-size: 0.825rem;
-    color: #ffffff;
+    color: var(--avastra-ink);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -176,7 +205,7 @@ body {
 
 #admin-sidebar .user-role {
     font-size: 0.7rem;
-    color: #94a3b8;
+    color: var(--avastra-muted);
 }
 
 /* -----------------------------------------------------------------------------
@@ -191,11 +220,11 @@ body {
 }
 
 /* -----------------------------------------------------------------------------
-   Top Header Bar Component (White #FFFFFF Background)
+   Top Header Bar Component (White #FFFFFF Background, 64px height)
    ----------------------------------------------------------------------------- */
 .admin-navbar {
     height: 64px;
-    background: #ffffff;
+    background: var(--avastra-header-bg);
     border-bottom: 1px solid var(--avastra-border-color);
     padding: 0 1.5rem;
     display: flex;
@@ -207,16 +236,17 @@ body {
 }
 
 .admin-navbar .page-title-header h4 {
-    font-weight: 800;
-    font-size: 1.1rem;
-    color: var(--avastra-forest);
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--avastra-ink);
     margin: 0;
-    letter-spacing: -0.3px;
+    line-height: 1.2;
 }
 
 .admin-navbar .page-breadcrumb {
     font-size: 0.725rem;
-    color: var(--avastra-text-muted);
+    color: var(--avastra-muted);
 }
 
 .admin-navbar .navbar-search {
@@ -225,7 +255,7 @@ body {
 }
 
 .admin-navbar .navbar-search input {
-    background: var(--avastra-warm-white);
+    background: var(--avastra-body-bg);
     border: 1px solid var(--avastra-border-color);
     border-radius: 20px;
     padding: 0.4rem 1rem 0.4rem 2.3rem;
@@ -237,7 +267,7 @@ body {
 .admin-navbar .navbar-search input:focus {
     outline: none;
     border-color: var(--avastra-primary);
-    box-shadow: 0 0 0 3px rgba(20, 92, 74, 0.1);
+    box-shadow: 0 0 0 3px rgba(27, 94, 58, 0.1);
     background: #ffffff;
 }
 
@@ -246,15 +276,15 @@ body {
     left: 0.85rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--avastra-text-muted);
+    color: var(--avastra-muted);
 }
 
 /* -----------------------------------------------------------------------------
-   Cards & Widgets System (Clean White Card, Restrained Borders)
+   Cards & Widgets System (Clean White Card, ~12px Radius, Thin Border)
    ----------------------------------------------------------------------------- */
 .avastra-card {
     background: var(--avastra-card-bg);
-    border-radius: var(--avastra-radius-md);
+    border-radius: var(--avastra-radius-lg);
     border: 1px solid var(--avastra-border-color);
     box-shadow: var(--avastra-shadow-sm);
     padding: 1.25rem;
@@ -271,7 +301,7 @@ body {
 .kpi-card .kpi-label {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--avastra-text-muted);
+    color: var(--avastra-muted);
     text-transform: uppercase;
     letter-spacing: 0.4px;
 }
@@ -280,7 +310,7 @@ body {
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -0.5px;
-    color: var(--avastra-dark-neutral);
+    color: var(--avastra-ink);
     line-height: 1.2;
     margin-top: 2px;
 }
@@ -300,14 +330,14 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
-    background: #e6f4f0;
+    background: var(--avastra-light-green);
     color: var(--avastra-primary);
 }
 
 /* Semantic KPI Icon override for Pending/Warning */
 .kpi-icon.warning {
     background: #fffbe6;
-    color: #b45309;
+    color: var(--avastra-warning);
 }
 
 /* -----------------------------------------------------------------------------
@@ -349,8 +379,8 @@ body {
 }
 
 .table-avastra th {
-    background: #f8fafc;
-    color: var(--avastra-text-muted);
+    background: #F8FAFC;
+    color: var(--avastra-muted);
     font-weight: 700;
     font-size: 0.725rem;
     text-transform: uppercase;
@@ -381,23 +411,23 @@ body {
 }
 
 .badge-status.approved, .badge-status.verified, .badge-status.active, .badge-status.published, .badge-status.completed, .badge-status.paid {
-    background: #ecfdf5;
-    color: #145C4A;
+    background: var(--avastra-light-green);
+    color: var(--avastra-primary);
 }
 
 .badge-status.pending, .badge-status.under_review, .badge-status.requires_information, .badge-status.draft {
-    background: #fffbe6;
-    color: #b45309;
+    background: #FFFBE6;
+    color: #B45309;
 }
 
 .badge-status.rejected, .badge-status.failed, .badge-status.cancelled, .badge-status.suspended, .badge-status.disputed, .badge-status.blocked {
-    background: #fef2f2;
-    color: #991b1b;
+    background: #FEF2F2;
+    color: #991B1B;
 }
 
 .badge-status.inactive {
-    background: #f3f4f6;
-    color: #4b5563;
+    background: #F3F4F6;
+    color: #4B5563;
 }
 
 /* Buttons */
@@ -412,7 +442,7 @@ body {
 }
 
 .btn-avastra:hover {
-    background: var(--avastra-forest);
+    background: #124228;
     color: #ffffff;
 }
 
@@ -436,7 +466,7 @@ body {
     border-top: 1px solid var(--avastra-border-color);
     background: #ffffff;
     font-size: 0.775rem;
-    color: var(--avastra-text-muted);
+    color: var(--avastra-muted);
     margin-top: auto;
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * AVASTRA Admin — Top Navbar Component (Approved Figma Alignment)
+ * AVASTRA Admin — Top Navbar Component (White Header & Exact Breadcrumbs)
  */
 $currentUser = Auth::getUser();
 $pageTitle = $pageTitle ?? 'Dashboard';
@@ -13,7 +13,7 @@ $pageTitle = $pageTitle ?? 'Dashboard';
 
         <div class="page-title-header">
             <h4><?= htmlspecialchars($pageTitle); ?></h4>
-            <div class="page-breadcrumb">AVASTRA Admin Portal &bull; <?= htmlspecialchars($pageTitle); ?></div>
+            <div class="page-breadcrumb">Home / <?= htmlspecialchars($pageTitle); ?></div>
         </div>
     </div>
 
@@ -38,7 +38,7 @@ $pageTitle = $pageTitle ?? 'Dashboard';
         <!-- Profile Avatar & Dropdown -->
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark gap-2" data-bs-toggle="dropdown">
-                <div class="text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:36px; height:36px; background:#145C4A !important;">
+                <div class="text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:36px; height:36px; background:#1B5E3A !important;">
                     <?= strtoupper(substr($currentUser['full_name'] ?? 'A', 0, 1)); ?>
                 </div>
                 <div class="d-none d-md-block text-start" style="line-height:1.2;">

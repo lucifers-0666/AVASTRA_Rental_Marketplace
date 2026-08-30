@@ -1,6 +1,6 @@
 <?php
 /**
- * AVASTRA Admin — Sidebar Navigation Component (Approved Figma Alignment)
+ * AVASTRA Admin — White Sidebar Navigation Component (Figma Design System)
  */
 $currentScript = basename($_SERVER['PHP_SELF']);
 $adminModel = new Admin();
@@ -11,7 +11,7 @@ $currentUser = Auth::getUser();
     <!-- Brand Header -->
     <div class="sidebar-brand">
         <a href="<?= APP_URL; ?>/admin/dashboard.php" class="d-flex align-items-center gap-2 text-decoration-none">
-            <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA Logo">
+            <img src="<?= APP_URL; ?>/assets/images/logo/colored-logo.svg" alt="AVASTRA Logo">
             <span class="brand-tag">ADMIN</span>
         </a>
     </div>
@@ -26,7 +26,7 @@ $currentUser = Auth::getUser();
             </a>
         </li>
 
-        <li class="menu-header">MARKETPLACE</li>
+        <li class="menu-header">MANAGEMENT</li>
         <li>
             <a href="<?= APP_URL; ?>/admin/users.php" class="nav-link <?= ($currentScript === 'users.php') ? 'active' : ''; ?>">
                 <i class="bi bi-people-fill"></i>

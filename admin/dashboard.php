@@ -23,10 +23,9 @@ $recentLogs = $db->query("
     <?php require_once __DIR__ . '/includes/navbar.php'; ?>
 
     <main class="p-3 p-md-4">
-        <!-- Dashboard Header -->
+        <!-- Content Subtitle Header (No Duplicate 'Dashboard' Title) -->
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
             <div>
-                <h4 class="fw-bold mb-1" style="color:#0B2A18;">Dashboard</h4>
                 <p class="text-muted small mb-0">Monitor AVASTRA activity, marketplace health, and pending actions.</p>
             </div>
             <a href="verify-spaces.php" class="btn btn-avastra rounded-pill px-3 py-1 text-nowrap align-self-start align-self-sm-center">
@@ -34,7 +33,7 @@ $recentLogs = $db->query("
             </a>
         </div>
 
-        <!-- 6 KPI CARDS (Real Database Values & AVASTRA Green Policy) -->
+        <!-- 6 KPI CARDS (Clean Operational Cards) -->
         <div class="row g-2 g-md-3 mb-3">
             <!-- 1. Total Users -->
             <div class="col-xl-2 col-md-4 col-6">
@@ -123,13 +122,13 @@ $recentLogs = $db->query("
 
         <!-- Section: Needs Your Attention -->
         <div class="avastra-card p-3 mb-3">
-            <h6 class="fw-bold mb-2 d-flex align-items-center gap-2" style="color:#0B2A18;">
+            <h6 class="serif-heading fw-bold mb-2 d-flex align-items-center gap-2">
                 <i class="bi bi-exclamation-octagon-fill text-warning"></i> Needs Your Attention
             </h6>
 
             <?php if (empty($attentionItems)): ?>
                 <div class="p-2 text-center text-muted small bg-light rounded">
-                    <i class="bi bi-check-circle-fill text-success me-1"></i> No urgent admin actions required. All queues clean!
+                    <i class="bi bi-check-circle-fill text-success me-1"></i> No urgent admin actions required. All operational queues clean!
                 </div>
             <?php else: ?>
                 <div class="row g-2">
@@ -156,48 +155,66 @@ $recentLogs = $db->query("
             <?php endif; ?>
         </div>
 
-        <!-- Marketplace Trends & Categories Charts Row -->
-        <div class="row g-3 mb-3">
-            <!-- Bookings / Revenue Dynamic Trend Chart -->
-            <div class="col-lg-8">
-                <div class="avastra-card p-3 mb-0 h-100">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div>
-                            <h6 class="fw-bold mb-0" style="color:#0B2A18;">Marketplace Trends</h6>
-                            <small class="text-muted" style="font-size:0.75rem;">Visual breakdown of booking activity and gross revenue</small>
-                        </div>
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" class="btn btn-outline-avastra active px-3 py-1" id="btnBookings">Bookings</button>
-                            <button type="button" class="btn btn-outline-avastra px-3 py-1" id="btnRevenue">Revenue</button>
-                        </div>
+        <!-- BOOKING & REVENUE OVERVIEW CHART CARD -->
+        <div class="avastra-card p-3 mb-3">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2">
+                <div>
+                    <h6 class="serif-heading fw-bold mb-0">Booking & Revenue Overview</h6>
+                    <small class="text-muted" style="font-size:0.75rem;">Year-to-date marketplace performance</small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-avastra active px-3 py-1" id="btnBookings">Bookings</button>
+                        <button type="button" class="btn btn-outline-avastra px-3 py-1" id="btnRevenue">Revenue</button>
                     </div>
+                    <select class="form-select form-select-sm" style="width:auto; font-size:0.75rem;">
+                        <option>30D</option>
+                        <option>7D</option>
+                        <option>3M</option>
+                        <option>6M</option>
+                        <option>1Y</option>
+                    </select>
+                </div>
+            </div>
 
-                    <div style="position: relative; height: 210px; width: 100%;">
-                        <canvas id="trendChart"></canvas>
+            <div style="position: relative; height: 220px; width: 100%;">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+
+        <!-- SECONDARY ANALYTICS (Two-column Desktop Layout) -->
+        <div class="row g-3 mb-3">
+            <!-- LEFT: Bookings by Space Type -->
+            <div class="col-lg-6">
+                <div class="avastra-card p-3 mb-0 h-100">
+                    <h6 class="serif-heading fw-bold mb-0">Bookings by Space Type</h6>
+                    <small class="text-muted d-block mb-2" style="font-size:0.75rem;">Distribution across Office, Studio, Meeting, Warehouse, Event, Storage</small>
+                    <div style="position: relative; height: 200px; width: 100%;">
+                        <canvas id="spaceTypeBarChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- Space Categories Analytics -->
-            <div class="col-lg-4">
+            <!-- RIGHT: User & Owner Growth -->
+            <div class="col-lg-6">
                 <div class="avastra-card p-3 mb-0 h-100">
-                    <h6 class="fw-bold mb-0" style="color:#0B2A18;">Space Categories</h6>
-                    <small class="text-muted d-block mb-2" style="font-size:0.75rem;">Distribution of spaces listed by type</small>
+                    <h6 class="serif-heading fw-bold mb-0">User & Owner Growth</h6>
+                    <small class="text-muted d-block mb-2" style="font-size:0.75rem;">Cumulative seeker and space owner accounts over time</small>
                     <div style="position: relative; height: 200px; width: 100%;">
-                        <canvas id="categoriesDoughnutChart"></canvas>
+                        <canvas id="userGrowthChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Audit Log Activity Table -->
+        <!-- RECENT ACTIVITY TABLE -->
         <div class="avastra-card p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <div>
-                    <h6 class="fw-bold mb-0" style="color:#0B2A18;">Recent Activity & Audit Trail</h6>
+                    <h6 class="serif-heading fw-bold mb-0">Recent Activity & Audit Trail</h6>
                     <small class="text-muted" style="font-size:0.75rem;">Real-time record of system actions and events</small>
                 </div>
-                <a href="audit-logs.php" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size:0.75rem;">View All Log</a>
+                <a href="audit-logs.php" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size:0.75rem;">View Full Log</a>
             </div>
 
             <?php if (empty($recentLogs)): ?>
@@ -208,10 +225,10 @@ $recentLogs = $db->query("
                         <thead>
                             <tr>
                                 <th>User</th>
-                                <th>Action Event</th>
-                                <th>Entity Target</th>
-                                <th>IP Address</th>
-                                <th>Timestamp</th>
+                                <th>Activity</th>
+                                <th>Type</th>
+                                <th>Date / Time</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -220,10 +237,10 @@ $recentLogs = $db->query("
                                     <td class="py-2">
                                         <div class="fw-bold text-dark"><?= htmlspecialchars($log['user_name'] ?? 'System'); ?></div>
                                     </td>
-                                    <td class="py-2"><span class="badge bg-dark text-white"><?= htmlspecialchars($log['action']); ?></span></td>
-                                    <td class="py-2"><span class="badge bg-light text-dark border"><?= htmlspecialchars($log['entity_type'] ?? 'N/A'); ?> <?= $log['entity_id'] ? '#' . $log['entity_id'] : ''; ?></span></td>
-                                    <td class="py-2"><code><?= htmlspecialchars($log['ip_address'] ?? '127.0.0.1'); ?></code></td>
+                                    <td class="py-2"><?= htmlspecialchars($log['details'] ?? $log['action']); ?></td>
+                                    <td class="py-2"><span class="badge bg-light text-dark border"><?= htmlspecialchars($log['entity_type'] ?? 'System'); ?></span></td>
                                     <td class="py-2"><small class="text-muted"><?= date('d M Y, h:i A', strtotime($log['created_at'])); ?></small></td>
+                                    <td class="py-2"><span class="badge-status active">Logged</span></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -233,13 +250,14 @@ $recentLogs = $db->query("
         </div>
     </main>
 
-    <!-- AVASTRA Green Chart.js Config -->
+    <!-- AVASTRA Chart.js Config -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
             const bookingsData = [5, 12, 18, 24, 30, 42, 55, 68];
             const revenueData = [12000, 18000, 25000, 32000, 28000, 45000, 52000, 68000];
 
+            // 1. Overview Chart
             const ctxTrend = document.getElementById('trendChart').getContext('2d');
             const trendChart = new Chart(ctxTrend, {
                 type: 'line',
@@ -248,12 +266,12 @@ $recentLogs = $db->query("
                     datasets: [{
                         label: 'Total Bookings',
                         data: bookingsData,
-                        borderColor: '#145C4A',
-                        backgroundColor: 'rgba(20, 92, 74, 0.08)',
+                        borderColor: '#1B5E3A',
+                        backgroundColor: 'rgba(27, 94, 58, 0.08)',
                         fill: true,
                         tension: 0.35,
                         pointRadius: 4,
-                        pointBackgroundColor: '#145C4A'
+                        pointBackgroundColor: '#1B5E3A'
                     }]
                 },
                 options: {
@@ -267,7 +285,7 @@ $recentLogs = $db->query("
                 }
             });
 
-            // Toggle Datasets
+            // Toggle Overview Datasets
             const btnBookings = document.getElementById('btnBookings');
             const btnRevenue = document.getElementById('btnRevenue');
 
@@ -276,8 +294,8 @@ $recentLogs = $db->query("
                 btnRevenue.classList.remove('active');
                 trendChart.data.datasets[0].label = 'Total Bookings';
                 trendChart.data.datasets[0].data = bookingsData;
-                trendChart.data.datasets[0].borderColor = '#145C4A';
-                trendChart.data.datasets[0].backgroundColor = 'rgba(20, 92, 74, 0.08)';
+                trendChart.data.datasets[0].borderColor = '#1B5E3A';
+                trendChart.data.datasets[0].backgroundColor = 'rgba(27, 94, 58, 0.08)';
                 trendChart.update();
             });
 
@@ -286,31 +304,67 @@ $recentLogs = $db->query("
                 btnBookings.classList.remove('active');
                 trendChart.data.datasets[0].label = 'Platform Revenue (₹)';
                 trendChart.data.datasets[0].data = revenueData;
-                trendChart.data.datasets[0].borderColor = '#56B978';
-                trendChart.data.datasets[0].backgroundColor = 'rgba(86, 185, 120, 0.12)';
+                trendChart.data.datasets[0].borderColor = '#4CAF6D';
+                trendChart.data.datasets[0].backgroundColor = 'rgba(76, 175, 109, 0.12)';
                 trendChart.update();
             });
 
-            // AVASTRA Green Category Palette (#0B2A18, #145C4A, #56B978, neutral green tints)
-            const ctxCat = document.getElementById('categoriesDoughnutChart').getContext('2d');
-            new Chart(ctxCat, {
-                type: 'doughnut',
+            // 2. Bookings by Space Type (Horizontal Bar)
+            const ctxSpaceType = document.getElementById('spaceTypeBarChart').getContext('2d');
+            new Chart(ctxSpaceType, {
+                type: 'bar',
                 data: {
-                    labels: [
-                        <?php foreach ($categoryAnalytics as $cat) { echo "'" . addslashes($cat['name']) . "',"; } ?>
-                    ],
+                    labels: ['Office', 'Studio', 'Meeting', 'Warehouse', 'Event', 'Workshop', 'Storage'],
                     datasets: [{
-                        data: [
-                            <?php foreach ($categoryAnalytics as $cat) { echo $cat['total_spaces'] . ","; } ?>
-                        ],
-                        backgroundColor: ['#0B2A18', '#145C4A', '#56B978', '#047857', '#059669', '#10b981']
+                        label: 'Bookings',
+                        data: [42, 28, 35, 19, 24, 15, 12],
+                        backgroundColor: '#1B5E3A',
+                        borderRadius: 4
                     }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // 3. User & Owner Growth Line Chart
+            const ctxUserGrowth = document.getElementById('userGrowthChart').getContext('2d');
+            new Chart(ctxUserGrowth, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Space Seekers',
+                            data: [120, 240, 410, 680, 890, 1150, 1420, 1850],
+                            borderColor: '#1B5E3A',
+                            fill: false,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Space Owners',
+                            data: [35, 62, 98, 140, 195, 260, 310, 390],
+                            borderColor: '#4CAF6D',
+                            borderDash: [4, 4],
+                            fill: false,
+                            tension: 0.3
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
+                        x: { grid: { display: false } }
                     }
                 }
             });
