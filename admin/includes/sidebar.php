@@ -11,7 +11,7 @@ $currentUser = Auth::getUser();
     <!-- Brand Header -->
     <div class="sidebar-brand">
         <a href="<?= APP_URL; ?>/admin/dashboard.php" class="d-flex align-items-center gap-2 text-decoration-none">
-            <img src="<?= APP_URL; ?>/assets/images/logo/colored-logo.svg" alt="AVASTRA Logo">
+            <img src="<?= APP_URL; ?>/assets/images/PHP%20LOGO/transparent-logo.svg" alt="AVASTRA Logo">
             <span class="brand-tag">ADMIN</span>
         </a>
     </div>

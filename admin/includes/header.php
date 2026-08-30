@@ -20,7 +20,7 @@ $pageTitle = $pageTitle ?? 'Dashboard';
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="<?= APP_URL; ?>/assets/images/logo/only%20logo.svg">
+    <link rel="icon" type="image/svg+xml" href="<?= APP_URL; ?>/assets/images/PHP%20LOGO/only%20logo.svg">
 
     <!-- Bootstrap 5 CSS & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">

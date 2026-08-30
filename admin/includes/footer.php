@@ -4,7 +4,8 @@
  */
 ?>
         <footer class="admin-footer text-center">
-            <div class="container-fluid">
+            <div class="container-fluid d-flex align-items-center justify-content-center gap-2">
+                <img src="<?= APP_URL; ?>/assets/images/PHP%20LOGO/transparent-logo.svg" alt="AVASTRA Logo" height="20" style="object-fit:contain;">
                 <span>&copy; <?= date('Y'); ?> <strong>AVASTRA</strong>. All rights reserved.</span>
             </div>
         </footer>

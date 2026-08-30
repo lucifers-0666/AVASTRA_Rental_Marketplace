@@ -37,32 +37,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login — AVASTRA</title>
-    <link rel="icon" type="image/svg+xml" href="<?= APP_URL; ?>/assets/images/logo/only%20logo.svg">
+    <link rel="icon" type="image/svg+xml" href="<?= APP_URL; ?>/assets/images/PHP%20LOGO/only%20logo.svg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <style>
         body {
-            background: #0B2A18;
+            background: #1B5E3A;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
         .login-card {
             background: #FFFFFF;
             border-radius: 12px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 400px;
             padding: 2.25rem;
         }
         .btn-avastra {
-            background: #145C4A;
+            background: #1B5E3A;
             color: #FFFFFF;
         }
         .btn-avastra:hover {
-            background: #0B2A18;
+            background: #124228;
             color: #FFFFFF;
         }
     </style>
@@ -70,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="login-card">
         <div class="text-center mb-4">
-            <img src="<?= APP_URL; ?>/assets/images/logo/colored-logo.svg" alt="AVASTRA Logo" height="42" class="mb-2">
-            <h5 class="fw-bold mb-1" style="color:#0B2A18;">AVASTRA Admin</h5>
-            <p class="text-muted small mb-0">SPACE FOR WHAT'S NEXT.</p>
+            <img src="<?= APP_URL; ?>/assets/images/PHP%20LOGO/transparent-logo.svg" alt="AVASTRA Logo" height="42" class="mb-2">
+            <h5 class="fw-bold mb-1" style="color:#1B5E3A;">AVASTRA Admin</h5>
+            <p class="text-muted small mb-0">OPEN TO WHAT MATTERS.</p>
         </div>
 
         <?php if ($error): ?>
