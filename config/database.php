@@ -13,5 +13,5 @@ define('DB_CHARSET', 'utf8mb4');
 
 // Application Base URL & Branding Configuration
 define('APP_NAME', 'AVASTRA — Flexible Space Rental Marketplace');
-define('APP_TAGLINE', "SPACE FOR WHAT'S NEXT.");
+define('APP_TAGLINE', 'OPEN TO WHAT MATTERS.');
 define('APP_URL', 'http://localhost/AVASTRA_Rental_Marketplace');
