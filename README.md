@@ -1,38 +1,120 @@
-# SpaceShare — Flexible Space Utilization & Time-Based Rental Marketplace
+# AVASTRA — Flexible Space Utilization & Time-Based Rental Marketplace
 
-> **Note:** This repository originally hosted the *ParkFlow* (Smart Car Parking System) project. That idea has been discontinued and replaced with **SpaceShare**. See [`PROJECT_SPEC.md`](./PROJECT_SPEC.md) for the full specification.
+<div align="center">
 
-## What is SpaceShare?
+![AVASTRA Banner](assets/images/PHP%20LOGO/transparent-logo.svg)
 
-SpaceShare is a PHP + MySQL web marketplace where people or businesses can list **unused space** (warehouses, garages, shops, offices, storage rooms, event venues, etc.) and rent it out to others for a **flexible duration** — a day, a week, a month, or any custom range — based on the seeker's purpose, required size, location, availability, and budget.
+### *OPEN TO WHAT MATTERS.*
 
-**Core idea:** Unused space → flexible duration → requirement-based matching → booking → income.
+[![PHP Version](https://img.shields.io/badge/PHP-8.x-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
+[![Database](https://img.shields.io/badge/MySQL-8.x-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://mysql.com)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
+[![License](https://img.shields.io/badge/Academic-MCA%20Capstone-1B5E3A?style=flat-square)]()
 
-This is **not** a standard property-listing CRUD site. Its distinguishing features are:
+</div>
 
-1. Flexible rental durations (day/week/month/custom dates)
-2. Requirement-based search ("I need 300 sq.ft. for storage for 20 days")
-3. Real-time availability management with booking-conflict prevention
-4. Purpose-based matching (storage, office, event, workshop, pop-up shop)
-5. Flexible, tiered pricing (daily/weekly/monthly)
-6. A transparent, rule-based **match-percentage engine** for seeker requirements vs. available spaces
+---
 
-## Roles
-- **Visitor** — browse and search public listings, no login required
-- **Registered User** — a single account can act as both a **Space Seeker** (rents space) and a **Space Owner** (lists space)
-- **Admin** — verifies listings, manages users, bookings, payments, complaints, reviews, categories, commission settings, reports, and audit logs
+## 📌 Project Overview
 
-## Tech Stack
-- **Backend:** Core PHP 8.x (OOP), PDO, sessions
-- **Database:** MySQL 8.x
-- **Frontend:** HTML5, CSS3, Bootstrap 5, JavaScript, AJAX/Fetch API
-- **Maps:** Leaflet + OpenStreetMap
-- **Charts:** Chart.js
-- **Payment:** Razorpay (optional) + Cash/Pay Later fallback
-- **Version control:** Git + GitHub
+**AVASTRA** is an India-first flexible space utilization and rental marketplace. It bridges the gap between space owners with underutilized or vacant properties (warehouses, garages, office desks, vacant retail shops, storage units, event venues, studios) and space seekers who require space for custom, flexible durations—whether daily, weekly, monthly, or exact date ranges—tailored to specific operational purposes.
 
-## Documentation
-Full project specification — pages, database schema, matching/pricing algorithms, folder structure, team division, security requirements, and phased scope — is in [`PROJECT_SPEC.md`](./PROJECT_SPEC.md).
+Unlike traditional real-estate portals, AVASTRA focuses on **time-based space sharing**, **requirement-based matching**, **booking conflict prevention**, and **transparent pricing**.
 
-## MCA Project Status
-This is an academic (MCA) project. Current phase: **planning/spec complete, development starting.**
+---
+
+## ✨ Key Features & Differentiators
+
+1. **Flexible Time-Based Rental Durations:** Rent space by the hour, day, week, month, or custom date ranges.
+2. **Requirement-Based Search & Matching Engine:** Rule-based algorithm evaluating location, size, purpose, date availability, budget, and amenities to yield a transparent Match Percentage.
+3. **Real-Time Booking Conflict Prevention:** Server-side SQL date overlap algorithm ensuring zero double-bookings:
+   $$\text{existing\_start} < \text{new\_end} \quad \text{AND} \quad \text{existing\_end} > \text{new\_start}$$
+4. **Purpose-Based Space Categorization:** Support for office desks, recording studios, meeting rooms, storage, logistics warehouses, event pop-ups, and workshops.
+5. **Figma-Aligned Operational Control Center:** Admin portal featuring a clean white sidebar layout, light-green brand palette (`#1B5E3A`, `#E7F5EC`), `DM Serif Display` editorial typography, Chart.js metrics, and comprehensive moderation workflows.
+
+---
+
+## 🛠️ Technology Stack
+
+* **Backend Logic:** Core PHP 8.x (Object-Oriented Architecture), PDO (Prepared Statements), Native Session Authentication.
+* **Database Management:** MySQL 8.x (18 relational tables with bcrypt security hashing).
+* **Presentation Layer:** HTML5, CSS3 (AVASTRA Centralized Design Tokens), Bootstrap 5, Vanilla JavaScript.
+* **Libraries & Visualizations:** Chart.js (Data Analytics), DataTables, Leaflet.js / OpenStreetMap, SweetAlert2.
+
+---
+
+## 👥 User Roles & Access Control
+
+* **Visitor (Public):** Browse and search verified space listings, filter by category/city/price, view space detail pages, access platform guides.
+* **Registered User (Unified Account):** Dual-capability account allowing a user to act seamlessly as both a **Space Seeker** (rents spaces) and a **Space Owner** (lists properties).
+* **Administrator:** Master oversight panel to approve/reject space listings, verify owner accounts, manage bookings, track payments/payouts, resolve customer dispute tickets, configure commission rates, and audit system activity logs.
+
+---
+
+## 📂 Repository Architecture
+
+```text
+AVASTRA_Rental_Marketplace/
+├── admin/                     # Admin Operational Control Center
+│   ├── includes/              # Sidebar, Header, Navbar, Footer partials
+│   ├── dashboard.php          # 6 KPI cards, Needs Attention queue, Chart.js trends
+│   ├── verify-spaces.php      # Listing verification queue & approval modals
+│   ├── users.php              # User account management & status toggles
+│   ├── owners.php             # Space owner directory & revenue stats
+│   ├── spaces.php             # Master marketplace space directory
+│   ├── bookings.php           # Reservation duration manager
+│   ├── payments.php           # Financial transactions & platform fee tracker
+│   ├── complaints.php         # Customer dispute & issue tickets
+│   ├── reviews.php            # Customer reviews moderation
+│   ├── analytics.php          # Marketplace insights & dual-axis charts
+│   ├── notifications.php      # System notifications center
+│   ├── settings.php           # Commission %, deposit %, & support settings
+│   └── audit-logs.php         # Immutable admin activity audit trail
+├── assets/                    # Static CSS, JS, SVG & Image assets
+│   ├── css/admin.css          # AVASTRA Centralized CSS Tokens & Components
+│   └── images/PHP LOGO/       # Official AVASTRA transparent SVG logo assets
+├── classes/                   # OOP PHP Models
+│   ├── Database.php           # Singleton PDO Connection Handler
+│   ├── Auth.php               # Session Authentication & Authorization Guards
+│   └── Admin.php              # Optimized Admin database queries
+├── config/                    # Global Configuration & Environment Constants
+│   └── database.php           # Database credentials & APP_URL constants
+├── db/                        # Database SQL Scripts
+│   └── schema.sql             # 18-Table MySQL Schema & Seed Data
+└── README.md                  # Project Documentation
+```
+
+---
+
+## ⚡ Local Environment Setup Instructions
+
+### 1. Prerequisites
+* XAMPP / WAMP / MAMP (PHP 8.x + MySQL 8.x / MariaDB).
+* Web Server (Apache).
+
+### 2. Database Installation
+1. Start Apache & MySQL in XAMPP.
+2. Open phpMyAdmin (`http://localhost/phpmyadmin`) or MySQL Command Line.
+3. Create database `spaceshare_db`:
+   ```sql
+   CREATE DATABASE spaceshare_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+4. Import `db/schema.sql` into `spaceshare_db`.
+
+### 3. Application Execution
+1. Link project directory to XAMPP web root `htdocs`:
+   `E:\xampp\htdocs\AVASTRA_Rental_Marketplace` -> `e:\AVASTRA-MCA-P1\AVASTRA_Rental_Marketplace`
+2. Open browser and access the Admin Login Portal:
+   👉 **[http://localhost/AVASTRA_Rental_Marketplace/admin/login.php](http://localhost/AVASTRA_Rental_Marketplace/admin/login.php)**
+
+### 🔑 Default Admin Login Credentials
+* **Email:** `admin@spaceshare.com`
+* **Password:** `admin123`
+
+---
+
+## 📄 License & Academic Note
+
+This project is developed as part of an **MCA Capstone Project**. All rights reserved.
+
+© 2026 **AVASTRA**. *OPEN TO WHAT MATTERS.*
