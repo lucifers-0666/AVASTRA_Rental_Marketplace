@@ -75,30 +75,34 @@ code, .font-mono {
 }
 
 #admin-sidebar .sidebar-brand {
-    padding: 1rem 0.85rem;
+    padding: 0.85rem 0.85rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.4rem;
+    gap: 0.5rem;
     border-bottom: 1px solid var(--avastra-border-color);
     background: #FFFFFF;
+    min-height: 64px;
 }
 
 #admin-sidebar .sidebar-brand img {
-    height: 38px;
-    max-width: 140px;
+    height: 46px;
+    width: auto;
+    max-width: 155px;
     object-fit: contain;
+    display: block;
 }
 
-/* ADMIN Pill Badge matching provided screenshot */
+/* ADMIN Pill Badge matching reference image */
 #admin-sidebar .sidebar-brand .brand-tag {
     background: #E7F5EC;
     color: #1B5E3A;
-    font-size: 0.825rem;
+    font-size: 0.85rem;
     font-weight: 800;
-    padding: 0.35rem 0.75rem;
+    padding: 0.35rem 0.85rem;
     border-radius: 12px;
     letter-spacing: 0.5px;
+    flex-shrink: 0;
 }
 
 #admin-sidebar .sidebar-menu {
