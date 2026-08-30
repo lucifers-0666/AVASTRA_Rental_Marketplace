@@ -1,13 +1,13 @@
 <?php
 /**
- * SpaceShare / AVASTRA Admin — Header Include Component
+ * AVASTRA Admin — Header Include Component
  */
 require_once __DIR__ . '/../../classes/Auth.php';
 Auth::initSession();
 Auth::requireAdmin();
 
 $currentUser = Auth::getUser();
-$pageTitle = $pageTitle ?? 'Admin Dashboard';
+$pageTitle = $pageTitle ?? 'Dashboard';
 ?>
 <!DOCTYPE html>
 <html lang="en">

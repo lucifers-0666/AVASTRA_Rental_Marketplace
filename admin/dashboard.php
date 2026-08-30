@@ -26,7 +26,7 @@ $recentLogs = $db->query("
         <!-- Dashboard Header -->
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
             <div>
-                <h4 class="fw-bold mb-1" style="color:#0d5c46;">Dashboard</h4>
+                <h4 class="fw-bold mb-1" style="color:#0B2A18;">Dashboard</h4>
                 <p class="text-muted small mb-0">Monitor AVASTRA activity, marketplace health, and pending actions.</p>
             </div>
             <a href="verify-spaces.php" class="btn btn-avastra rounded-pill px-3 py-1 text-nowrap align-self-start align-self-sm-center">
@@ -34,7 +34,7 @@ $recentLogs = $db->query("
             </a>
         </div>
 
-        <!-- 6 KPI CARDS (Real Database Values) -->
+        <!-- 6 KPI CARDS (Real Database Values & AVASTRA Green Policy) -->
         <div class="row g-2 g-md-3 mb-3">
             <!-- 1. Total Users -->
             <div class="col-xl-2 col-md-4 col-6">
@@ -45,7 +45,7 @@ $recentLogs = $db->query("
                             <div class="kpi-value fs-4"><?= number_format($kpis['total_users']); ?></div>
                             <div class="kpi-subtext">Registered</div>
                         </div>
-                        <div class="kpi-icon blue"><i class="bi bi-people-fill"></i></div>
+                        <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@ $recentLogs = $db->query("
                             <div class="kpi-value fs-4"><?= number_format($kpis['active_owners']); ?></div>
                             <div class="kpi-subtext">Space Owners</div>
                         </div>
-                        <div class="kpi-icon emerald"><i class="bi bi-person-badge-fill"></i></div>
+                        <div class="kpi-icon"><i class="bi bi-person-badge-fill"></i></div>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@ $recentLogs = $db->query("
                             <div class="kpi-value fs-4"><?= number_format($kpis['active_spaces']); ?></div>
                             <div class="kpi-subtext">Verified</div>
                         </div>
-                        <div class="kpi-icon emerald"><i class="bi bi-building-check"></i></div>
+                        <div class="kpi-icon"><i class="bi bi-building-check"></i></div>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@ $recentLogs = $db->query("
                             <div class="kpi-value fs-4"><?= number_format($kpis['total_bookings']); ?></div>
                             <div class="kpi-subtext">Reservations</div>
                         </div>
-                        <div class="kpi-icon purple"><i class="bi bi-calendar-check-fill"></i></div>
+                        <div class="kpi-icon"><i class="bi bi-calendar-check-fill"></i></div>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,7 @@ $recentLogs = $db->query("
                             <div class="kpi-value fs-5">₹<?= number_format($kpis['total_revenue'], 0); ?></div>
                             <div class="kpi-subtext">Gross Marketplace</div>
                         </div>
-                        <div class="kpi-icon rose"><i class="bi bi-currency-rupee"></i></div>
+                        <div class="kpi-icon"><i class="bi bi-currency-rupee"></i></div>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@ $recentLogs = $db->query("
                             <div class="kpi-value fs-4 text-warning"><?= number_format($kpis['pending_verifications']); ?></div>
                             <div class="kpi-subtext text-warning">Requires Review</div>
                         </div>
-                        <div class="kpi-icon amber"><i class="bi bi-clock-history"></i></div>
+                        <div class="kpi-icon warning"><i class="bi bi-clock-history"></i></div>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@ $recentLogs = $db->query("
 
         <!-- Section: Needs Your Attention -->
         <div class="avastra-card p-3 mb-3">
-            <h6 class="fw-bold mb-2 d-flex align-items-center gap-2">
+            <h6 class="fw-bold mb-2 d-flex align-items-center gap-2" style="color:#0B2A18;">
                 <i class="bi bi-exclamation-octagon-fill text-warning"></i> Needs Your Attention
             </h6>
 
@@ -137,7 +137,7 @@ $recentLogs = $db->query("
                         <div class="col-md-4">
                             <div class="attention-item py-2 px-3 mb-0">
                                 <div class="d-flex align-items-center gap-2">
-                                    <div class="attention-icon <?= ($item['priority'] === 'High') ? 'bg-danger text-white' : 'bg-warning text-dark'; ?>" style="width:34px; height:34px; font-size:0.95rem;">
+                                    <div class="attention-icon <?= ($item['priority'] === 'High') ? 'bg-danger text-white' : 'bg-warning text-dark'; ?>" style="width:32px; height:32px; font-size:0.9rem;">
                                         <i class="bi <?= $item['icon']; ?>"></i>
                                     </div>
                                     <div>
@@ -146,7 +146,7 @@ $recentLogs = $db->query("
                                         <span class="badge <?= ($item['priority'] === 'High') ? 'bg-danger' : 'bg-warning text-dark'; ?>" style="font-size:10px;"><?= $item['priority']; ?></span>
                                     </div>
                                 </div>
-                                <a href="<?= $item['action_link']; ?>" class="btn btn-sm btn-outline-success fw-bold ms-2 py-0 px-2 text-nowrap" style="font-size:0.75rem;">
+                                <a href="<?= $item['action_link']; ?>" class="btn btn-sm btn-outline-avastra fw-bold ms-2 py-0 px-2 text-nowrap" style="font-size:0.75rem;">
                                     <?= $item['action_label']; ?>
                                 </a>
                             </div>
@@ -156,19 +156,19 @@ $recentLogs = $db->query("
             <?php endif; ?>
         </div>
 
-        <!-- Charts Row -->
+        <!-- Marketplace Trends & Categories Charts Row -->
         <div class="row g-3 mb-3">
             <!-- Bookings / Revenue Dynamic Trend Chart -->
             <div class="col-lg-8">
                 <div class="avastra-card p-3 mb-0 h-100">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <div>
-                            <h6 class="fw-bold mb-0">Marketplace Trends</h6>
+                            <h6 class="fw-bold mb-0" style="color:#0B2A18;">Marketplace Trends</h6>
                             <small class="text-muted" style="font-size:0.75rem;">Visual breakdown of booking activity and gross revenue</small>
                         </div>
                         <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" class="btn btn-outline-success active px-3 py-1" id="btnBookings">Bookings</button>
-                            <button type="button" class="btn btn-outline-success px-3 py-1" id="btnRevenue">Revenue</button>
+                            <button type="button" class="btn btn-outline-avastra active px-3 py-1" id="btnBookings">Bookings</button>
+                            <button type="button" class="btn btn-outline-avastra px-3 py-1" id="btnRevenue">Revenue</button>
                         </div>
                     </div>
 
@@ -181,7 +181,7 @@ $recentLogs = $db->query("
             <!-- Space Categories Analytics -->
             <div class="col-lg-4">
                 <div class="avastra-card p-3 mb-0 h-100">
-                    <h6 class="fw-bold mb-0">Space Categories</h6>
+                    <h6 class="fw-bold mb-0" style="color:#0B2A18;">Space Categories</h6>
                     <small class="text-muted d-block mb-2" style="font-size:0.75rem;">Distribution of spaces listed by type</small>
                     <div style="position: relative; height: 200px; width: 100%;">
                         <canvas id="categoriesDoughnutChart"></canvas>
@@ -194,7 +194,7 @@ $recentLogs = $db->query("
         <div class="avastra-card p-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <div>
-                    <h6 class="fw-bold mb-0">Recent Activity & Audit Trail</h6>
+                    <h6 class="fw-bold mb-0" style="color:#0B2A18;">Recent Activity & Audit Trail</h6>
                     <small class="text-muted" style="font-size:0.75rem;">Real-time record of system actions and events</small>
                 </div>
                 <a href="audit-logs.php" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size:0.75rem;">View All Log</a>
@@ -233,7 +233,7 @@ $recentLogs = $db->query("
         </div>
     </main>
 
-    <!-- Fast Chart.js Config -->
+    <!-- AVASTRA Green Chart.js Config -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
@@ -248,20 +248,18 @@ $recentLogs = $db->query("
                     datasets: [{
                         label: 'Total Bookings',
                         data: bookingsData,
-                        borderColor: '#0d5c46',
-                        backgroundColor: 'rgba(13, 92, 70, 0.08)',
+                        borderColor: '#145C4A',
+                        backgroundColor: 'rgba(20, 92, 74, 0.08)',
                         fill: true,
                         tension: 0.35,
                         pointRadius: 4,
-                        pointBackgroundColor: '#0d5c46'
+                        pointBackgroundColor: '#145C4A'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } },
                         x: { grid: { display: false } }
@@ -269,7 +267,7 @@ $recentLogs = $db->query("
                 }
             });
 
-            // Toggle Datasets Smoothly without canvas destruction
+            // Toggle Datasets
             const btnBookings = document.getElementById('btnBookings');
             const btnRevenue = document.getElementById('btnRevenue');
 
@@ -278,8 +276,8 @@ $recentLogs = $db->query("
                 btnRevenue.classList.remove('active');
                 trendChart.data.datasets[0].label = 'Total Bookings';
                 trendChart.data.datasets[0].data = bookingsData;
-                trendChart.data.datasets[0].borderColor = '#0d5c46';
-                trendChart.data.datasets[0].backgroundColor = 'rgba(13, 92, 70, 0.08)';
+                trendChart.data.datasets[0].borderColor = '#145C4A';
+                trendChart.data.datasets[0].backgroundColor = 'rgba(20, 92, 74, 0.08)';
                 trendChart.update();
             });
 
@@ -288,12 +286,12 @@ $recentLogs = $db->query("
                 btnBookings.classList.remove('active');
                 trendChart.data.datasets[0].label = 'Platform Revenue (₹)';
                 trendChart.data.datasets[0].data = revenueData;
-                trendChart.data.datasets[0].borderColor = '#10b981';
-                trendChart.data.datasets[0].backgroundColor = 'rgba(16, 185, 129, 0.12)';
+                trendChart.data.datasets[0].borderColor = '#56B978';
+                trendChart.data.datasets[0].backgroundColor = 'rgba(86, 185, 120, 0.12)';
                 trendChart.update();
             });
 
-            // Space Categories Doughnut Chart
+            // AVASTRA Green Category Palette (#0B2A18, #145C4A, #56B978, neutral green tints)
             const ctxCat = document.getElementById('categoriesDoughnutChart').getContext('2d');
             new Chart(ctxCat, {
                 type: 'doughnut',
@@ -305,7 +303,7 @@ $recentLogs = $db->query("
                         data: [
                             <?php foreach ($categoryAnalytics as $cat) { echo $cat['total_spaces'] . ","; } ?>
                         ],
-                        backgroundColor: ['#0d5c46', '#10b981', '#0284c7', '#f59e0b', '#8b5cf6', '#ec4899']
+                        backgroundColor: ['#0B2A18', '#145C4A', '#56B978', '#047857', '#059669', '#10b981']
                     }]
                 },
                 options: {

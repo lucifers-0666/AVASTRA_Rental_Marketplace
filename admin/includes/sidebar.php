@@ -1,6 +1,6 @@
 <?php
 /**
- * AVASTRA SpaceShare Admin — Sidebar Navigation Component (Figma Aligned)
+ * AVASTRA Admin — Sidebar Navigation Component (Approved Figma Alignment)
  */
 $currentScript = basename($_SERVER['PHP_SELF']);
 $adminModel = new Admin();
@@ -18,7 +18,7 @@ $currentUser = Auth::getUser();
 
     <!-- Navigation Menu -->
     <ul class="sidebar-menu">
-        <li class="menu-header">Overview</li>
+        <li class="menu-header">OVERVIEW</li>
         <li>
             <a href="<?= APP_URL; ?>/admin/dashboard.php" class="nav-link <?= ($currentScript === 'dashboard.php') ? 'active' : ''; ?>">
                 <i class="bi bi-grid-1x2-fill"></i>
@@ -26,7 +26,7 @@ $currentUser = Auth::getUser();
             </a>
         </li>
 
-        <li class="menu-header">Marketplace Management</li>
+        <li class="menu-header">MARKETPLACE</li>
         <li>
             <a href="<?= APP_URL; ?>/admin/users.php" class="nav-link <?= ($currentScript === 'users.php') ? 'active' : ''; ?>">
                 <i class="bi bi-people-fill"></i>
@@ -52,7 +52,7 @@ $currentUser = Auth::getUser();
             </a>
         </li>
 
-        <li class="menu-header">Operations</li>
+        <li class="menu-header">OPERATIONS</li>
         <li>
             <a href="<?= APP_URL; ?>/admin/verify-spaces.php" class="nav-link <?= ($currentScript === 'verify-spaces.php') ? 'active' : ''; ?>">
                 <i class="bi bi-shield-check-fill"></i>
@@ -75,7 +75,7 @@ $currentUser = Auth::getUser();
             </a>
         </li>
 
-        <li class="menu-header">Finance</li>
+        <li class="menu-header">FINANCE</li>
         <li>
             <a href="<?= APP_URL; ?>/admin/payments.php" class="nav-link <?= ($currentScript === 'payments.php') ? 'active' : ''; ?>">
                 <i class="bi bi-credit-card-2-front-fill"></i>
@@ -83,7 +83,7 @@ $currentUser = Auth::getUser();
             </a>
         </li>
 
-        <li class="menu-header">Insights</li>
+        <li class="menu-header">INSIGHTS</li>
         <li>
             <a href="<?= APP_URL; ?>/admin/analytics.php" class="nav-link <?= ($currentScript === 'analytics.php') ? 'active' : ''; ?>">
                 <i class="bi bi-graph-up-arrow"></i>
@@ -91,7 +91,7 @@ $currentUser = Auth::getUser();
             </a>
         </li>
 
-        <li class="menu-header">System</li>
+        <li class="menu-header">SYSTEM</li>
         <li>
             <a href="<?= APP_URL; ?>/admin/notifications.php" class="nav-link <?= ($currentScript === 'notifications.php') ? 'active' : ''; ?>">
                 <i class="bi bi-bell-fill"></i>

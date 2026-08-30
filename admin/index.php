@@ -1,6 +1,6 @@
 <?php
 /**
- * SpaceShare Admin Index Redirect
+ * AVASTRA Admin Index Redirect
  */
 require_once __DIR__ . '/../classes/Auth.php';
 Auth::initSession();

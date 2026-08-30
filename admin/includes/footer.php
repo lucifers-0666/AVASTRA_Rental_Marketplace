@@ -1,11 +1,11 @@
 <?php
 /**
- * SpaceShare Admin — Footer Include Component
+ * AVASTRA Admin — Footer Include Component
  */
 ?>
         <footer class="admin-footer text-center">
             <div class="container-fluid">
-                <span>&copy; <?= date('Y'); ?> <strong>AVASTRA SpaceShare</strong> — Flexible Rental Marketplace (MCA PHP Project). All rights reserved.</span>
+                <span>&copy; <?= date('Y'); ?> <strong>AVASTRA</strong>. All rights reserved.</span>
             </div>
         </footer>
     </div> <!-- End #admin-main -->

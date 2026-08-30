@@ -1,40 +1,40 @@
 /* =============================================================================
    AVASTRA — Flexible Space Rental Marketplace
-   Admin Panel CSS Design System (Aligned to Approved Figma Design)
+   Admin Panel CSS Design System (Approved Figma Visual Alignment)
    ============================================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    /* AVASTRA Brand Palette */
-    --avastra-primary: #0d5c46;
-    --avastra-primary-hover: #094434;
-    --avastra-primary-light: #e6f4f0;
-    --avastra-accent: #10b981;
-    --avastra-sidebar-bg: #091310;
-    --avastra-sidebar-hover: rgba(255, 255, 255, 0.06);
-    --avastra-sidebar-text: #94a3b8;
-    --avastra-body-bg: #f8faf9;
-    --avastra-card-bg: #ffffff;
-    --avastra-text-main: #0f172a;
-    --avastra-text-muted: #64748b;
-    --avastra-border-color: #e2e8f0;
-    --avastra-radius-sm: 8px;
-    --avastra-radius-md: 12px;
-    --avastra-radius-lg: 16px;
-    --avastra-shadow: 0 4px 20px -2px rgba(13, 92, 70, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
-    --avastra-shadow-hover: 0 12px 30px -4px rgba(13, 92, 70, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+    /* AVASTRA Centralized Color Palette */
+    --avastra-forest: #0B2A18;       /* Deep Forest Green (Sidebar & Dark Headers) */
+    --avastra-primary: #145C4A;      /* Primary Brand Green (Buttons, Links, Main Accents) */
+    --avastra-primary-hover: #0B2A18;
+    --avastra-accent: #56B978;       /* Accent Green (Active states, Success highlights) */
+    --avastra-warm-white: #F7F7F7;   /* Body Background */
+    --avastra-dark-neutral: #17201B; /* Main Text Color */
+    --avastra-text-muted: #64748B;
+    
+    /* Layout Tokens */
+    --avastra-body-bg: #F7F7F7;
+    --avastra-card-bg: #FFFFFF;
+    --avastra-border-color: #E5E7EB;
+    --avastra-radius-sm: 6px;
+    --avastra-radius-md: 10px;
+    --avastra-radius-lg: 14px;
+    --avastra-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --avastra-shadow-md: 0 4px 12px -2px rgba(11, 42, 24, 0.06);
 }
 
 body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--avastra-body-bg);
-    color: var(--avastra-text-main);
+    color: var(--avastra-dark-neutral);
     overflow-x: hidden;
 }
 
 /* -----------------------------------------------------------------------------
-   Layout Wrapper & Shell
+   Layout Shell
    ----------------------------------------------------------------------------- */
 #admin-wrapper {
     display: flex;
@@ -42,95 +42,91 @@ body {
 }
 
 /* -----------------------------------------------------------------------------
-   Sidebar Navigation Component (Figma Proportions: ~250px)
+   Sidebar Navigation Component (Fixed ~248px, #0B2A18 Background)
    ----------------------------------------------------------------------------- */
 #admin-sidebar {
-    width: 250px;
-    background: var(--avastra-sidebar-bg);
+    width: 248px;
+    background: var(--avastra-forest);
     color: #ffffff;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s ease;
     z-index: 1000;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 #admin-sidebar .sidebar-brand {
-    padding: 1.25rem 1.25rem;
+    padding: 1.25rem 1.15rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.65rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 #admin-sidebar .sidebar-brand img {
-    height: 34px;
+    height: 32px;
     object-fit: contain;
 }
 
 #admin-sidebar .sidebar-brand .brand-tag {
-    background: rgba(16, 185, 129, 0.15);
-    color: #34d399;
+    background: rgba(86, 185, 120, 0.18);
+    color: var(--avastra-accent);
     font-size: 0.65rem;
     font-weight: 800;
     padding: 2px 6px;
     border-radius: 4px;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 #admin-sidebar .sidebar-menu {
     list-style: none;
-    padding: 0.85rem 0.75rem;
+    padding: 0.75rem 0.65rem;
     margin: 0;
     flex-grow: 1;
     overflow-y: auto;
 }
 
 #admin-sidebar .menu-header {
-    font-size: 0.65rem;
+    font-size: 0.625rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #475569;
-    padding: 1rem 0.75rem 0.35rem;
+    color: #64748b;
+    padding: 0.9rem 0.65rem 0.3rem;
 }
 
 #admin-sidebar .nav-link {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.65rem 0.85rem;
-    color: var(--avastra-sidebar-text);
+    gap: 0.7rem;
+    padding: 0.55rem 0.75rem;
+    color: #94a3b8;
     font-weight: 500;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     border-radius: var(--avastra-radius-sm);
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
     text-decoration: none;
     margin-bottom: 2px;
 }
 
 #admin-sidebar .nav-link i {
-    font-size: 1.1rem;
-    transition: transform 0.2s ease;
+    font-size: 1.05rem;
 }
 
 #admin-sidebar .nav-link:hover {
     color: #ffffff;
-    background: var(--avastra-sidebar-hover);
-    transform: translateX(3px);
+    background: rgba(255, 255, 255, 0.06);
 }
 
-/* Active Nav Link: AVASTRA Soft Light-Green Treatment */
+/* Active Nav Link: AVASTRA Light Green Background (#e6f4f0) */
 #admin-sidebar .nav-link.active {
-    color: var(--avastra-primary);
-    background: var(--avastra-primary-light);
+    color: var(--avastra-forest);
+    background: #e6f4f0;
     font-weight: 700;
-    box-shadow: 0 2px 8px rgba(13, 92, 70, 0.15);
 }
 
 #admin-sidebar .nav-link.active i {
@@ -139,7 +135,7 @@ body {
 
 /* Sidebar User Footer Card */
 #admin-sidebar .sidebar-footer {
-    padding: 1rem;
+    padding: 0.85rem 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     background: rgba(0, 0, 0, 0.2);
 }
@@ -148,12 +144,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: 0.65rem;
 }
 
 #admin-sidebar .user-avatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: var(--avastra-primary);
     color: #ffffff;
@@ -161,7 +157,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 #admin-sidebar .user-info {
@@ -171,7 +167,7 @@ body {
 
 #admin-sidebar .user-name {
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.825rem;
     color: #ffffff;
     white-space: nowrap;
     overflow: hidden;
@@ -179,27 +175,26 @@ body {
 }
 
 #admin-sidebar .user-role {
-    font-size: 0.725rem;
+    font-size: 0.7rem;
     color: #94a3b8;
 }
 
 /* -----------------------------------------------------------------------------
-   Main Content Area
+   Main Content Container
    ----------------------------------------------------------------------------- */
 #admin-main {
-    margin-left: 250px;
+    margin-left: 248px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     min-width: 0;
-    transition: margin 0.3s ease;
 }
 
 /* -----------------------------------------------------------------------------
-   Top Header Bar Component
+   Top Header Bar Component (White #FFFFFF Background)
    ----------------------------------------------------------------------------- */
 .admin-navbar {
-    height: 66px;
+    height: 64px;
     background: #ffffff;
     border-bottom: 1px solid var(--avastra-border-color);
     padding: 0 1.5rem;
@@ -213,28 +208,28 @@ body {
 
 .admin-navbar .page-title-header h4 {
     font-weight: 800;
-    font-size: 1.15rem;
-    color: var(--avastra-text-main);
+    font-size: 1.1rem;
+    color: var(--avastra-forest);
     margin: 0;
     letter-spacing: -0.3px;
 }
 
 .admin-navbar .page-breadcrumb {
-    font-size: 0.75rem;
+    font-size: 0.725rem;
     color: var(--avastra-text-muted);
 }
 
 .admin-navbar .navbar-search {
     position: relative;
-    width: 300px;
+    width: 280px;
 }
 
 .admin-navbar .navbar-search input {
-    background: var(--avastra-body-bg);
+    background: var(--avastra-warm-white);
     border: 1px solid var(--avastra-border-color);
     border-radius: 20px;
-    padding: 0.45rem 1rem 0.45rem 2.4rem;
-    font-size: 0.85rem;
+    padding: 0.4rem 1rem 0.4rem 2.3rem;
+    font-size: 0.825rem;
     width: 100%;
     transition: all 0.2s ease;
 }
@@ -242,36 +237,31 @@ body {
 .admin-navbar .navbar-search input:focus {
     outline: none;
     border-color: var(--avastra-primary);
-    box-shadow: 0 0 0 3px rgba(13, 92, 70, 0.12);
+    box-shadow: 0 0 0 3px rgba(20, 92, 74, 0.1);
     background: #ffffff;
 }
 
 .admin-navbar .navbar-search i {
     position: absolute;
-    left: 0.9rem;
+    left: 0.85rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--avastra-text-muted);
 }
 
 /* -----------------------------------------------------------------------------
-   Cards & Widgets System
+   Cards & Widgets System (Clean White Card, Restrained Borders)
    ----------------------------------------------------------------------------- */
 .avastra-card {
     background: var(--avastra-card-bg);
     border-radius: var(--avastra-radius-md);
     border: 1px solid var(--avastra-border-color);
-    box-shadow: var(--avastra-shadow);
-    padding: 1.35rem;
-    margin-bottom: 1.25rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--avastra-shadow-sm);
+    padding: 1.25rem;
+    margin-bottom: 1.15rem;
 }
 
-.avastra-card:hover {
-    box-shadow: var(--avastra-shadow-hover);
-}
-
-/* 6 KPI Cards Styling */
+/* KPI Cards Styling (Clean AVASTRA Greens Policy) */
 .kpi-card {
     display: flex;
     align-items: center;
@@ -279,19 +269,19 @@ body {
 }
 
 .kpi-card .kpi-label {
-    font-size: 0.775rem;
+    font-size: 0.75rem;
     font-weight: 700;
     color: var(--avastra-text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
 }
 
 .kpi-card .kpi-value {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -0.5px;
-    color: var(--avastra-text-main);
-    line-height: 1.25;
+    color: var(--avastra-dark-neutral);
+    line-height: 1.2;
     margin-top: 2px;
 }
 
@@ -299,53 +289,53 @@ body {
     font-size: 0.725rem;
     font-weight: 600;
     color: var(--avastra-primary);
-    margin-top: 4px;
+    margin-top: 3px;
 }
 
 .kpi-card .kpi-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: var(--avastra-radius-md);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--avastra-radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+    background: #e6f4f0;
+    color: var(--avastra-primary);
 }
 
-.kpi-icon.emerald { background: rgba(13, 92, 70, 0.1); color: var(--avastra-primary); }
-.kpi-icon.blue    { background: rgba(2, 132, 199, 0.1); color: #0284c7; }
-.kpi-icon.purple  { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
-.kpi-icon.amber   { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-.kpi-icon.rose    { background: rgba(225, 29, 72, 0.1); color: #e11d48; }
+/* Semantic KPI Icon override for Pending/Warning */
+.kpi-icon.warning {
+    background: #fffbe6;
+    color: #b45309;
+}
 
 /* -----------------------------------------------------------------------------
-   "Needs Your Attention" Queue Component
+   "Needs Your Attention" Section Component
    ----------------------------------------------------------------------------- */
 .attention-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.85rem 1rem;
+    padding: 0.75rem 0.9rem;
     border: 1px solid var(--avastra-border-color);
     border-radius: var(--avastra-radius-sm);
-    margin-bottom: 0.65rem;
     background: #ffffff;
-    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
 }
 
 .attention-item:hover {
     border-color: var(--avastra-primary);
-    background: #fafdfc;
 }
 
 .attention-item .attention-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     flex-shrink: 0;
 }
 
@@ -364,50 +354,50 @@ body {
     font-weight: 700;
     font-size: 0.725rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 0.85rem 1rem;
+    letter-spacing: 0.4px;
+    padding: 0.75rem 0.85rem;
     border-bottom: 1px solid var(--avastra-border-color);
 }
 
 .table-avastra td {
-    padding: 0.95rem 1rem;
+    padding: 0.85rem;
     border-bottom: 1px solid var(--avastra-border-color);
     vertical-align: middle;
-    font-size: 0.875rem;
+    font-size: 0.85rem;
 }
 
 .table-avastra tr:last-child td {
     border-bottom: none;
 }
 
-.table-avastra tr:hover td {
-    background: #fcfdfd;
-}
-
 .badge-status {
-    padding: 0.3em 0.7em;
-    border-radius: 20px;
+    padding: 0.28em 0.65em;
+    border-radius: 16px;
     font-size: 0.725rem;
     font-weight: 700;
-    letter-spacing: 0.2px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
 }
 
-.badge-status.approved, .badge-status.active, .badge-status.published, .badge-status.completed, .badge-status.paid {
+.badge-status.approved, .badge-status.verified, .badge-status.active, .badge-status.published, .badge-status.completed, .badge-status.paid {
     background: #ecfdf5;
-    color: #065f46;
+    color: #145C4A;
 }
 
-.badge-status.pending, .badge-status.draft, .badge-status.in_progress {
+.badge-status.pending, .badge-status.under_review, .badge-status.requires_information, .badge-status.draft {
     background: #fffbe6;
     color: #b45309;
 }
 
-.badge-status.rejected, .badge-status.blocked, .badge-status.suspended, .badge-status.cancelled, .badge-status.failed {
+.badge-status.rejected, .badge-status.failed, .badge-status.cancelled, .badge-status.suspended, .badge-status.disputed, .badge-status.blocked {
     background: #fef2f2;
     color: #991b1b;
+}
+
+.badge-status.inactive {
+    background: #f3f4f6;
+    color: #4b5563;
 }
 
 /* Buttons */
@@ -417,22 +407,35 @@ body {
     font-weight: 600;
     border: none;
     border-radius: var(--avastra-radius-sm);
-    padding: 0.5rem 1.25rem;
-    transition: all 0.2s ease;
+    padding: 0.45rem 1.15rem;
+    transition: all 0.15s ease;
 }
 
 .btn-avastra:hover {
-    background: var(--avastra-primary-hover);
+    background: var(--avastra-forest);
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(13, 92, 70, 0.25);
+}
+
+.btn-outline-avastra {
+    background: #ffffff;
+    color: var(--avastra-primary);
+    border: 1px solid var(--avastra-primary);
+    font-weight: 600;
+    border-radius: var(--avastra-radius-sm);
+    padding: 0.4rem 1rem;
+}
+
+.btn-outline-avastra:hover {
+    background: var(--avastra-primary);
+    color: #ffffff;
 }
 
 /* Footer Styling */
 .admin-footer {
-    padding: 1.15rem 1.5rem;
+    padding: 1rem 1.5rem;
     border-top: 1px solid var(--avastra-border-color);
     background: #ffffff;
-    font-size: 0.8rem;
+    font-size: 0.775rem;
     color: var(--avastra-text-muted);
     margin-top: auto;
 }
@@ -440,7 +443,7 @@ body {
 /* Responsive Drawer adjustments */
 @media (max-width: 991.98px) {
     #admin-sidebar {
-        left: -250px;
+        left: -248px;
     }
     #admin-sidebar.show {
         left: 0;

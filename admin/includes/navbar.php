@@ -1,9 +1,9 @@
 <?php
 /**
- * AVASTRA SpaceShare Admin — Top Navbar Component (Figma Aligned)
+ * AVASTRA Admin — Top Navbar Component (Approved Figma Alignment)
  */
 $currentUser = Auth::getUser();
-$pageTitle = $pageTitle ?? 'Admin Dashboard';
+$pageTitle = $pageTitle ?? 'Dashboard';
 ?>
 <header class="admin-navbar">
     <div class="d-flex align-items-center gap-3">
@@ -13,7 +13,7 @@ $pageTitle = $pageTitle ?? 'Admin Dashboard';
 
         <div class="page-title-header">
             <h4><?= htmlspecialchars($pageTitle); ?></h4>
-            <div class="page-breadcrumb">AVASTRA Admin Portal &bull; Overview</div>
+            <div class="page-breadcrumb">AVASTRA Admin Portal &bull; <?= htmlspecialchars($pageTitle); ?></div>
         </div>
     </div>
 
@@ -25,20 +25,20 @@ $pageTitle = $pageTitle ?? 'Admin Dashboard';
 
     <div class="d-flex align-items-center gap-3">
         <!-- Public Site Button -->
-        <a href="<?= APP_URL; ?>/public/index.php" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">
+        <a href="<?= APP_URL; ?>/public/index.php" target="_blank" class="btn btn-sm btn-outline-avastra rounded-pill px-3">
             <i class="bi bi-globe me-1"></i> Public Site
         </a>
 
         <!-- Notifications Icon -->
         <a href="<?= APP_URL; ?>/admin/notifications.php" class="btn btn-light rounded-circle position-relative p-2" title="Notifications">
-            <i class="bi bi-bell fs-5"></i>
+            <i class="bi bi-bell fs-5 text-dark"></i>
             <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
         </a>
 
         <!-- Profile Avatar & Dropdown -->
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark gap-2" data-bs-toggle="dropdown">
-                <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:36px; height:36px; background:#0d5c46 !important;">
+                <div class="text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:36px; height:36px; background:#145C4A !important;">
                     <?= strtoupper(substr($currentUser['full_name'] ?? 'A', 0, 1)); ?>
                 </div>
                 <div class="d-none d-md-block text-start" style="line-height:1.2;">
@@ -46,7 +46,7 @@ $pageTitle = $pageTitle ?? 'Admin Dashboard';
                     <small class="text-muted" style="font-size:11px;">Administrator</small>
                 </div>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-2">
                 <li><a class="dropdown-item" href="<?= APP_URL; ?>/admin/settings.php"><i class="bi bi-gear me-2"></i> Settings</a></li>
                 <li><a class="dropdown-item" href="<?= APP_URL; ?>/admin/audit-logs.php"><i class="bi bi-shield-lock me-2"></i> Audit Logs</a></li>
                 <li><hr class="dropdown-divider"></li>

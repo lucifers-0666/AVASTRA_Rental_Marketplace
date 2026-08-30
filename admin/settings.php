@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
     $platformFee = (float) ($_POST['platform_fee_percent'] ?? 5.00);
     $depositPercent = (float) ($_POST['deposit_percent'] ?? 10.00);
     $minPayout = (float) ($_POST['min_payout_amount'] ?? 500.00);
-    $contactEmail = trim($_POST['contact_email'] ?? 'support@spaceshare.com');
+    $contactEmail = trim($_POST['contact_email'] ?? 'support@avastra.com');
 
     try {
         $stmt = $db->prepare("
@@ -36,23 +36,23 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
 <div id="admin-main">
     <?php require_once __DIR__ . '/includes/navbar.php'; ?>
 
-    <main class="p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
+    <main class="p-3 p-md-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h3 class="fw-bold mb-1" style="color:#0d5c46;">Platform Settings</h3>
+                <h4 class="fw-bold mb-1" style="color:#0B2A18;">Platform Settings</h4>
                 <p class="text-muted small mb-0">Grouped marketplace configurations, revenue commission shares, and support contact details.</p>
             </div>
         </div>
 
         <?php if ($message): ?>
-            <div class="alert alert-success alert-dismissible fade show mb-4">
+            <div class="alert alert-success alert-dismissible fade show mb-3">
                 <i class="bi bi-check-circle-fill me-2"></i> <?= htmlspecialchars($message); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         <?php endif; ?>
 
         <?php if ($error): ?>
-            <div class="alert alert-danger alert-dismissible fade show mb-4">
+            <div class="alert alert-danger alert-dismissible fade show mb-3">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i> <?= htmlspecialchars($error); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
@@ -64,10 +64,10 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
                     <form method="POST" action="">
                         <input type="hidden" name="save_settings" value="1">
 
-                        <h5 class="fw-bold mb-3"><i class="bi bi-cash-stack me-2 text-success"></i> Revenue & Fees Configuration</h5>
+                        <h6 class="fw-bold mb-3" style="color:#0B2A18;"><i class="bi bi-cash-stack me-2 text-success"></i> Revenue & Fees Configuration</h6>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Platform Commission Fee (%)</label>
+                                <label class="form-label fw-bold small">Platform Commission Fee (%)</label>
                                 <div class="input-group">
                                     <input type="number" step="0.1" name="platform_fee_percent" class="form-control" value="<?= htmlspecialchars($settings['platform_fee_percent'] ?? 5.00); ?>" required>
                                     <span class="input-group-text">%</span>
@@ -76,7 +76,7 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Default Security Deposit (%)</label>
+                                <label class="form-label fw-bold small">Default Security Deposit (%)</label>
                                 <div class="input-group">
                                     <input type="number" step="0.1" name="deposit_percent" class="form-control" value="<?= htmlspecialchars($settings['deposit_percent'] ?? 10.00); ?>" required>
                                     <span class="input-group-text">%</span>
@@ -87,10 +87,10 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
 
                         <hr class="my-4">
 
-                        <h5 class="fw-bold mb-3"><i class="bi bi-wallet2 me-2 text-success"></i> Payouts & Marketplace Support</h5>
+                        <h6 class="fw-bold mb-3" style="color:#0B2A18;"><i class="bi bi-wallet2 me-2 text-success"></i> Payouts & Marketplace Support</h6>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Minimum Owner Payout Threshold (₹)</label>
+                                <label class="form-label fw-bold small">Minimum Owner Payout Threshold (₹)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">₹</span>
                                     <input type="number" step="100" name="min_payout_amount" class="form-control" value="<?= htmlspecialchars($settings['min_payout_amount'] ?? 500.00); ?>" required>
@@ -98,8 +98,8 @@ $settings = $db->query("SELECT * FROM commission_settings WHERE id = 1")->fetch(
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold">Platform Support Email</label>
-                                <input type="email" name="contact_email" class="form-control" value="<?= htmlspecialchars($settings['contact_email'] ?? 'support@spaceshare.com'); ?>" required>
+                                <label class="form-label fw-bold small">Platform Support Email</label>
+                                <input type="email" name="contact_email" class="form-control" value="<?= htmlspecialchars($settings['contact_email'] ?? 'support@avastra.com'); ?>" required>
                             </div>
                         </div>
 
