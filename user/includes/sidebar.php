@@ -51,8 +51,8 @@ if (count($nameParts) === 1) {
     </div>
 
     <ul class="sidebar-footer-links">
-        <li><a href="<?= APP_URL; ?>/user/help.php"><i class="bi bi-question-circle"></i> Help &amp; Support</a></li>
-        <li><a href="<?= APP_URL; ?>/user/settings.php"><i class="bi bi-gear"></i> Account Settings</a></li>
+        <li><a href="<?= APP_URL; ?>/user/help.php" class="<?= $currentScript === 'help.php' ? 'active' : ''; ?>"><i class="bi bi-question-circle"></i> Help &amp; Support</a></li>
+        <li><a href="<?= APP_URL; ?>/user/settings.php" class="<?= $currentScript === 'settings.php' ? 'active' : ''; ?>"><i class="bi bi-gear"></i> Account Settings</a></li>
     </ul>
 
     <div class="sidebar-user">

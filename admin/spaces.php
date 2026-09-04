@@ -23,7 +23,7 @@ if ($statusFilter !== 'all') {
 
 $sql = "
     SELECT s.*, c.name AS category_name, u.full_name AS owner_name, u.email AS owner_email,
-           (SELECT image_url FROM space_images WHERE space_id = s.id LIMIT 1) AS primary_image
+           (SELECT image_path FROM space_images WHERE space_id = s.id ORDER BY is_primary DESC, id ASC LIMIT 1) AS primary_image
     FROM spaces s
     JOIN categories c ON s.category_id = c.id
     JOIN users u ON s.owner_id = u.id
@@ -92,7 +92,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                                 <th><i class="bi bi-tags me-1 text-muted"></i> Category</th>
                                 <th><i class="bi bi-person me-1 text-muted"></i> Owner</th>
                                 <th><i class="bi bi-geo-alt me-1 text-muted"></i> Location</th>
-                                <th><i class="bi bi-currency-rupee me-1 text-muted"></i> Hourly Rate</th>
+                                <th><i class="bi bi-currency-rupee me-1 text-muted"></i> Daily Rate</th>
                                 <th><i class="bi bi-info-circle me-1 text-muted"></i> Status</th>
                                 <th><i class="bi bi-clock me-1 text-muted"></i> Created</th>
                                 <th><i class="bi bi-three-dots me-1 text-muted"></i> Actions</th>
@@ -122,7 +122,7 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                                         <small class="text-muted"><?= htmlspecialchars($s['owner_email']); ?></small>
                                     </td>
                                     <td><small class="text-muted"><i class="bi bi-geo-alt me-1"></i><?= htmlspecialchars($s['city']); ?></small></td>
-                                    <td class="fw-bold text-success">₹<?= number_format($s['price_per_hour'], 2); ?>/hr</td>
+                                    <td class="fw-bold text-success">₹<?= number_format((float) $s['daily_rate'], 2); ?>/day</td>
                                     <td>
                                         <?php if ($s['verification_status'] === 'approved'): ?>
                                             <span class="badge-status approved"><i class="bi bi-check-circle-fill"></i> Published</span>
@@ -152,8 +152,8 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
                                                         <div class="p-2 bg-light rounded border small mb-3"><?= nl2br(htmlspecialchars($s['description'])); ?></div>
                                                         <div class="row g-2 border-top pt-2 small">
                                                             <div class="col-6"><strong>Category:</strong> <?= htmlspecialchars($s['category_name']); ?></div>
-                                                            <div class="col-6"><strong>Hourly Rate:</strong> ₹<?= number_format($s['price_per_hour'], 2); ?></div>
-                                                            <div class="col-6"><strong>Daily Rate:</strong> ₹<?= number_format($s['price_per_day'], 2); ?></div>
+                                                            <div class="col-6"><strong>Daily Rate:</strong> ₹<?= number_format((float) $s['daily_rate'], 2); ?></div>
+                                                            <div class="col-6"><strong>Weekly Rate:</strong> <?= $s['weekly_rate'] !== null ? '₹' . number_format((float) $s['weekly_rate'], 2) : '—'; ?></div>
                                                             <div class="col-6"><strong>Owner:</strong> <?= htmlspecialchars($s['owner_name']); ?></div>
                                                         </div>
                                                     </div>
@@ -173,4 +173,4 @@ $categories = $db->query("SELECT * FROM categories ORDER BY name ASC")->fetchAll
         </div>
     </main>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+    <?php require_once __DIR__ . '/includes/footer.php'; ?>

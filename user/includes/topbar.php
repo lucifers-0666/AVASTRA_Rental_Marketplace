@@ -20,10 +20,12 @@ $unreadNotifCount = $unreadNotifCount ?? 0;
     </div>
 
     <div class="topbar-right">
-        <div class="topbar-search">
-            <i class="bi bi-search"></i>
-            <input type="text" placeholder="Search spaces...">
-        </div>
+        <?php if (empty($hideTopbarSearch)): ?>
+            <div class="topbar-search">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search spaces...">
+            </div>
+        <?php endif; ?>
 
         <a href="<?= APP_URL; ?>/user/notifications.php" class="topbar-icon-btn" title="Notifications">
             <i class="bi bi-bell"></i>
