@@ -3,7 +3,7 @@
    Used by every page under /user/*. Reuses the same 5-color palette
    as the public site (assets/css/style.css) — do not add new colors.
 ===================================================================== */
-
+html,
 :root {
   --forest: #0b2a18;
   --teal: #145c4a;
@@ -30,6 +30,8 @@ body {
   background: var(--paper);
   font-size: 15px;
   margin: 0;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 h1,
@@ -49,6 +51,7 @@ a {
 #user-app {
   display: flex;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ---------------------------------------------------------------
@@ -2329,4 +2332,185 @@ a {
   font-size: 13px;
   font-weight: 600;
   color: var(--teal);
+}
+
+/* Photo upload row — avatar + "Change profile photo" + file input */
+.photo-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.photo-upload-row .pu-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.photo-upload-row input[type="file"] {
+  font-size: 13.5px;
+  color: rgba(23, 32, 27, 0.7);
+}
+.photo-upload-row input[type="file"]::file-selector-button {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid rgba(23, 32, 27, 0.15);
+  border-radius: 6px;
+  padding: 7px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.photo-upload-row input[type="file"]::file-selector-button:hover {
+  background: #eee;
+}
+
+/* Each editable field row: icon | inline label | input box
+   (matches Figma: "FULL NAME [___________]" on one line) */
+.edit-field-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(23, 32, 27, 0.06);
+}
+.edit-field-row:last-of-type {
+  border-bottom: none;
+}
+.edit-field-row > i {
+  font-size: 16px;
+  color: rgba(23, 32, 27, 0.4);
+  width: 20px;
+  flex-shrink: 0;
+}
+.edit-field-row .field-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: rgba(23, 32, 27, 0.5);
+  width: 82px;
+  flex-shrink: 0;
+}
+.edit-field-row .field-input {
+  flex: 1;
+  border: 1px solid rgba(23, 32, 27, 0.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14.5px;
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+  background: #fff;
+  max-width: 460px;
+}
+.edit-field-row .field-input:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(20, 92, 74, 0.08);
+}
+.edit-field-row .field-input::placeholder {
+  color: rgba(23, 32, 27, 0.35);
+}
+
+/* Email row is stacked (label above value), not inline like the rest,
+   since it's read-only text rather than an input box */
+.edit-field-row .field-static {
+  flex: 1;
+}
+.edit-field-row .field-static .fs-label {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: rgba(23, 32, 27, 0.5);
+  margin-bottom: 2px;
+}
+.edit-field-row .field-static .fs-value {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.edit-field-row .field-static .fs-note {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(23, 32, 27, 0.4);
+  margin-top: 2px;
+}
+
+/* Inline validation error card */
+.form-error-card {
+  border-left: 3px solid #c0392b;
+}
+.form-error-card div {
+  font-size: 13.5px;
+  padding: 4px 0;
+  color: #c0392b;
+}
+
+/* Save button spacing */
+.profile-card form .btn-primary-avastra {
+  margin-top: 8px;
+}
+
+/* ---------------------------------------------------------------
+   EDIT PROFILE — MOBILE FIXES
+   Root cause of the overflow: form inputs don't shrink inside a
+   flex row by default (browsers give them min-width:auto), so on
+   narrow screens the box pushes past the card edge. min-width:0
+   fixes that at every size; the breakpoints below then restack
+   icon/label/input for small screens, matching this file's
+   existing 840px / 767px / 400px pattern.
+--------------------------------------------------------------- */
+.edit-field-row .field-input,
+.photo-upload-row input[type="file"] {
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .edit-field-row {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .edit-field-row .field-label {
+    width: auto;
+    flex: 1;
+  }
+  .edit-field-row .field-input {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin-left: 34px; /* lines up under the label, past the icon */
+    width: calc(100% - 34px);
+  }
+  .edit-field-row .field-static {
+    min-width: 0;
+  }
+  .photo-upload-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .photo-upload-row input[type="file"] {
+    max-width: 100%;
+  }
+  .profile-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 400px) {
+  .edit-field-row .field-input {
+    margin-left: 0;
+    width: 100%;
+  }
+  .edit-field-row > i {
+    display: none; /* reclaim space on very small phones */
+  }
+  .edit-field-row .field-label {
+    width: 100%;
+  }
+  .profile-card {
+    padding: 14px;
+  }
+  .completion-percent {
+    font-size: 26px;
+  }
 }
