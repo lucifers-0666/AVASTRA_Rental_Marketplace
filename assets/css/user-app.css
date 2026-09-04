@@ -51,7 +51,6 @@ a {
 #user-app {
   display: flex;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 /* ---------------------------------------------------------------

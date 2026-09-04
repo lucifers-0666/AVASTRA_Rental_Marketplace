@@ -70,7 +70,12 @@ $unreadNotifCount = 0; // used by topbar.php
                 <!-- Identity card -->
                 <div class="profile-card">
                     <div class="profile-id-row">
-                        <div class="avatar-circle-xl"><?= htmlspecialchars($initials); ?></div>
+                        <?php if (!empty($user['profile_image']) && $user['profile_image'] !== 'default-avatar.png'): ?>
+                            <img src="<?= APP_URL; ?>/<?= htmlspecialchars($user['profile_image']); ?>"
+                                class="avatar-circle-xl" style="object-fit:cover;">
+                        <?php else: ?>
+                            <div class="avatar-circle-xl"><?= htmlspecialchars($initials); ?></div>
+                        <?php endif; ?>
                         <div>
                             <h3><?= htmlspecialchars($user['full_name']); ?></h3>
                             <div class="p-meta">

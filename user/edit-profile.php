@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($size > 2 * 1024 * 1024) {
             $errors[] = 'Profile photo must be under 2MB.';
         } else {
-            $uploadDir = __DIR__ . '/uploads/profiles/';
+            $uploadDir = __DIR__ . '/../uploads/profiles/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
