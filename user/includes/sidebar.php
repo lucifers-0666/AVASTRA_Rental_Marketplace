@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AVASTRA User App — Left Sidebar Navigation
  * Active state is based on the current file name (same pattern as admin/includes/sidebar.php).
@@ -11,6 +12,15 @@ $initials  = strtoupper(substr($nameParts[0], 0, 1) . substr($nameParts[count($n
 if (count($nameParts) === 1) {
     $initials = strtoupper(substr($nameParts[0], 0, 2));
 }
+
+// How many booking requests on MY spaces are waiting for MY response (owner side).
+$ownerPendingStmt = Database::getInstance()->prepare("
+    SELECT COUNT(*) FROM bookings b
+    JOIN spaces s ON s.id = b.space_id
+    WHERE s.owner_id = :uid AND b.status = 'pending'
+");
+$ownerPendingStmt->execute([':uid' => (int) $currentUser['id']]);
+$ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
 ?>
 <div id="sidebar-backdrop" onclick="toggleSidebar()"></div>
 <aside id="user-sidebar">
@@ -23,26 +33,30 @@ if (count($nameParts) === 1) {
 
     <ul class="sidebar-nav">
         <li><a href="<?= APP_URL; ?>/user/dashboard.php" class="<?= $currentScript === 'dashboard.php' ? 'active' : ''; ?>">
-            <i class="bi bi-grid-1x2-fill"></i> Overview
-        </a></li>
+                <i class="bi bi-grid-1x2-fill"></i> Overview
+            </a></li>
         <li><a href="<?= APP_URL; ?>/user/find-spaces.php" class="<?= $currentScript === 'find-spaces.php' ? 'active' : ''; ?>">
-            <i class="bi bi-search"></i> Find Spaces
-        </a></li>
+                <i class="bi bi-search"></i> Find Spaces
+            </a></li>
         <li><a href="<?= APP_URL; ?>/user/my-bookings.php" class="<?= $currentScript === 'my-bookings.php' ? 'active' : ''; ?>">
-            <i class="bi bi-calendar-check"></i> My Bookings
-        </a></li>
+                <i class="bi bi-calendar-check"></i> My Bookings
+            </a></li>
         <li><a href="<?= APP_URL; ?>/user/my-requests.php" class="<?= $currentScript === 'my-requests.php' ? 'active' : ''; ?>">
-            <i class="bi bi-file-earmark-text"></i> My Requests
-        </a></li>
+                <i class="bi bi-file-earmark-text"></i> My Requests
+            </a></li>
+        <li><a href="<?= APP_URL; ?>/user/owner-requests.php" class="<?= $currentScript === 'owner-requests.php' ? 'active' : ''; ?>">
+                <i class="bi bi-inbox"></i> Booking Requests
+                <?php if ($ownerPendingCount > 0): ?><span class="sidebar-badge"><?= $ownerPendingCount; ?></span><?php endif; ?>
+            </a></li>
         <li><a href="<?= APP_URL; ?>/user/my-spaces.php" class="<?= $currentScript === 'my-spaces.php' ? 'active' : ''; ?>">
-            <i class="bi bi-building"></i> My Spaces
-        </a></li>
+                <i class="bi bi-building"></i> My Spaces
+            </a></li>
         <li><a href="<?= APP_URL; ?>/user/messages.php" class="<?= $currentScript === 'messages.php' ? 'active' : ''; ?>">
-            <i class="bi bi-chat-dots"></i> Messages
-        </a></li>
+                <i class="bi bi-chat-dots"></i> Messages
+            </a></li>
         <li><a href="<?= APP_URL; ?>/user/profile.php" class="<?= $currentScript === 'profile.php' ? 'active' : ''; ?>">
-            <i class="bi bi-person"></i> Profile
-        </a></li>
+                <i class="bi bi-person"></i> Profile
+            </a></li>
     </ul>
 
     <div class="sidebar-divider"></div>

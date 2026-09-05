@@ -197,6 +197,20 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   FOREIGN KEY (`seeker_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- A space owner must never book their own listing. The same safeguard is
+-- available as db/self_booking_guard.sql for already-created databases.
+DROP TRIGGER IF EXISTS prevent_self_booking_before_insert;
+DELIMITER $$
+CREATE TRIGGER prevent_self_booking_before_insert
+BEFORE INSERT ON bookings
+FOR EACH ROW
+BEGIN
+  IF EXISTS (SELECT 1 FROM spaces WHERE id = NEW.space_id AND owner_id = NEW.seeker_id) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'A space owner cannot book their own listing.';
+  END IF;
+END$$
+DELIMITER ;
+
 -- Sample Bookings Seed Data
 INSERT INTO `bookings` (`id`, `booking_code`, `space_id`, `seeker_id`, `start_date`, `end_date`, `total_days`, `purpose`, `base_amount`, `platform_fee`, `deposit_amount`, `total_amount`, `status`) VALUES
 (1, 'BK-202608-001', 1, 3, '2026-09-01', '2026-09-15', 15, 'Inventory Storage', 10000.00, 500.00, 2000.00, 12500.00, 'confirmed'),

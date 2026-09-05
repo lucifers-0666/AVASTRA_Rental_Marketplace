@@ -151,7 +151,7 @@ function timeAgo(string $datetime): string
             <a href="<?= APP_URL; ?>/user/my-requests.php" class="summary-card" style="color:inherit;">
                 <div class="top-row"><i class="bi bi-file-earmark-text icon"></i><i class="bi bi-arrow-right"></i></div>
                 <div class="count"><?= $pendingRequestsCount; ?></div>
-                <div class="label">Pending Requests</div>
+                <div class="label">My Pending Requests</div>
             </a>
             <a href="<?= APP_URL; ?>/user/my-spaces.php" class="summary-card" style="color:inherit;">
                 <div class="top-row"><i class="bi bi-building icon"></i><i class="bi bi-arrow-right"></i></div>

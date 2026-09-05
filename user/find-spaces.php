@@ -22,8 +22,8 @@ $sort           = $_GET['sort'] ?? 'best';
 /* -----------------------------------------------------------
    BUILD THE QUERY
 ----------------------------------------------------------- */
-$where  = ["s.is_active = 1", "s.verification_status = 'approved'"];
-$params = [];
+$where  = ["s.is_active = 1", "s.verification_status = 'approved'", "s.owner_id != :current_user_id"];
+$params = [':current_user_id' => (int) $currentUser['id']];
 
 if ($search !== '') {
     $where[]            = "(s.title LIKE :search1 OR s.description LIKE :search2 OR s.city LIKE :search3)";
