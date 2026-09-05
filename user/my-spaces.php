@@ -184,7 +184,7 @@ $unreadNotifCount = 0; // used by topbar.php
                                 <?php endif; ?>
 
                                 <div class="msr-actions">
-                                    <a href="<?= APP_URL; ?>/user/edit-space.php?id=<?= (int) $space['id']; ?>" class="btn btn-ghost-avastra"><i class="bi bi-pencil"></i> Edit</a>
+                                    <span class="btn btn-ghost-avastra disabled" title="Listing edits will open in the List a Space flow."><i class="bi bi-pencil"></i> Edit</span>
                                     <a href="<?= APP_URL; ?>/user/space-availability.php?id=<?= (int) $space['id']; ?>" class="btn btn-ghost-avastra"><i class="bi bi-calendar-week"></i> Availability</a>
                                 </div>
                             </div>
