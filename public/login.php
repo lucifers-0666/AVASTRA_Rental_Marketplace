@@ -64,12 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <nav class="navbar-avastra">
         <div class="wrap nav-inner">
-            <a href="<?= APP_URL; ?>/user/dashboard.php" class="brand-logo d-flex align-items-center gap-2">
-                <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA Logo" style="height:32px; width:auto;">
-                <span class="brand-text">
-                    <span class="brand-name" style="font-family:'DM Serif Display', serif;">AVASTRA</span>
-                    <span class="brand-tag">Space for what's next</span>
-                </span>
+            <a href="<?= APP_URL; ?>/user/dashboard.php" class="brand-logo d-inline-block">
+                <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA" style="height:38px; width:auto; display:block;">
             </a>
             <div class="nav-center d-none d-md-flex gap-4">
                 <a href="<?= APP_URL; ?>/user/find-spaces.php">Browse Spaces</a>
@@ -85,8 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="auth-shell py-5">
         <div class="wrap" style="max-width: 440px; margin: 0 auto;">
             <div class="auth-logo text-center mb-4">
-                <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA Logo" style="height:48px; width:auto; margin-bottom:8px;">
-                <h2 style="font-family:'DM Serif Display', serif; color:#1B5E3A; margin:0; font-size:28px;">AVASTRA</h2>
+                <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA" style="height:54px; width:auto; display:inline-block;">
             </div>
 
             <div class="auth-card p-4 bg-white rounded-3 shadow-sm border border-light">

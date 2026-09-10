@@ -25,12 +25,8 @@ $ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
 <div id="sidebar-backdrop" onclick="toggleSidebar()"></div>
 <aside id="user-sidebar">
     <div class="sidebar-brand">
-        <a href="<?= APP_URL; ?>/user/dashboard.php" class="d-flex align-items-center gap-2" style="text-decoration:none;">
-            <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA Logo" style="height:32px; width:auto; filter: brightness(0) invert(1);">
-            <div class="brand-text">
-                <span class="brand-name">AVASTRA</span>
-                <span class="brand-tag">Space for what's next</span>
-            </div>
+        <a href="<?= APP_URL; ?>/user/dashboard.php" class="d-inline-block" style="text-decoration:none;">
+            <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA" style="height:38px; width:auto; filter: brightness(0) invert(1); display:block;">
         </a>
     </div>
 

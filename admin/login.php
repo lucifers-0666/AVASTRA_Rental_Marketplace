@@ -70,9 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="login-card">
         <div class="text-center mb-4">
-            <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA Logo" height="42" class="mb-2">
-            <h5 class="fw-bold mb-1" style="color:#1B5E3A;">AVASTRA Admin</h5>
-            <p class="text-muted small mb-0">OPEN TO WHAT MATTERS.</p>
+            <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA" height="48" class="mb-2">
+            <div><span class="badge bg-success-subtle text-success px-2 py-1 small rounded-pill fw-semibold">ADMIN CONTROL CENTER</span></div>
         </div>
 
         <?php if ($error): ?>

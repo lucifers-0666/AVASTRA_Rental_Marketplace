@@ -6,15 +6,25 @@
 ===================================================================== */
 
 :root {
-  --forest: #0b2a18;
-  --teal: #145c4a;
-  --accent: #56b978;
-  --paper: #f7f7f7;
-  --ink: #17201b;
+  --avastra-primary: #1B5E3A;
+  --avastra-primary-light: #4CAF6D;
+  --avastra-light-green: #E7F5EC;
+  --avastra-supporting-green: #9FD4B4;
+  --avastra-soft-neutral: #DCE6E0;
+  --avastra-muted: #5C6B62;
+  --avastra-ink: #1A1F1C;
+  --avastra-white: #FFFFFF;
+  --avastra-warning: #E8A33D;
+  --avastra-body-bg: #F4F9F6;
 
-  --shadow-sm:
-    0 1px 2px rgba(23, 32, 27, 0.06), 0 1px 1px rgba(23, 32, 27, 0.04);
-  --shadow-md: 0 6px 20px rgba(11, 42, 24, 0.1);
+  --forest: #1B5E3A;
+  --teal: #1B5E3A;
+  --accent: #4CAF6D;
+  --paper: #F4F9F6;
+  --ink: #1A1F1C;
+
+  --shadow-sm: 0 1px 3px rgba(26, 31, 28, 0.05), 0 1px 2px rgba(26, 31, 28, 0.03);
+  --shadow-md: 0 6px 20px rgba(27, 94, 58, 0.1);
   --container-max: 1280px;
 }
 
@@ -26,13 +36,10 @@ html {
 }
 
 body {
-  font-family:
-    "Inter",
-    -apple-system,
-    sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--ink);
   background: var(--paper);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.6;
 }
 
@@ -40,9 +47,9 @@ h1,
 h2,
 h3,
 .font-display {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: "DM Serif Display", Georgia, serif;
   color: var(--forest);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }
 
