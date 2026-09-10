@@ -26,7 +26,7 @@ $ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
 <aside id="user-sidebar">
     <div class="sidebar-brand">
         <a href="<?= APP_URL; ?>/user/dashboard.php" class="d-inline-block" style="text-decoration:none;">
-            <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA" style="height:38px; width:auto; filter: brightness(0) invert(1); display:block;">
+            <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA" style="height:36px; width:auto; display:block;">
         </a>
     </div>
 

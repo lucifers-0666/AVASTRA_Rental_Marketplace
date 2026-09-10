@@ -97,15 +97,20 @@ a {
 }
 
 .sidebar-brand {
-  padding: 22px 20px 16px;
+  background: #FFFFFF;
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  padding: 0 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 .sidebar-brand img {
   height: 36px;
   width: auto;
   object-fit: contain;
+  display: block;
 }
 .sidebar-brand .brand-text {
   display: flex;
