@@ -5,16 +5,27 @@
 ===================================================================== */
 html,
 :root {
-  --forest: #0b2a18;
-  --teal: #145c4a;
-  --accent: #56b978;
-  --paper: #f7f7f7;
-  --ink: #17201b;
+  --avastra-primary: #1B5E3A;
+  --avastra-accent: #4CAF6D;
+  --avastra-light: #E7F5EC;
+  --avastra-supporting: #9FD4B4;
+  --avastra-neutral-soft: #DCE6E0;
+  --avastra-text-muted: #5C6B62;
+  --avastra-text-main: #1A1F1C;
+  --avastra-white: #FFFFFF;
+  --avastra-warning: #E8A33D;
+  --avastra-bg: #F4F9F6;
 
-  --sidebar-width: 260px;
-  --topbar-height: 72px;
-  --shadow-sm:
-    0 1px 2px rgba(23, 32, 27, 0.06), 0 1px 1px rgba(23, 32, 27, 0.04);
+  /* Legacy variables mapped to AVASTRA design system */
+  --forest: #1B5E3A;
+  --teal: #1B5E3A;
+  --accent: #4CAF6D;
+  --paper: #F4F9F6;
+  --ink: #1A1F1C;
+
+  --sidebar-width: 248px;
+  --topbar-height: 68px;
+  --shadow-sm: 0 1px 3px rgba(26, 31, 28, 0.05), 0 1px 2px rgba(26, 31, 28, 0.03);
 }
 
 * {
@@ -22,13 +33,10 @@ html,
 }
 
 body {
-  font-family:
-    "Inter",
-    -apple-system,
-    sans-serif;
-  color: var(--ink);
-  background: var(--paper);
-  font-size: 15px;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--avastra-text-main);
+  background: var(--avastra-bg);
+  font-size: 14.5px;
   margin: 0;
   overflow-x: hidden;
   width: 100%;
@@ -37,11 +45,21 @@ body {
 h1,
 h2,
 h3,
-.font-display {
-  font-family: "Fraunces", Georgia, serif;
-  color: var(--forest);
-  font-weight: 600;
+h4,
+.font-display,
+.page-title {
+  font-family: "DM Serif Display", Georgia, serif;
+  color: var(--avastra-primary);
+  font-weight: 500;
   letter-spacing: -0.01em;
+}
+
+.booking-code,
+.id-badge,
+code,
+pre,
+.font-mono {
+  font-family: "DM Mono", monospace;
 }
 
 a {
@@ -58,8 +76,8 @@ a {
 --------------------------------------------------------------- */
 #user-sidebar {
   width: var(--sidebar-width);
-  background: var(--forest);
-  color: rgba(247, 247, 247, 0.85);
+  background: var(--avastra-primary);
+  color: rgba(255, 255, 255, 0.9);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -67,67 +85,96 @@ a {
   top: 0;
   height: 100vh;
   overflow-y: auto;
+  z-index: 100;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .sidebar-brand {
-  padding: 26px 24px 20px;
+  padding: 22px 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sidebar-brand img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+.sidebar-brand .brand-text {
+  display: flex;
+  flex-direction: column;
 }
 .sidebar-brand .brand-name {
-  font-family: "Fraunces", serif;
-  font-weight: 700;
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
   font-size: 20px;
-  color: #fff;
-  letter-spacing: 0.02em;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
 }
 .sidebar-brand .brand-tag {
-  display: block;
-  font-size: 10px;
+  font-size: 9.5px;
   letter-spacing: 0.12em;
-  color: var(--accent);
+  color: var(--avastra-accent);
   font-weight: 600;
-  margin-top: 2px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.sidebar-section-title {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 700;
+  padding: 14px 16px 4px;
 }
 
 .sidebar-nav {
   list-style: none;
   margin: 0;
-  padding: 8px 14px;
+  padding: 4px 12px;
   flex: 1;
 }
 .sidebar-nav li {
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 .sidebar-nav a {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 9.5px 12px;
   border-radius: 8px;
-  color: rgba(247, 247, 247, 0.75);
-  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
   font-weight: 500;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 .sidebar-nav a i {
-  font-size: 16px;
+  font-size: 15px;
   width: 18px;
   text-align: center;
+  color: rgba(255, 255, 255, 0.75);
 }
 .sidebar-nav a:hover {
-  background: rgba(247, 247, 247, 0.06);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+.sidebar-nav a:hover i {
+  color: #ffffff;
 }
 .sidebar-nav a.active {
-  background: rgba(86, 185, 120, 0.14);
-  color: var(--accent);
+  background: var(--avastra-light);
+  color: var(--avastra-primary);
   font-weight: 600;
+}
+.sidebar-nav a.active i {
+  color: var(--avastra-primary);
 }
 .sidebar-badge {
   margin-left: auto;
-  background: var(--accent);
-  color: var(--forest);
+  background: var(--avastra-accent);
+  color: #ffffff;
   font-size: 11px;
   font-weight: 700;
   padding: 1px 7px;

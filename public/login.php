@@ -30,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = Auth::login($email, $password);
 
         if ($result['success']) {
-            // Send admins to the admin panel, everyone else to their dashboard.
             if (Auth::isAdmin()) {
                 header("Location: " . APP_URL . "/admin/dashboard.php");
             } elseif ($redirectTo !== '') {
@@ -52,55 +51,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log in — AVASTRA</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="<?= APP_URL; ?>/assets/images/PHP%20LOGO/only%20logo.svg">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="<?= APP_URL; ?>/assets/css/style.css">
 </head>
 
 <body>
 
     <nav class="navbar-avastra">
         <div class="wrap nav-inner">
-            <a href="<?= APP_URL; ?>/index.php" class="brand-logo">
-                <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 2 L29 9 V23 L16 30 L3 23 V9 Z" stroke="#145C4A" stroke-width="2" fill="none" />
-                    <path d="M16 2 V16 M16 16 L3 9 M16 16 L29 9" stroke="#56B978" stroke-width="2" />
-                </svg>
+            <a href="<?= APP_URL; ?>/user/dashboard.php" class="brand-logo d-flex align-items-center gap-2">
+                <img src="<?= APP_URL; ?>/assets/images/PHP%20LOGO/transparent-logo.svg" alt="AVASTRA Logo" style="height:32px; width:auto;">
                 <span class="brand-text">
-                    <span class="brand-name">AVASTRA</span>
+                    <span class="brand-name" style="font-family:'DM Serif Display', serif;">AVASTRA</span>
                     <span class="brand-tag">Space for what's next</span>
                 </span>
             </a>
-            <div class="nav-center">
-                <a href="<?= APP_URL; ?>/user/browse-spaces.php">Browse Spaces</a>
-                <a href="<?= APP_URL; ?>/user/how-it-works.php">How It Works</a>
-                <a href="<?= APP_URL; ?>/user/for-owners.php">For Owners</a>
+            <div class="nav-center d-none d-md-flex gap-4">
+                <a href="<?= APP_URL; ?>/user/find-spaces.php">Browse Spaces</a>
+                <a href="<?= APP_URL; ?>/user/help.php">How It Works</a>
+                <a href="<?= APP_URL; ?>/user/list-space.php">For Owners</a>
             </div>
             <div class="nav-right">
-                <a href="<?= APP_URL; ?>/public/login.php" class="nav-login d-none d-md-inline" style="color:var(--teal);">Log in</a>
-                <a href="<?= APP_URL; ?>/public/register.php" class="btn btn-ghost-avastra d-none d-lg-inline-flex">Sign up</a>
+                <a href="<?= APP_URL; ?>/public/login.php" class="nav-login d-none d-md-inline" style="color:var(--avastra-primary, #1B5E3A); font-weight:600;">Log in</a>
             </div>
         </div>
     </nav>
 
-    <div class="auth-shell">
-        <div class="wrap">
-            <div class="auth-logo">
-                <svg viewBox="0 0 32 32" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 2 L29 9 V23 L16 30 L3 23 V9 Z" stroke="#145C4A" stroke-width="2" fill="none" />
-                    <path d="M16 2 V16 M16 16 L3 9 M16 16 L29 9" stroke="#56B978" stroke-width="2" />
-                </svg>
-                <span class="brand-name">AVASTRA</span>
+    <div class="auth-shell py-5">
+        <div class="wrap" style="max-width: 440px; margin: 0 auto;">
+            <div class="auth-logo text-center mb-4">
+                <img src="<?= APP_URL; ?>/assets/images/PHP%20LOGO/transparent-logo.svg" alt="AVASTRA Logo" style="height:48px; width:auto; margin-bottom:8px;">
+                <h2 style="font-family:'DM Serif Display', serif; color:#1B5E3A; margin:0; font-size:28px;">AVASTRA</h2>
             </div>
 
-            <div class="auth-card">
-                <h1 style="font-size:26px;text-align:center;margin-bottom:6px;">Welcome back</h1>
-                <p style="text-align:center;color:rgba(23,32,27,0.65);font-size:14.5px;margin-bottom:26px;">Log in to manage your spaces and bookings.</p>
+            <div class="auth-card p-4 bg-white rounded-3 shadow-sm border border-light">
+                <h1 style="font-family:'DM Serif Display', serif; font-size:24px; text-align:center; margin-bottom:6px; color:#1B5E3A;">Welcome back</h1>
+                <p style="text-align:center; color:#5C6B62; font-size:14px; margin-bottom:24px;">Log in to manage your spaces and bookings.</p>
 
                 <?php if ($error): ?>
-                    <div class="alert alert-danger py-2 px-3" style="font-size:13.5px;border-radius:8px;">
+                    <div class="alert alert-danger py-2 px-3 mb-3" style="font-size:13.5px; border-radius:8px;">
                         <i class="bi bi-exclamation-triangle-fill me-1"></i> <?= htmlspecialchars($error); ?>
                     </div>
                 <?php endif; ?>
@@ -111,24 +105,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endif; ?>
 
                     <div class="field mb-3">
-                        <label for="loginEmail">Email address</label>
+                        <label for="loginEmail" class="form-label text-dark fw-medium small mb-1">Email address</label>
                         <input type="email" name="email" class="form-control" id="loginEmail"
                             value="<?= htmlspecialchars($_POST['email'] ?? ''); ?>"
-                            placeholder="you@example.com" autofocus>
+                            placeholder="you@example.com" required autofocus>
                     </div>
                     <div class="field mb-2">
-                        <label for="loginPassword">Password</label>
+                        <label for="loginPassword" class="form-label text-dark fw-medium small mb-1">Password</label>
                         <input type="password" name="password" class="form-control" id="loginPassword"
-                            placeholder="Your password">
+                            placeholder="Your password" required>
                     </div>
                     <div class="text-end mb-3">
-                        <a href="#" style="font-size:13.5px;" onclick="alert('Password reset is not built yet.'); return false;">Forgot password?</a>
+                        <a href="#" style="font-size:13px; color:#1B5E3A;" onclick="alert('Demo account passwords are: admin123'); return false;">Forgot password?</a>
                     </div>
-                    <button type="submit" class="btn btn-primary-avastra w-100">Log in</button>
+                    <button type="submit" class="btn w-100 py-2 fw-semibold text-white" style="background:#1B5E3A; border-radius:8px;">Log in</button>
                 </form>
             </div>
 
-            <p class="auth-below">Don't have an account? <a href="<?= APP_URL; ?>/public/register.php" style="font-weight:600;">Register</a></p>
+            <div class="text-center mt-4">
+                <p class="small text-muted mb-0">Testing Seeker / Owner account?</p>
+                <code class="small text-dark">jay@example.com / admin123</code>
+            </div>
         </div>
     </div>
 

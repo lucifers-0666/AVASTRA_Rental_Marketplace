@@ -128,7 +128,7 @@ $unreadNotifCount = 0; // used by topbar.php
             <div class="d-flex align-items-center gap-2">
                 <label for="sortSelect" style="font-size:13.5px;color:rgba(23,32,27,0.6);">Sort:</label>
                 <select id="sortSelect" class="sort-select" onchange="updateSort(this.value)">
-                    <option value="best" <?= $sort === 'best' ? 'selected' : ''; ?>>Best match</option>
+                    <option value="best" <?= $sort === 'best' ? 'selected' : ''; ?>>Recommended</option>
                     <option value="price_low" <?= $sort === 'price_low' ? 'selected' : ''; ?>>Price: Low to High</option>
                     <option value="price_high" <?= $sort === 'price_high' ? 'selected' : ''; ?>>Price: High to Low</option>
                     <option value="newest" <?= $sort === 'newest' ? 'selected' : ''; ?>>Newest</option>
