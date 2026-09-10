@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="<?= APP_URL; ?>/assets/images/PHP%20LOGO/only%20logo.svg">
+    <link rel="icon" type="image/svg+xml" href="<?= APP_URL; ?>/assets/images/logo/only%20logo.svg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="<?= APP_URL; ?>/assets/css/style.css">
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <nav class="navbar-avastra">
         <div class="wrap nav-inner">
             <a href="<?= APP_URL; ?>/user/dashboard.php" class="brand-logo d-flex align-items-center gap-2">
-                <img src="<?= APP_URL; ?>/assets/images/PHP%20LOGO/transparent-logo.svg" alt="AVASTRA Logo" style="height:32px; width:auto;">
+                <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA Logo" style="height:32px; width:auto;">
                 <span class="brand-text">
                     <span class="brand-name" style="font-family:'DM Serif Display', serif;">AVASTRA</span>
                     <span class="brand-tag">Space for what's next</span>
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="auth-shell py-5">
         <div class="wrap" style="max-width: 440px; margin: 0 auto;">
             <div class="auth-logo text-center mb-4">
-                <img src="<?= APP_URL; ?>/assets/images/PHP%20LOGO/transparent-logo.svg" alt="AVASTRA Logo" style="height:48px; width:auto; margin-bottom:8px;">
+                <img src="<?= APP_URL; ?>/assets/images/logo/transparent-logo.svg" alt="AVASTRA Logo" style="height:48px; width:auto; margin-bottom:8px;">
                 <h2 style="font-family:'DM Serif Display', serif; color:#1B5E3A; margin:0; font-size:28px;">AVASTRA</h2>
             </div>
 

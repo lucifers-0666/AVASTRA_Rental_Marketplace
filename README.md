@@ -72,7 +72,7 @@ AVASTRA_Rental_Marketplace/
 │   └── audit-logs.php         # Immutable admin activity audit trail
 ├── assets/                    # Static CSS, JS, SVG & Image assets
 │   ├── css/admin.css          # AVASTRA Centralized CSS Tokens & Components
-│   └── images/PHP LOGO/       # Official AVASTRA transparent SVG logo assets
+│   └── images/logo/           # Official AVASTRA transparent SVG logo assets
 ├── classes/                   # OOP PHP Models
 │   ├── Database.php           # Singleton PDO Connection Handler
 │   ├── Auth.php               # Session Authentication & Authorization Guards

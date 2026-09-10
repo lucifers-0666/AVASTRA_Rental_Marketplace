@@ -5,18 +5,25 @@
 ===================================================================== */
 html,
 :root {
-  --avastra-primary: #1B5E3A;
+  /* AVASTRA Core Design System Tokens (Matched to Admin Center) */
+  --avastra-primary: #1B5E3A;          /* Deep AVASTRA Green */
+  --avastra-primary-light: #4CAF6D;    /* Vibrant Accent Green */
+  --avastra-light-green: #E7F5EC;     /* Active Nav & Highlight Background */
+  --avastra-supporting-green: #9FD4B4;
+  --avastra-soft-neutral: #DCE6E0;    /* Border & Divider Tints */
+  --avastra-muted: #5C6B62;           /* Subtitle & Secondary Labels */
+  --avastra-ink: #1A1F1C;             /* Body Headings & Dark Text */
+  --avastra-white: #FFFFFF;
+  --avastra-warning: #E8A33D;         /* Amber Attention & Pending */
+  
+  /* Aliases & Legacy Mappings */
   --avastra-accent: #4CAF6D;
   --avastra-light: #E7F5EC;
   --avastra-supporting: #9FD4B4;
   --avastra-neutral-soft: #DCE6E0;
   --avastra-text-muted: #5C6B62;
   --avastra-text-main: #1A1F1C;
-  --avastra-white: #FFFFFF;
-  --avastra-warning: #E8A33D;
   --avastra-bg: #F4F9F6;
-
-  /* Legacy variables mapped to AVASTRA design system */
   --forest: #1B5E3A;
   --teal: #1B5E3A;
   --accent: #4CAF6D;

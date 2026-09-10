@@ -172,14 +172,14 @@ $unreadNotifCount = 0; // used by topbar.php
         <!-- Gallery -->
         <div class="sd-gallery">
             <?php if (!empty($images[0])): ?>
-                <img class="main-img" src="<?= APP_URL . '/' . htmlspecialchars($images[0]['image_path']); ?>" alt="<?= htmlspecialchars($space['title']); ?>" onerror="this.onerror=null; this.src='<?= APP_URL; ?>/assets/images/PHP%20LOGO/only%20logo.svg'; this.style.objectFit='contain'; this.style.padding='40px'; this.style.background='#E7F5EC';">
+                <img class="main-img" src="<?= APP_URL . '/' . htmlspecialchars($images[0]['image_path']); ?>" alt="<?= htmlspecialchars($space['title']); ?>" onerror="this.onerror=null; this.src='<?= APP_URL; ?>/assets/images/logo/only%20logo.svg'; this.style.objectFit='contain'; this.style.padding='40px'; this.style.background='#E7F5EC';">
             <?php else: ?>
                 <div class="img-fallback-lg d-flex flex-column align-items-center justify-content-center" style="background:var(--avastra-light); border-radius:12px; height:100%; min-height:280px;"><i class="bi bi-building" style="font-size:44px;color:var(--avastra-primary);"></i><span class="small text-muted mt-2">No image uploaded yet</span></div>
             <?php endif; ?>
             <div class="thumb-col">
                 <?php for ($i = 1; $i <= 2; $i++): ?>
                     <?php if (!empty($images[$i])): ?>
-                        <img src="<?= APP_URL . '/' . htmlspecialchars($images[$i]['image_path']); ?>" alt="<?= htmlspecialchars($space['title']); ?>" onerror="this.onerror=null; this.src='<?= APP_URL; ?>/assets/images/PHP%20LOGO/only%20logo.svg'; this.style.objectFit='contain'; this.style.padding='20px'; this.style.background='#E7F5EC';">
+                        <img src="<?= APP_URL . '/' . htmlspecialchars($images[$i]['image_path']); ?>" alt="<?= htmlspecialchars($space['title']); ?>" onerror="this.onerror=null; this.src='<?= APP_URL; ?>/assets/images/logo/only%20logo.svg'; this.style.objectFit='contain'; this.style.padding='20px'; this.style.background='#E7F5EC';">
                     <?php else: ?>
                         <div class="img-fallback-sm d-flex flex-column align-items-center justify-content-center" style="background:var(--avastra-light); border-radius:12px; height:100%; min-height:130px;"><i class="bi bi-image" style="font-size:24px;color:var(--avastra-primary);"></i></div>
                     <?php endif; ?>
