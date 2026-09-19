@@ -6,33 +6,34 @@
 html,
 :root {
   /* AVASTRA Core Design System Tokens (Matched to Admin Center) */
-  --avastra-primary: #1B5E3A;          /* Deep AVASTRA Green */
-  --avastra-primary-light: #4CAF6D;    /* Vibrant Accent Green */
-  --avastra-light-green: #E7F5EC;     /* Active Nav & Highlight Background */
-  --avastra-supporting-green: #9FD4B4;
-  --avastra-soft-neutral: #DCE6E0;    /* Border & Divider Tints */
-  --avastra-muted: #5C6B62;           /* Subtitle & Secondary Labels */
-  --avastra-ink: #1A1F1C;             /* Body Headings & Dark Text */
-  --avastra-white: #FFFFFF;
-  --avastra-warning: #E8A33D;         /* Amber Attention & Pending */
-  
+  --avastra-primary: #1b5e3a; /* Deep AVASTRA Green */
+  --avastra-primary-light: #4caf6d; /* Vibrant Accent Green */
+  --avastra-light-green: #e7f5ec; /* Active Nav & Highlight Background */
+  --avastra-supporting-green: #9fd4b4;
+  --avastra-soft-neutral: #dce6e0; /* Border & Divider Tints */
+  --avastra-muted: #5c6b62; /* Subtitle & Secondary Labels */
+  --avastra-ink: #1a1f1c; /* Body Headings & Dark Text */
+  --avastra-white: #ffffff;
+  --avastra-warning: #e8a33d; /* Amber Attention & Pending */
+
   /* Aliases & Legacy Mappings */
-  --avastra-accent: #4CAF6D;
-  --avastra-light: #E7F5EC;
-  --avastra-supporting: #9FD4B4;
-  --avastra-neutral-soft: #DCE6E0;
-  --avastra-text-muted: #5C6B62;
-  --avastra-text-main: #1A1F1C;
-  --avastra-bg: #F4F9F6;
-  --forest: #1B5E3A;
-  --teal: #1B5E3A;
-  --accent: #4CAF6D;
-  --paper: #F4F9F6;
-  --ink: #1A1F1C;
+  --avastra-accent: #4caf6d;
+  --avastra-light: #e7f5ec;
+  --avastra-supporting: #9fd4b4;
+  --avastra-neutral-soft: #dce6e0;
+  --avastra-text-muted: #5c6b62;
+  --avastra-text-main: #1a1f1c;
+  --avastra-bg: #f4f9f6;
+  --forest: #1b5e3a;
+  --teal: #1b5e3a;
+  --accent: #4caf6d;
+  --paper: #f4f9f6;
+  --ink: #1a1f1c;
 
   --sidebar-width: 248px;
   --topbar-height: 68px;
-  --shadow-sm: 0 1px 3px rgba(26, 31, 28, 0.05), 0 1px 2px rgba(26, 31, 28, 0.03);
+  --shadow-sm:
+    0 1px 3px rgba(26, 31, 28, 0.05), 0 1px 2px rgba(26, 31, 28, 0.03);
 }
 
 * {
@@ -40,7 +41,11 @@ html,
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   color: var(--avastra-text-main);
   background: var(--avastra-bg);
   font-size: 14.5px;
@@ -86,26 +91,42 @@ a {
   background: var(--avastra-primary);
   color: rgba(255, 255, 255, 0.9);
   flex-shrink: 0;
+
   display: flex;
   flex-direction: column;
+
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow-y: auto;
+
+  /* Sidebar itself should NOT scroll */
+  overflow: hidden;
+
   z-index: 100;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .sidebar-brand {
-  background: #FFFFFF;
+  background: #ffffff;
+
   height: var(--topbar-height);
   min-height: var(--topbar-height);
+
   padding: 0 20px;
+
   display: flex;
   align-items: center;
+
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   border-right: 1px solid rgba(0, 0, 0, 0.08);
+
+  /* Important */
+  flex-shrink: 0;
+
+  position: relative;
+  z-index: 2;
 }
+
 .sidebar-brand img {
   height: 36px;
   width: auto;
@@ -146,8 +167,23 @@ a {
   list-style: none;
   margin: 0;
   padding: 4px 12px;
+
   flex: 1;
+
+  /* Only menu area scrolls */
+  min-height: 0;
+  overflow-y: auto;
+
+  /* Hide scrollbar by default */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 .sidebar-nav li {
   margin-bottom: 3px;
 }
@@ -160,7 +196,9 @@ a {
   color: rgba(255, 255, 255, 0.78);
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 .sidebar-nav a i {
   font-size: 15px;
@@ -1777,14 +1815,23 @@ a {
 --------------------------------------------------------------- */
 .msg-layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 300px minmax(0, 1fr);
+
   background: #fff;
   border: 1px solid rgba(23, 32, 27, 0.08);
   border-radius: 12px;
+
   overflow: hidden;
-  height: calc(100vh - var(--topbar-height) - 64px);
-  min-height: 520px;
+
+  /*
+   * Messages heading + topbar + content spacing
+   * are already using vertical space.
+   */
+  height: calc(100vh - var(--topbar-height) - 124px);
+
+  min-height: 450px;
 }
+
 .msg-conv-list {
   border-right: 1px solid rgba(23, 32, 27, 0.08);
   overflow-y: auto;
@@ -1866,8 +1913,13 @@ a {
 .msg-thread {
   display: flex;
   flex-direction: column;
+
   min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
 }
+
 .msg-thread-header {
   display: flex;
   align-items: center;
@@ -1913,11 +1965,53 @@ a {
 
 .msg-body {
   flex: 1;
+  min-height: 0;
+
   overflow-y: auto;
+  overflow-x: hidden;
+
   padding: 20px;
+
   display: flex;
   flex-direction: column;
+
+  /* Hide scrollbar by default */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
+/* Chrome / Edge / Safari */
+.msg-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* =========================================================
+   SHOW SCROLLBAR ONLY WHILE MESSAGING AREA IS SCROLLING
+========================================================= */
+
+.msg-body.is-scrolling {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(20, 92, 74, 0.45) transparent;
+}
+
+.msg-body.is-scrolling::-webkit-scrollbar {
+  width: 5px;
+}
+
+.msg-body.is-scrolling::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.msg-body.is-scrolling::-webkit-scrollbar-thumb {
+  background: rgba(20, 92, 74, 0.45);
+  border-radius: 10px;
+}
+
+.msg-body.is-scrolling::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 92, 74, 0.65);
+}
+
 .msg-bubble-row {
   display: flex;
   flex-direction: column;
@@ -2002,11 +2096,17 @@ a {
   .msg-layout {
     grid-template-columns: 1fr;
     height: auto;
+    min-height: 650px;
   }
+
   .msg-conv-list {
     border-right: none;
     border-bottom: 1px solid rgba(23, 32, 27, 0.08);
     max-height: 240px;
+  }
+
+  .msg-thread {
+    min-height: 500px;
   }
 }
 
@@ -3982,5 +4082,649 @@ a {
   .orc-actions .btn {
     flex: 1;
     justify-content: center;
+  }
+}
+
+/* ============================================================
+   SIDEBAR SCROLLBAR
+   Hidden by default
+   Visible only while sidebar is scrolling
+============================================================ */
+
+#user-sidebar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer / old Edge */
+}
+
+/* Chrome, Edge, Safari */
+#user-sidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Show scrollbar while scrolling */
+#user-sidebar.is-scrolling {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.45) transparent;
+}
+
+/* Chrome, Edge, Safari */
+#user-sidebar.is-scrolling::-webkit-scrollbar {
+  width: 6px;
+}
+
+#user-sidebar.is-scrolling::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#user-sidebar.is-scrolling::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 10px;
+}
+
+#user-sidebar.is-scrolling::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+/* ---------------------------------------------------------------
+   USER FOOTER
+--------------------------------------------------------------- */
+
+.user-footer {
+  width: 100%;
+  padding: 16px 24px;
+
+  background: #ffffff;
+
+  border-top: 1px solid rgba(23, 32, 27, 0.08);
+
+  color: var(--avastra-muted);
+
+  font-size: 12.5px;
+
+  margin-top: auto;
+}
+
+.user-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 32px;
+}
+
+.user-footer-inner img {
+  width: auto;
+  height: 22px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+.user-footer-inner strong {
+  color: var(--avastra-primary);
+  font-weight: 700;
+}
+
+/* ===============================================================
+   NOTIFICATIONS PAGE
+================================================================ */
+
+.notifications-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.notifications-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.notifications-title-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--avastra-light);
+  color: var(--avastra-primary);
+
+  font-size: 20px;
+
+  flex-shrink: 0;
+}
+
+.notifications-title-row h1 {
+  margin: 0 0 4px;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--avastra-primary);
+}
+
+.notifications-title-row p {
+  margin: 0;
+  color: var(--avastra-muted);
+  font-size: 13.5px;
+}
+
+/* ---------------------------------------------------------------
+   MARK ALL READ
+--------------------------------------------------------------- */
+
+.notifications-mark-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 9px 14px;
+
+  border: 1px solid rgba(27, 94, 58, 0.18);
+  border-radius: 8px;
+
+  background: #fff;
+
+  color: var(--avastra-primary);
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: all 0.15s ease;
+}
+
+.notifications-mark-read:hover {
+  background: var(--avastra-light-green);
+  color: var(--avastra-primary);
+}
+
+/* ---------------------------------------------------------------
+   SUMMARY CARDS
+--------------------------------------------------------------- */
+
+.notifications-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 240px));
+  gap: 14px;
+
+  margin-bottom: 20px;
+}
+
+.notification-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 15px 17px;
+
+  background: #fff;
+
+  border: 1px solid rgba(23, 32, 27, 0.08);
+  border-radius: 10px;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.notification-summary-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: var(--avastra-light);
+  color: var(--avastra-primary);
+
+  font-size: 16px;
+
+  flex-shrink: 0;
+}
+
+.notification-summary-card strong {
+  display: block;
+
+  color: var(--avastra-primary);
+
+  font-family: "Fraunces", serif;
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.notification-summary-card span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: var(--avastra-muted);
+  font-size: 11.5px;
+}
+
+/* ---------------------------------------------------------------
+   MAIN NOTIFICATIONS CARD
+--------------------------------------------------------------- */
+
+.notifications-card {
+  background: #fff;
+
+  border: 1px solid rgba(23, 32, 27, 0.08);
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.notifications-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid rgba(23, 32, 27, 0.07);
+}
+
+.notifications-card-header h2 {
+  margin: 0;
+
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+
+  color: var(--avastra-ink);
+}
+
+.notifications-card-header p {
+  margin: 3px 0 0;
+
+  color: var(--avastra-muted);
+  font-size: 12px;
+}
+
+.notifications-count {
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  background: var(--avastra-light-green);
+  color: var(--avastra-primary);
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------
+   NOTIFICATION ITEM
+--------------------------------------------------------------- */
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid rgba(23, 32, 27, 0.06);
+
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background: rgba(27, 94, 58, 0.025);
+}
+
+/* Unread */
+
+.notification-item.is-unread {
+  background: rgba(231, 245, 236, 0.48);
+}
+
+.notification-item.is-unread:hover {
+  background: rgba(231, 245, 236, 0.7);
+}
+
+/* ---------------------------------------------------------------
+   NOTIFICATION ICONS
+--------------------------------------------------------------- */
+
+.notification-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  font-size: 16px;
+
+  flex-shrink: 0;
+}
+
+/* Booking */
+
+.notification-booking {
+  background: rgba(27, 94, 58, 0.1);
+  color: var(--avastra-primary);
+}
+
+/* Request */
+
+.notification-request {
+  background: rgba(76, 175, 109, 0.12);
+  color: #34784d;
+}
+
+/* Message */
+
+.notification-message {
+  background: rgba(63, 112, 143, 0.1);
+  color: #3f708f;
+}
+
+/* Space */
+
+.notification-space {
+  background: rgba(159, 212, 180, 0.25);
+  color: #35734d;
+}
+
+/* Payment */
+
+.notification-payment {
+  background: rgba(232, 163, 61, 0.13);
+  color: #9a661c;
+}
+
+/* General */
+
+.notification-general {
+  background: rgba(92, 107, 98, 0.1);
+  color: var(--avastra-muted);
+}
+
+/* ---------------------------------------------------------------
+   CONTENT
+--------------------------------------------------------------- */
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 5px;
+}
+
+.notification-title-wrap {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  min-width: 0;
+}
+
+.notification-title-wrap h3 {
+  margin: 0;
+
+  color: var(--avastra-ink);
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  line-height: 1.35;
+}
+
+.notification-item.is-unread .notification-title-wrap h3 {
+  font-weight: 700;
+}
+
+.notification-message {
+  margin: 0;
+
+  color: var(--avastra-muted);
+
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.notification-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  color: rgba(92, 107, 98, 0.72);
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+.notification-time i {
+  font-size: 10px;
+}
+
+/* ---------------------------------------------------------------
+   UNREAD INDICATOR
+--------------------------------------------------------------- */
+
+.notification-unread-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--avastra-primary);
+
+  flex-shrink: 0;
+}
+
+.notification-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 9px;
+}
+
+.notification-type {
+  display: inline-flex;
+
+  padding: 3px 8px;
+
+  border-radius: 20px;
+
+  background: #f3f6f4;
+
+  color: var(--avastra-muted);
+
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.notification-new {
+  display: inline-flex;
+
+  padding: 3px 8px;
+
+  border-radius: 20px;
+
+  background: var(--avastra-light-green);
+
+  color: var(--avastra-primary);
+
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------
+   EMPTY STATE
+--------------------------------------------------------------- */
+
+.notifications-empty {
+  padding: 70px 25px;
+
+  text-align: center;
+}
+
+.notifications-empty-icon {
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--avastra-light-green);
+  color: var(--avastra-primary);
+
+  font-size: 27px;
+}
+
+.notifications-empty h3 {
+  margin: 0 0 7px;
+
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+
+  color: var(--avastra-primary);
+}
+
+.notifications-empty p {
+  max-width: 440px;
+
+  margin: 0 auto 20px;
+
+  color: var(--avastra-muted);
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.notifications-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 9px 16px;
+
+  border-radius: 8px;
+
+  background: var(--avastra-primary);
+  color: #fff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: background 0.15s ease;
+}
+
+.notifications-empty-btn:hover {
+  background: #144b2e;
+  color: #fff;
+}
+
+/* ---------------------------------------------------------------
+   MOBILE
+--------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .notifications-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .notifications-mark-read {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .notifications-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .notifications-card-header {
+    padding: 15px;
+  }
+
+  .notification-item {
+    padding: 15px;
+    gap: 11px;
+  }
+
+  .notification-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .notification-top {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .notification-time {
+    font-size: 10.5px;
+  }
+
+  .notifications-title-row h1 {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .notifications-title-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .notification-item {
+    align-items: flex-start;
+  }
+
+  .notification-message {
+    font-size: 12.5px;
+  }
+
+  .notifications-empty {
+    padding: 50px 18px;
   }
 }

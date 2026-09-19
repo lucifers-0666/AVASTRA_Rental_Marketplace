@@ -31,6 +31,7 @@ $ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
     </div>
 
     <ul class="sidebar-nav">
+
         <!-- EXPLORE -->
         <li class="sidebar-section-title">Explore</li>
         <li>
@@ -98,6 +99,7 @@ $ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
                 <i class="bi bi-gear"></i> Settings
             </a>
         </li>
+
     </ul>
 
     <div class="sidebar-footer-links">

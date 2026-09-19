@@ -8,9 +8,15 @@
  * (phpMyAdmin → SQL tab), or this page will show a setup notice instead
  * of crashing.
  */
+
 $pageTitle = 'Messages';
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/sidebar.php';
+
+require_once __DIR__ . '/../classes/Auth.php';
+
+Auth::initSession();
+Auth::requireLogin();
+
+$currentUser = Auth::getUser();
 
 $db     = Database::getInstance();
 $userId = (int) $currentUser['id'];
@@ -145,12 +151,26 @@ if ($activeConversationId) {
 function initialsOf(string $name): string
 {
     $parts = preg_split('/\s+/', trim($name));
+
     return count($parts) > 1
-        ? strtoupper(substr($parts[0], 0, 1) . substr(end($parts), 0, 1))
+        ? strtoupper(
+            substr($parts[0], 0, 1) .
+                substr(end($parts), 0, 1)
+        )
         : strtoupper(substr($name, 0, 2));
 }
 
 $unreadNotifCount = 0; // used by topbar.php
+
+/*
+|--------------------------------------------------------------------------
+| NOW START HTML OUTPUT
+|--------------------------------------------------------------------------
+*/
+
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
+
     ?>
 
     <div id="user-main">
