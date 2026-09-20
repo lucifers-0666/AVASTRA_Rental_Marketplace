@@ -5,35 +5,37 @@
 ===================================================================== */
 html,
 :root {
-  /* AVASTRA Core Design System Tokens (Matched to Admin Center) */
-  --avastra-primary: #1b5e3a; /* Deep AVASTRA Green */
-  --avastra-primary-light: #4caf6d; /* Vibrant Accent Green */
-  --avastra-light-green: #e7f5ec; /* Active Nav & Highlight Background */
-  --avastra-supporting-green: #9fd4b4;
-  --avastra-soft-neutral: #dce6e0; /* Border & Divider Tints */
-  --avastra-muted: #5c6b62; /* Subtitle & Secondary Labels */
-  --avastra-ink: #1a1f1c; /* Body Headings & Dark Text */
+  /* AVASTRA Deep Forest & Logo-matched Premium Palette */
+  --avastra-primary: #073b36; /* Deep Logo Dark Spruce / Forest Green */
+  --avastra-primary-dark: #052623; /* Deepest Pine Green */
+  --avastra-secondary: #0e5244; /* Rich Dark Forest Green */
+  --avastra-primary-light: #126351; /* Vibrant Forest Green */
+  --avastra-accent: #156e5a; /* High-contrast Forest Accent (never light lime) */
+  --avastra-light-green: #e8f4ef; /* Refined Light Sage Background */
+  --avastra-supporting-green: #1b735e;
+  --avastra-soft-neutral: #cce3d8; /* Border & Divider Tints */
+  --avastra-muted: #495a52; /* Subtitle & Secondary Labels */
+  --avastra-ink: #0d1613; /* Headings & Body Dark Text */
   --avastra-white: #ffffff;
-  --avastra-warning: #e8a33d; /* Amber Attention & Pending */
+  --avastra-warning: #d97706; /* High-contrast Amber */
 
   /* Aliases & Legacy Mappings */
-  --avastra-accent: #4caf6d;
-  --avastra-light: #e7f5ec;
-  --avastra-supporting: #9fd4b4;
-  --avastra-neutral-soft: #dce6e0;
-  --avastra-text-muted: #5c6b62;
-  --avastra-text-main: #1a1f1c;
-  --avastra-bg: #f4f9f6;
-  --forest: #1b5e3a;
-  --teal: #1b5e3a;
-  --accent: #4caf6d;
-  --paper: #f4f9f6;
-  --ink: #1a1f1c;
+  --avastra-light: #e8f4ef;
+  --avastra-supporting: #1b735e;
+  --avastra-neutral-soft: #cce3d8;
+  --avastra-text-muted: #495a52;
+  --avastra-text-main: #0d1613;
+  --avastra-bg: #f4f8f6;
+  --forest: #073b36;
+  --teal: #0e5244;
+  --accent: #126351;
+  --paper: #f4f8f6;
+  --ink: #0d1613;
 
   --sidebar-width: 248px;
   --topbar-height: 68px;
   --shadow-sm:
-    0 1px 3px rgba(26, 31, 28, 0.05), 0 1px 2px rgba(26, 31, 28, 0.03);
+    0 1px 3px rgba(7, 59, 54, 0.07), 0 1px 2px rgba(7, 59, 54, 0.04);
 }
 
 * {
@@ -293,8 +295,9 @@ a {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--accent);
-  color: var(--forest);
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -329,6 +332,31 @@ a {
 }
 .sidebar-signout a:hover {
   color: var(--accent);
+}
+
+.sidebar-cta-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 10px 14px !important;
+  border-radius: 9px !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+}
+.sidebar-cta-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18) !important;
+}
+.sidebar-cta-btn i {
+  color: #38ef7d !important;
+  font-size: 17px !important;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
 }
 
 /* ---------------------------------------------------------------
@@ -1852,21 +1880,27 @@ a {
   border-bottom: 1px solid rgba(23, 32, 27, 0.06);
   cursor: pointer;
   color: inherit;
+  text-decoration: none;
+  transition: all 0.15s ease;
 }
-.msg-conv-item:hover,
+.msg-conv-item:hover {
+  background: var(--avastra-light-green);
+  color: inherit;
+}
 .msg-conv-item.active {
-  background: var(--paper);
+  background: var(--avastra-light-green);
+  border-left: 4px solid var(--avastra-primary);
+  color: inherit;
 }
 .msg-conv-item .mc-avatar {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: var(--teal);
+  background: var(--avastra-primary);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Fraunces", serif;
   font-weight: 700;
   font-size: 13px;
   flex-shrink: 0;
@@ -1879,7 +1913,7 @@ a {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--avastra-secondary);
   border: 2px solid #fff;
 }
 .msg-conv-item .mc-main {
@@ -1894,16 +1928,16 @@ a {
 .msg-conv-item .mc-name {
   font-size: 14px;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--avastra-ink);
 }
 .msg-conv-item .mc-date {
   font-size: 11.5px;
-  color: rgba(23, 32, 27, 0.45);
+  color: var(--avastra-muted);
   flex-shrink: 0;
 }
 .msg-conv-item .mc-preview {
   font-size: 12.5px;
-  color: rgba(23, 32, 27, 0.55);
+  color: var(--avastra-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1930,37 +1964,47 @@ a {
 .msg-thread-header .mc-avatar {
   width: 40px;
   height: 40px;
+  border-radius: 50%;
+  background: var(--avastra-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
 }
 .msg-thread-header .th-name {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--avastra-ink);
 }
 .msg-thread-header .th-role {
   font-size: 12.5px;
-  color: rgba(23, 32, 27, 0.55);
+  color: var(--avastra-muted);
 }
 
 .msg-context-card {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--paper);
+  background: var(--avastra-light-green);
+  border: 1px solid var(--avastra-soft-neutral);
   border-radius: 8px;
   padding: 12px 14px;
   margin: 16px 20px 0;
   font-size: 13.5px;
 }
 .msg-context-card i {
-  color: var(--teal);
+  color: var(--avastra-primary);
   font-size: 16px;
 }
 .msg-context-card .cc-title {
   font-weight: 600;
-  color: var(--ink);
+  color: var(--avastra-ink);
 }
 .msg-context-card .cc-sub {
   font-size: 12px;
-  color: rgba(23, 32, 27, 0.55);
+  color: var(--avastra-muted);
 }
 
 .msg-body {
@@ -1992,7 +2036,7 @@ a {
 
 .msg-body.is-scrolling {
   scrollbar-width: thin;
-  scrollbar-color: rgba(20, 92, 74, 0.45) transparent;
+  scrollbar-color: rgba(7, 59, 54, 0.45) transparent;
 }
 
 .msg-body.is-scrolling::-webkit-scrollbar {
@@ -2004,12 +2048,12 @@ a {
 }
 
 .msg-body.is-scrolling::-webkit-scrollbar-thumb {
-  background: rgba(20, 92, 74, 0.45);
+  background: rgba(7, 59, 54, 0.45);
   border-radius: 10px;
 }
 
 .msg-body.is-scrolling::-webkit-scrollbar-thumb:hover {
-  background: rgba(20, 92, 74, 0.65);
+  background: rgba(7, 59, 54, 0.65);
 }
 
 .msg-bubble-row {
@@ -2033,18 +2077,19 @@ a {
   line-height: 1.5;
 }
 .msg-bubble-row.mine .msg-bubble {
-  background: var(--teal);
+  background: var(--avastra-primary);
   color: #fff;
   border-bottom-right-radius: 4px;
 }
 .msg-bubble-row.theirs .msg-bubble {
-  background: var(--paper);
-  color: var(--ink);
+  background: #eef5f1;
+  color: var(--avastra-ink);
   border-bottom-left-radius: 4px;
+  border: 1px solid #d4e7de;
 }
 .msg-time {
   font-size: 11px;
-  color: rgba(23, 32, 27, 0.45);
+  color: var(--avastra-muted);
   margin-top: 4px;
 }
 
@@ -2056,20 +2101,20 @@ a {
 }
 .msg-input-row input {
   flex: 1;
-  border: 1px solid rgba(23, 32, 27, 0.15);
+  border: 1.5px solid var(--avastra-soft-neutral);
   border-radius: 24px;
   padding: 11px 18px;
   font-size: 14px;
 }
 .msg-input-row input:focus {
   outline: none;
-  border-color: var(--teal);
+  border-color: var(--avastra-primary);
 }
 .msg-input-row button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--teal);
+  background: var(--avastra-primary);
   color: #fff;
   border: none;
   display: flex;
@@ -2077,9 +2122,11 @@ a {
   justify-content: center;
   font-size: 16px;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 .msg-input-row button:hover {
-  background: var(--forest);
+  background: var(--avastra-secondary);
 }
 
 .msg-empty-thread {
@@ -2276,11 +2323,12 @@ a {
    FIND SPACES PAGE
 --------------------------------------------------------------- */
 .find-hero {
-  background: var(--forest);
+  background: linear-gradient(135deg, #073b36 0%, #0d4a3e 100%);
   border-radius: 14px;
   padding: 32px;
   margin-bottom: 24px;
   color: #fff;
+  box-shadow: 0 6px 24px rgba(7, 59, 54, 0.18);
 }
 .find-hero h1 {
   color: #fff;
@@ -2295,19 +2343,19 @@ a {
 .find-search-row input[type="text"] {
   flex: 1;
   min-width: 220px;
-  background: rgba(247, 247, 247, 0.08);
-  border: 1px solid rgba(247, 247, 247, 0.2);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   color: #fff;
   border-radius: 8px;
   padding: 12px 14px;
   font-size: 14px;
 }
 .find-search-row input[type="text"]::placeholder {
-  color: rgba(247, 247, 247, 0.5);
+  color: rgba(255, 255, 255, 0.7);
 }
 .find-search-row select {
-  background: rgba(247, 247, 247, 0.08);
-  border: 1px solid rgba(247, 247, 247, 0.2);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   color: #fff;
   border-radius: 8px;
   padding: 12px 14px;
@@ -2315,20 +2363,25 @@ a {
   min-width: 130px;
 }
 .find-search-row select option {
-  color: #17201b;
+  background: #ffffff;
+  color: #073b36;
 }
 .find-search-row button {
-  background: var(--accent);
-  color: var(--forest);
-  border: none;
+  background: #0e5244;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 8px;
   padding: 12px 24px;
   font-weight: 700;
   font-size: 14.5px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 .find-search-row button:hover {
-  background: #fff;
+  background: #ffffff;
+  color: #073b36;
+  border-color: #ffffff;
 }
 
 .filters-panel {
@@ -2476,12 +2529,13 @@ a {
   margin-bottom: 12px;
 }
 .find-card .fc-tag {
-  background: rgba(20, 92, 74, 0.07);
-  color: var(--teal);
-  padding: 3px 10px;
+  background: var(--avastra-light-green);
+  color: var(--avastra-primary);
+  border: 1px solid var(--avastra-soft-neutral);
+  padding: 4px 11px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
 }
 .find-card .fc-bottom {
   display: flex;
@@ -2492,18 +2546,18 @@ a {
   font-family: "Fraunces", serif;
   font-weight: 700;
   font-size: 16px;
-  color: var(--forest);
+  color: var(--avastra-primary);
 }
 .find-card .fc-price span {
   font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 12px;
-  color: rgba(23, 32, 27, 0.55);
+  color: var(--avastra-muted);
 }
 .find-card .fc-view {
   font-size: 13px;
-  font-weight: 600;
-  color: var(--teal);
+  font-weight: 700;
+  color: var(--avastra-secondary);
 }
 
 /* ---------------------------------------------------------------

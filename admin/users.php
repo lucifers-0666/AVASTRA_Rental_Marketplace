@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
     if (!empty($fullName) && !empty($email)) {
         try {
             $hash = password_hash($password, PASSWORD_BCRYPT);
-            $stmt = $db->prepare("INSERT INTO users (full_name, email, password, phone, role_id, status) VALUES (:name, :email, :pass, :phone, :role, 'active')");
+            $stmt = $db->prepare("INSERT INTO users (full_name, email, password_hash, phone, role_id, status) VALUES (:name, :email, :pass, :phone, :role, 'active')");
             $stmt->execute([':name' => $fullName, ':email' => $email, ':pass' => $hash, ':phone' => $phone, ':role' => $roleId]);
             $newId = (int) $db->lastInsertId();
             $adminModel->logAction($currentUser['id'], 'ADD_USER', 'USER', $newId, "Added new user account {$email}");

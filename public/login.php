@@ -7,18 +7,18 @@
 require_once __DIR__ . '/../classes/Auth.php';
 Auth::initSession();
 
-// Already logged in? Skip the form.
+$error = '';
+$redirectTo = $_GET['redirect'] ?? ($_POST['redirect'] ?? '');
+
+// Already logged in as regular user? Skip the form.
 if (Auth::isLoggedIn()) {
-    if (Auth::isAdmin()) {
-        header("Location: " . APP_URL . "/admin/dashboard.php");
+    if ($redirectTo !== '') {
+        header("Location: " . $redirectTo);
     } else {
         header("Location: " . APP_URL . "/user/dashboard.php");
     }
     exit;
 }
-
-$error = '';
-$redirectTo = $_GET['redirect'] ?? ($_POST['redirect'] ?? '');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email    = trim($_POST['email'] ?? '');
@@ -113,13 +113,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="text-end mb-3">
                         <a href="#" style="font-size:13px; color:#1B5E3A;" onclick="alert('Demo account passwords are: admin123'); return false;">Forgot password?</a>
                     </div>
-                    <button type="submit" class="btn w-100 py-2 fw-semibold text-white" style="background:#1B5E3A; border-radius:8px;">Log in</button>
+                    <button type="submit" class="btn w-100 py-2 fw-semibold text-white" style="background:#073B36; border-radius:8px;">Log in</button>
                 </form>
+
+                <div class="text-center mt-3 pt-2 border-top">
+                    <p class="small text-muted mb-0">Don't have an account? <a href="<?= APP_URL; ?>/public/register.php" style="color:#073B36; font-weight:600;">Sign up</a></p>
+                </div>
             </div>
 
             <div class="text-center mt-4">
                 <p class="small text-muted mb-0">Testing Seeker / Owner account?</p>
-                <code class="small text-dark">jay@example.com / admin123</code>
+                <code class="small text-dark">demo@avastra.com / demo123 &bull; jay@example.com / admin123</code>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="<?= APP_URL; ?>/admin/login.php" class="text-muted small text-decoration-none" style="font-size:12px;">
+                    <i class="bi bi-shield-lock me-1"></i> Administrator? Open Admin Portal &rarr;
+                </a>
             </div>
         </div>
     </div>

@@ -3,10 +3,11 @@
 /**
  * AVASTRA — Edit Space Listing
  */
-$pageTitle = 'Edit Space';
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/sidebar.php';
+require_once __DIR__ . '/../classes/Auth.php';
+Auth::initSession();
+Auth::requireLogin();
 
+$currentUser = Auth::getUser();
 $db     = Database::getInstance();
 $userId = (int) $currentUser['id'];
 $spaceId = (int) ($_GET['id'] ?? 0);
@@ -194,6 +195,9 @@ $spaceImages->execute([':id' => $spaceId]);
 $spaceImages = $spaceImages->fetchAll();
 
 $unreadNotifCount = 0;
+$pageTitle = 'Edit Space';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
 ?>
 
 <div id="user-main">

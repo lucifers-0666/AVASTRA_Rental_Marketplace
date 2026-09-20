@@ -124,7 +124,7 @@ $currentUser = Auth::getUser();
                     <div class="user-role">Administrator</div>
                 </div>
             </div>
-            <a href="<?= APP_URL; ?>/public/logout.php" class="btn btn-sm text-secondary p-1" title="Logout">
+            <a href="<?= APP_URL; ?>/admin/logout.php" class="btn btn-sm text-secondary p-1" title="Logout">
                 <i class="bi bi-box-arrow-right fs-5 text-danger"></i>
             </a>
         </div>

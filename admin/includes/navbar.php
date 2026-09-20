@@ -50,7 +50,7 @@ $pageTitle = $pageTitle ?? 'Dashboard';
                 <li><a class="dropdown-item" href="<?= APP_URL; ?>/admin/settings.php"><i class="bi bi-gear me-2"></i> Settings</a></li>
                 <li><a class="dropdown-item" href="<?= APP_URL; ?>/admin/audit-logs.php"><i class="bi bi-shield-lock me-2"></i> Audit Logs</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger fw-semibold" href="<?= APP_URL; ?>/public/logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                <li><a class="dropdown-item text-danger fw-semibold" href="<?= APP_URL; ?>/admin/logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
             </ul>
         </div>
     </div>

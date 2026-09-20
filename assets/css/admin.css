@@ -7,18 +7,21 @@
 
 :root {
     /* AVASTRA Core Design System Tokens */
-    --avastra-primary: #1B5E3A;          /* Deep AVASTRA Green */
-    --avastra-primary-light: #4CAF6D;    /* Vibrant Accent Green */
-    --avastra-light-green: #E7F5EC;     /* Active Nav & Highlight Background */
-    --avastra-supporting-green: #9FD4B4;
-    --avastra-soft-neutral: #DCE6E0;    /* Border & Divider Tints */
-    --avastra-muted: #5C6B62;           /* Subtitle & Secondary Labels */
-    --avastra-ink: #1A1F1C;             /* Body Headings & Dark Text */
+    --avastra-primary: #073B36;          /* Deep AVASTRA Logo Spruce / Forest Green */
+    --avastra-primary-dark: #052623;     /* Deepest Pine Green */
+    --avastra-secondary: #0E5244;        /* Rich Dark Forest Green */
+    --avastra-primary-light: #126351;    /* Vibrant Forest Green */
+    --avastra-accent: #156E5A;           /* High-contrast Forest Accent */
+    --avastra-light-green: #E8F4EF;      /* Refined Light Sage Background */
+    --avastra-supporting-green: #1B735E;
+    --avastra-soft-neutral: #CCE3D8;     /* Border & Divider Tints */
+    --avastra-muted: #495A52;            /* Subtitle & Secondary Labels */
+    --avastra-ink: #0D1613;              /* Body Headings & Dark Text */
     --avastra-white: #FFFFFF;
-    --avastra-warning: #E8A33D;         /* Amber Attention & Pending */
+    --avastra-warning: #D97706;          /* High-contrast Amber */
     
     /* Layout Tokens */
-    --avastra-body-bg: #F4F9F6;         /* Very Light Green / Neutral Background */
+    --avastra-body-bg: #F4F8F6;         /* Very Light Sage / Neutral Background */
     --avastra-sidebar-bg: #FFFFFF;      /* Clean White Sidebar */
     --avastra-header-bg: #FFFFFF;       /* Clean White Header */
     --avastra-card-bg: #FFFFFF;

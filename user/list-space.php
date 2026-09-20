@@ -1,11 +1,15 @@
 <?php
-$pageTitle = 'List a Space';
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/sidebar.php';
-$db=Database::getInstance(); $userId=(int)$currentUser['id'];
+require_once __DIR__ . '/../classes/Auth.php';
+Auth::initSession();
+Auth::requireLogin();
+
+$currentUser = Auth::getUser();
+$db = Database::getInstance();
+$userId = (int)$currentUser['id'];
 $hideTopbarSearch = true;
-$categories=$db->query('SELECT id,name FROM categories WHERE is_active=1 ORDER BY name')->fetchAll();
-$amenities=$db->query('SELECT id,name FROM amenities ORDER BY name')->fetchAll(); $errors=[];
+$categories = $db->query('SELECT id,name FROM categories WHERE is_active=1 ORDER BY name')->fetchAll();
+$amenities = $db->query('SELECT id,name FROM amenities ORDER BY name')->fetchAll();
+$errors = [];
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['submit_listing'])){
  $d=['category'=>(int)($_POST['category_id']??0),'title'=>trim($_POST['title']??''),'description'=>trim($_POST['description']??''),'address'=>trim($_POST['address']??''),'city'=>trim($_POST['city']??''),'state'=>trim($_POST['state']??''),'zip'=>trim($_POST['zip_code']??''),'size'=>(int)($_POST['total_sqft']??0),'capacity'=>(int)($_POST['max_capacity']??0),'daily'=>$_POST['daily_rate']??''];
  if(!$d['category']||!$d['title']||!$d['description']||!$d['address']||!$d['city']||!$d['state']||!$d['zip'])$errors[]='Please complete all required listing and location details.';
@@ -13,6 +17,9 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['submit_listing'])){
  if(!$errors){try{$db->beginTransaction();$q=$db->prepare("INSERT INTO spaces(owner_id,category_id,title,description,address,city,state,zip_code,total_sqft,max_capacity,daily_rate,weekly_rate,monthly_rate,security_deposit,verification_status,is_active) VALUES(:o,:c,:t,:d,:a,:city,:st,:z,:sq,:cap,:rate,:week,:month,:deposit,'pending',1)");$q->execute([':o'=>$userId,':c'=>$d['category'],':t'=>$d['title'],':d'=>$d['description'],':a'=>$d['address'],':city'=>$d['city'],':st'=>$d['state'],':z'=>$d['zip'],':sq'=>$d['size'],':cap'=>$d['capacity'],':rate'=>$d['daily'],':week'=>($_POST['weekly_rate']?:null),':month'=>($_POST['monthly_rate']?:null),':deposit'=>($_POST['security_deposit']?:0)]);$id=(int)$db->lastInsertId();$ai=$db->prepare('INSERT INTO space_amenities(space_id,amenity_id) VALUES(:s,:a)');foreach(array_unique(array_map('intval',$_POST['amenities']??[]))as$a)$ai->execute([':s'=>$id,':a'=>$a]);$pi=$db->prepare('INSERT INTO space_purposes(space_id,purpose_name) VALUES(:s,:p)');foreach(array_unique(array_filter($_POST['purposes']??[]))as$p)$pi->execute([':s'=>$id,':p'=>substr($p,0,100)]);$imageInsert=$db->prepare('INSERT INTO space_images(space_id,image_path,is_primary) VALUES(:space,:path,:primary)');$uploadDir=null;$savedImageCount=0;foreach($_FILES['photos']['tmp_name']??[]as$index=>$tmp){if(($_FILES['photos']['error'][$index]??UPLOAD_ERR_NO_FILE)===UPLOAD_ERR_NO_FILE)continue;if(($_FILES['photos']['error'][$index]??UPLOAD_ERR_OK)!==UPLOAD_ERR_OK)throw new RuntimeException('One of the selected photos could not be uploaded. Please choose it again.');if(($_FILES['photos']['size'][$index]??0)>35*1024*1024)throw new RuntimeException('Each photo must be 35 MB or smaller.');if(!is_uploaded_file($tmp))throw new RuntimeException('The selected photo was not received by the server. Please choose it again.');$extension=strtolower(pathinfo($_FILES['photos']['name'][$index],PATHINFO_EXTENSION));if(!in_array($extension,['jpg','jpeg','png','webp'],true))throw new RuntimeException('Only JPG, PNG, and WebP images are allowed.');if($uploadDir===null){$uploadDir=__DIR__.'/../assets/uploads/spaces';if(!is_dir($uploadDir)&&!mkdir($uploadDir,0775,true))throw new RuntimeException('Upload folder cannot be created.');}$filename='space-'.bin2hex(random_bytes(12)).'.'.$extension;if(!move_uploaded_file($tmp,$uploadDir.'/'.$filename))throw new RuntimeException('Could not save an uploaded photo.');$imageInsert->execute([':space'=>$id,':path'=>'assets/uploads/spaces/'.$filename,':primary'=>$savedImageCount===0?1:0]);$savedImageCount++;}$db->commit();$_SESSION['flash_success']='Your listing was submitted for review.';header('Location: '.APP_URL.'/user/my-spaces.php');exit;}catch(Throwable $e){error_log('List-space submission failed: '.$e->getMessage());if($db->inTransaction())$db->rollBack();$errors[]=$e instanceof RuntimeException?$e->getMessage():'Could not save your listing. Please try again.';}}
 }
 $unreadNotifCount=0;$steps=['Basic Info','Location','Capacity','Pricing','Availability','Amenities','Photos','Rules','Review'];
+$pageTitle = 'List a Space';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
 ?>
 <div id="user-main"><?php require_once __DIR__.'/includes/topbar.php'; ?>
 <div class="listing-progress"><?php foreach($steps as$i=>$s):?><span class="listing-step" data-step="<?=++$i?>"><b><?=$i?></b><?=$s?></span><?php if($i<9):?><i></i><?php endif;endforeach?></div>

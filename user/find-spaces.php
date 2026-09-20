@@ -3,10 +3,11 @@
 /**
  * AVASTRA — Find Spaces (renter marketplace, authenticated version)
  */
-$pageTitle = 'Find Spaces';
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/sidebar.php';
+require_once __DIR__ . '/../classes/Auth.php';
+Auth::initSession();
+Auth::requireLogin();
 
+$currentUser = Auth::getUser();
 $db = Database::getInstance();
 
 /* -----------------------------------------------------------
@@ -104,6 +105,9 @@ $cities     = $db->query("SELECT DISTINCT city FROM spaces WHERE is_active = 1 A
 $categories = $db->query("SELECT * FROM categories WHERE is_active = 1 ORDER BY name ASC")->fetchAll();
 
 $unreadNotifCount = 0; // used by topbar.php
+$pageTitle = 'Find Spaces';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
 ?>
 
 <div id="user-main">

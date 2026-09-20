@@ -1,14 +1,11 @@
 <?php
+require_once __DIR__ . '/../classes/Auth.php';
+Auth::initSession();
+Auth::requireLogin();
 
-/**
- * AVASTRA — Saved Spaces (Favorites)
- */
-$pageTitle = 'Saved Spaces';
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/sidebar.php';
-
-$db     = Database::getInstance();
-$userId = (int) $currentUser['id'];
+$currentUser = Auth::getUser();
+$db          = Database::getInstance();
+$userId      = (int) $currentUser['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'remove_favorite') {
     $favSpaceId = (int)($_POST['space_id'] ?? 0);
@@ -19,6 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'remov
     header("Location: " . APP_URL . "/user/favorites.php");
     exit;
 }
+
+$pageTitle = 'Saved Spaces';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
 
 $favSql = "
     SELECT s.*, c.name AS category_name, f.created_at AS saved_at,

@@ -9,10 +9,11 @@
  *  - Government ID is not handled (no column for it on `users` yet,
  *    same reasoning as profile.php).
  */
-$pageTitle = 'Edit Profile';
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/sidebar.php';
+require_once __DIR__ . '/../classes/Auth.php';
+Auth::initSession();
+Auth::requireLogin();
 
+$currentUser = Auth::getUser();
 $db     = Database::getInstance();
 $userId = (int) $currentUser['id'];
 
@@ -92,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':id'            => $userId,
         ]);
 
+        $_SESSION['user_name'] = $fullName;
         header('Location: ' . APP_URL . '/user/profile.php');
         exit();
     }
@@ -132,7 +134,9 @@ $bookingReceivedStmt = $db->prepare("
     SELECT COUNT(*) FROM bookings b JOIN spaces s ON b.space_id = s.id WHERE s.owner_id = :id
 ");
 $bookingReceivedStmt->execute([':id' => $userId]);
-$bookingsReceived = (int) $bookingReceivedStmt->fetchColumn();
+$pageTitle = 'Edit Profile';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
 ?>
 
 <div id="user-main">

@@ -78,9 +78,9 @@ $ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
                 <?php endif; ?>
             </a>
         </li>
-        <li class="mt-1">
-            <a href="<?= APP_URL; ?>/user/list-space.php" class="<?= $currentScript === 'list-space.php' ? 'active' : ''; ?>" style="background: rgba(255,255,255,0.08); color: #ffffff;">
-                <i class="bi bi-plus-circle-fill" style="color:var(--avastra-accent);"></i> + List a Space
+        <li class="mt-2 mb-2 px-1">
+            <a href="<?= APP_URL; ?>/user/list-space.php" class="sidebar-cta-btn <?= $currentScript === 'list-space.php' ? 'active' : ''; ?>">
+                <i class="bi bi-plus-circle-fill"></i> List a Space
             </a>
         </li>
 

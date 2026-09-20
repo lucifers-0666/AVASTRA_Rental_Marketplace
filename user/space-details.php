@@ -12,11 +12,12 @@
  *     rules/house_rules column, even though list-space.php's wizard already
  *     collects a "House rules" text field on Step 3. Ask Zaid to add:
  *         ALTER TABLE spaces ADD COLUMN house_rules TEXT DEFAULT NULL;
- *     Until then this section shows a plain note instead of inventing rules.
  */
-$pageTitle = 'Space Details';
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/sidebar.php';
+
+require_once __DIR__ . '/../classes/Auth.php';
+Auth::initSession();
+Auth::requireLogin();
+$currentUser = Auth::getUser();
 
 $db     = Database::getInstance();
 $userId = (int) $currentUser['id'];
@@ -197,6 +198,9 @@ $owner = $owner->fetch();
 $ownerInitials = strtoupper(substr($owner['full_name'], 0, 1) . substr(strrchr($owner['full_name'], ' ') ?: '', 1, 1));
 
 $unreadNotifCount = 0; // used by topbar.php
+$pageTitle = ($space ? htmlspecialchars($space['title']) : 'Space') . ' — Details';
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
 ?>
 
 <div id="user-main">

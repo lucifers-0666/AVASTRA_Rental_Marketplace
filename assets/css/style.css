@@ -6,22 +6,25 @@
 ===================================================================== */
 
 :root {
-  --avastra-primary: #1B5E3A;
-  --avastra-primary-light: #4CAF6D;
-  --avastra-light-green: #E7F5EC;
-  --avastra-supporting-green: #9FD4B4;
-  --avastra-soft-neutral: #DCE6E0;
-  --avastra-muted: #5C6B62;
-  --avastra-ink: #1A1F1C;
+  --avastra-primary: #073B36;
+  --avastra-primary-dark: #052623;
+  --avastra-secondary: #0E5244;
+  --avastra-primary-light: #126351;
+  --avastra-accent: #156E5A;
+  --avastra-light-green: #E8F4EF;
+  --avastra-supporting-green: #1B735E;
+  --avastra-soft-neutral: #CCE3D8;
+  --avastra-muted: #495A52;
+  --avastra-ink: #0D1613;
   --avastra-white: #FFFFFF;
-  --avastra-warning: #E8A33D;
-  --avastra-body-bg: #F4F9F6;
+  --avastra-warning: #D97706;
+  --avastra-body-bg: #F4F8F6;
 
-  --forest: #1B5E3A;
-  --teal: #1B5E3A;
-  --accent: #4CAF6D;
-  --paper: #F4F9F6;
-  --ink: #1A1F1C;
+  --forest: #073B36;
+  --teal: #0E5244;
+  --accent: #126351;
+  --paper: #F4F8F6;
+  --ink: #0D1613;
 
   --shadow-sm: 0 1px 3px rgba(26, 31, 28, 0.05), 0 1px 2px rgba(26, 31, 28, 0.03);
   --shadow-md: 0 6px 20px rgba(27, 94, 58, 0.1);
