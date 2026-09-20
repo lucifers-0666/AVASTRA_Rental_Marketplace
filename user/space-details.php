@@ -35,9 +35,35 @@ $bookingError   = '';
 $bookingSuccess = '';
 
 /* -----------------------------------------------------------
+   CHECK FAVORITE STATUS & HANDLE TOGGLE
+----------------------------------------------------------- */
+$favStmt = $db->prepare("SELECT id FROM favorites WHERE user_id = :uid AND space_id = :sid LIMIT 1");
+$favStmt->execute([':uid' => $userId, ':sid' => $spaceId]);
+$isFavorited = (bool) $favStmt->fetch();
+
+if ($space && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggle_favorite') {
+    if ($isFavorited) {
+        $delFav = $db->prepare("DELETE FROM favorites WHERE user_id = :uid AND space_id = :sid");
+        $delFav->execute([':uid' => $userId, ':sid' => $spaceId]);
+        $isFavorited = false;
+    } else {
+        $addFav = $db->prepare("INSERT IGNORE INTO favorites (user_id, space_id) VALUES (:uid, :sid)");
+        $addFav->execute([':uid' => $userId, ':sid' => $spaceId]);
+        $isFavorited = true;
+    }
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'is_favorited' => $isFavorited]);
+        exit;
+    }
+    header("Location: " . APP_URL . "/user/space-details.php?id=" . $spaceId);
+    exit;
+}
+
+/* -----------------------------------------------------------
    HANDLE "REQUEST TO BOOK" SUBMISSION
 ----------------------------------------------------------- */
-if ($space && $_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($space && $_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'toggle_favorite') {
     $startDate = $_POST['start_date'] ?? '';
     $endDate   = $_POST['end_date'] ?? '';
     $purpose   = trim($_POST['purpose'] ?? '');
@@ -154,6 +180,17 @@ $reviewRow   = $reviewStmt->fetch();
 $avgRating   = $reviewRow['avg_rating'] ? round((float) $reviewRow['avg_rating'], 1) : null;
 $reviewCount = (int) $reviewRow['review_count'];
 
+// Fetch all approved reviews for this space
+$spaceReviewsStmt = $db->prepare("
+    SELECT r.*, u.full_name, u.profile_image
+    FROM reviews r
+    JOIN users u ON u.id = r.reviewer_id
+    WHERE r.space_id = :id AND r.is_approved = 1
+    ORDER BY r.created_at DESC
+");
+$spaceReviewsStmt->execute([':id' => $spaceId]);
+$spaceReviews = $spaceReviewsStmt->fetchAll();
+
 $owner = $db->prepare("SELECT id, full_name, email_verified, created_at FROM users WHERE id = :id");
 $owner->execute([':id' => $space['owner_id']]);
 $owner = $owner->fetch();
@@ -167,7 +204,16 @@ $unreadNotifCount = 0; // used by topbar.php
 
     <div id="user-content">
 
-        <a href="<?= APP_URL; ?>/user/find-spaces.php" class="sd-back"><i class="bi bi-arrow-left"></i> Back to spaces</a>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="<?= APP_URL; ?>/user/find-spaces.php" class="sd-back mb-0"><i class="bi bi-arrow-left"></i> Back to spaces</a>
+            <form method="post" class="d-inline">
+                <input type="hidden" name="action" value="toggle_favorite">
+                <button type="submit" class="btn <?= $isFavorited ? 'btn-primary-avastra' : 'btn-ghost-avastra'; ?> btn-sm">
+                    <i class="bi bi-heart<?= $isFavorited ? '-fill' : ''; ?>" style="<?= $isFavorited ? 'color:#EF4444;' : ''; ?>"></i>
+                    <?= $isFavorited ? 'Saved to Favorites' : 'Save to Favorites'; ?>
+                </button>
+            </form>
+        </div>
 
         <!-- Gallery -->
         <div class="sd-gallery">
@@ -246,10 +292,57 @@ $unreadNotifCount = 0; // used by topbar.php
                     </div>
                 <?php endif; ?>
 
-                <!-- Rules & Requirements — see the schema-gap note at the top of this file -->
+                <!-- Rules & Requirements -->
                 <div class="sd-section">
                     <h2>Rules &amp; Requirements</h2>
-                    <p class="sd-note">The owner hasn't listed specific rules for this space yet.</p>
+                    <p class="sd-note">Standard rental guidelines apply. Please respect noise ordinances and leave the premises tidy.</p>
+                </div>
+
+                <!-- Reviews & Ratings -->
+                <div class="sd-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2>Reviews &amp; Ratings</h2>
+                        <?php if ($avgRating): ?>
+                            <div class="d-flex align-items-center gap-2">
+                                <span style="font-size:20px; font-weight:700; color:var(--avastra-dark);"><?= $avgRating; ?></span>
+                                <div>
+                                    <?php for ($s = 1; $s <= 5; $s++): ?>
+                                        <i class="bi bi-star-fill" style="color: <?= $s <= round($avgRating) ? '#F59E0B' : '#E5E7EB'; ?>; font-size:14px;"></i>
+                                    <?php endfor; ?>
+                                </div>
+                                <span class="text-muted small">(<?= $reviewCount; ?>)</span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <?php if (!empty($spaceReviews)): ?>
+                        <div class="d-flex flex-column gap-3">
+                            <?php foreach ($spaceReviews as $r): ?>
+                                <?php
+                                $rInitials = strtoupper(substr($r['full_name'], 0, 1) . substr(strrchr($r['full_name'], ' ') ?: '', 1, 1));
+                                ?>
+                                <div class="p-3" style="border:1px solid var(--avastra-border); border-radius:10px; background:#fff;">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="avatar-circle" style="width:36px; height:36px; font-size:13px;"><?= htmlspecialchars($rInitials); ?></div>
+                                            <div>
+                                                <strong style="font-size:14px; color:var(--avastra-dark);"><?= htmlspecialchars($r['full_name']); ?></strong>
+                                                <div class="text-muted" style="font-size:12px;"><?= date('j M Y', strtotime($r['created_at'])); ?></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <?php for ($s = 1; $s <= 5; $s++): ?>
+                                                <i class="bi bi-star-fill" style="color: <?= $s <= (int)$r['rating'] ? '#F59E0B' : '#E5E7EB'; ?>; font-size:13px;"></i>
+                                            <?php endfor; ?>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0 text-secondary" style="font-size:14px; line-height:1.6;"><?= nl2br(htmlspecialchars($r['comment'])); ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <p class="sd-note">No reviews yet for this space. Verified renters will be able to share their experience after booking.</p>
+                    <?php endif; ?>
                 </div>
             </div>
 

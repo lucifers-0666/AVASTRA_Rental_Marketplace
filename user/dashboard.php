@@ -29,10 +29,29 @@ $stmt = $db->prepare("SELECT COUNT(*) FROM spaces WHERE owner_id = :uid AND is_a
 $stmt->execute([':uid' => $userId]);
 $activeSpacesCount = (int) $stmt->fetchColumn();
 
-// NOTE: there is no `messages` table in db/schema.sql yet, so this is
-// hardcoded to 0 for now. Wire this up once a messaging table exists.
+// Live unread notifications count
+$notifStmt = $db->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = :uid AND is_read = 0");
+$notifStmt->execute([':uid' => $userId]);
+$unreadNotifCount = (int) $notifStmt->fetchColumn();
+
+// Live unread messages count if messaging tables exist
 $unreadMessagesCount = 0;
-$unreadNotifCount    = 0; // used by includes/topbar.php for the bell dot
+try {
+    $msgCheck = $db->query("SHOW TABLES LIKE 'messages'")->rowCount() > 0;
+    if ($msgCheck) {
+        $msgStmt = $db->prepare("
+            SELECT COUNT(*) FROM messages m
+            JOIN conversations c ON m.conversation_id = c.id
+            WHERE (c.user_one_id = :uid OR c.user_two_id = :uid)
+              AND m.sender_id != :uid
+              AND m.is_read = 0
+        ");
+        $msgStmt->execute([':uid' => $userId]);
+        $unreadMessagesCount = (int) $msgStmt->fetchColumn();
+    }
+} catch (Throwable $e) {
+    $unreadMessagesCount = 0;
+}
 
 /* -----------------------------------------------------------
    NEXT UPCOMING BOOKING (as seeker)

@@ -22,6 +22,33 @@ $sort           = $_GET['sort'] ?? 'best';
 /* -----------------------------------------------------------
    BUILD THE QUERY
 ----------------------------------------------------------- */
+/* -----------------------------------------------------------
+   HANDLE FAVORITE TOGGLE (AJAX or POST)
+----------------------------------------------------------- */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'toggle_favorite') {
+    $targetSpaceId = (int)($_POST['space_id'] ?? 0);
+    $isFav = false;
+    if ($targetSpaceId > 0) {
+        $chk = $db->prepare("SELECT id FROM favorites WHERE user_id = :uid AND space_id = :sid");
+        $chk->execute([':uid' => (int)$currentUser['id'], ':sid' => $targetSpaceId]);
+        $exists = $chk->fetch();
+        if ($exists) {
+            $db->prepare("DELETE FROM favorites WHERE id = :id")->execute([':id' => $exists['id']]);
+            $isFav = false;
+        } else {
+            $db->prepare("INSERT IGNORE INTO favorites (user_id, space_id) VALUES (:uid, :sid)")->execute([':uid' => (int)$currentUser['id'], ':sid' => $targetSpaceId]);
+            $isFav = true;
+        }
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'is_favorited' => $isFav]);
+            exit;
+        }
+    }
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit;
+}
+
 $where  = ["s.is_active = 1", "s.verification_status = 'approved'", "s.owner_id != :current_user_id"];
 $params = [':current_user_id' => (int) $currentUser['id']];
 
@@ -60,12 +87,14 @@ $sql = "
     SELECT s.*, c.name AS category_name,
         (SELECT image_path FROM space_images WHERE space_id = s.id AND is_primary = 1 LIMIT 1) AS image_path,
         (SELECT AVG(rating) FROM reviews WHERE space_id = s.id AND is_approved = 1) AS avg_rating,
-        (SELECT COUNT(*) FROM reviews WHERE space_id = s.id AND is_approved = 1) AS review_count
+        (SELECT COUNT(*) FROM reviews WHERE space_id = s.id AND is_approved = 1) AS review_count,
+        EXISTS(SELECT 1 FROM favorites WHERE user_id = :fav_uid AND space_id = s.id) AS is_favorited
     FROM spaces s
     JOIN categories c ON s.category_id = c.id
     WHERE " . implode(' AND ', $where) . "
     ORDER BY $orderBy
 ";
+$params[':fav_uid'] = (int) $currentUser['id'];
 $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $spaces = $stmt->fetchAll();
@@ -156,32 +185,37 @@ $unreadNotifCount = 0; // used by topbar.php
                     $reviewCount = (int) $space['review_count'];
                     $shortLoc    = htmlspecialchars($space['city']);
                     ?>
-                    <a href="<?= APP_URL; ?>/user/space-details.php?id=<?= (int) $space['id']; ?>" class="find-card">
-                        <?php if ($space['image_path']): ?>
-                            <img src="<?= APP_URL . '/' . htmlspecialchars($space['image_path']); ?>" alt="<?= htmlspecialchars($space['title']); ?>">
-                        <?php else: ?>
-                            <div class="img-fallback"><i class="bi bi-building" style="font-size:30px;color:rgba(23,32,27,0.25);"></i></div>
-                        <?php endif; ?>
-                        <div class="fc-body">
-                            <div class="fc-top">
-                                <h3><?= htmlspecialchars($space['title']); ?></h3>
-                                <?php if ($avgRating): ?>
-                                    <span class="fc-rating"><i class="bi bi-star-fill" style="color:var(--accent);"></i> <?= $avgRating; ?> (<?= $reviewCount; ?>)</span>
-                                <?php else: ?>
-                                    <span class="fc-rating" style="color:rgba(23,32,27,0.4);font-weight:500;">New</span>
-                                <?php endif; ?>
+                    <div class="position-relative" style="display:flex; flex-direction:column;">
+                        <button type="button" class="btn-fav-toggle" onclick="toggleFav(event, <?= (int)$space['id']; ?>, this)" title="<?= !empty($space['is_favorited']) ? 'Remove from Saved' : 'Save to Favorites'; ?>" style="position:absolute; top:12px; right:12px; z-index:10; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.92); border:1px solid rgba(0,0,0,0.06); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,0.12); cursor:pointer;">
+                            <i class="bi bi-heart<?= !empty($space['is_favorited']) ? '-fill' : ''; ?>" style="color:<?= !empty($space['is_favorited']) ? '#EF4444' : '#6B7280'; ?>; font-size:15px;"></i>
+                        </button>
+                        <a href="<?= APP_URL; ?>/user/space-details.php?id=<?= (int) $space['id']; ?>" class="find-card" style="height:100%;">
+                            <?php if ($space['image_path']): ?>
+                                <img src="<?= APP_URL . '/' . htmlspecialchars($space['image_path']); ?>" alt="<?= htmlspecialchars($space['title']); ?>">
+                            <?php else: ?>
+                                <div class="img-fallback"><i class="bi bi-building" style="font-size:30px;color:rgba(23,32,27,0.25);"></i></div>
+                            <?php endif; ?>
+                            <div class="fc-body">
+                                <div class="fc-top">
+                                    <h3><?= htmlspecialchars($space['title']); ?></h3>
+                                    <?php if ($avgRating): ?>
+                                        <span class="fc-rating"><i class="bi bi-star-fill" style="color:var(--accent);"></i> <?= $avgRating; ?> (<?= $reviewCount; ?>)</span>
+                                    <?php else: ?>
+                                        <span class="fc-rating" style="color:rgba(23,32,27,0.4);font-weight:500;">New</span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="fc-loc"><i class="bi bi-geo-alt"></i> <?= $shortLoc; ?></div>
+                                <div class="fc-meta">
+                                    <span class="fc-tag"><?= htmlspecialchars($space['category_name']); ?></span>
+                                    <span><i class="bi bi-people"></i> Up to <?= (int) $space['max_capacity']; ?></span>
+                                </div>
+                                <div class="fc-bottom">
+                                    <span class="fc-price">₹<?= number_format((float) $space['daily_rate'], 0); ?> <span>/ day</span></span>
+                                    <span class="fc-view">View Space <i class="bi bi-arrow-right"></i></span>
+                                </div>
                             </div>
-                            <div class="fc-loc"><i class="bi bi-geo-alt"></i> <?= $shortLoc; ?></div>
-                            <div class="fc-meta">
-                                <span class="fc-tag"><?= htmlspecialchars($space['category_name']); ?></span>
-                                <span><i class="bi bi-people"></i> Up to <?= (int) $space['max_capacity']; ?></span>
-                            </div>
-                            <div class="fc-bottom">
-                                <span class="fc-price">₹<?= number_format((float) $space['daily_rate'], 0); ?> <span>/ day</span></span>
-                                <span class="fc-view">View Space <i class="bi bi-arrow-right"></i></span>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
@@ -189,6 +223,35 @@ $unreadNotifCount = 0; // used by topbar.php
     </div><!-- /#user-content -->
 
     <script>
+        function toggleFav(e, spaceId, btn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const formData = new FormData();
+            formData.append('action', 'toggle_favorite');
+            formData.append('space_id', spaceId);
+            fetch('<?= APP_URL; ?>/user/find-spaces.php', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                body: formData
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    const icon = btn.querySelector('i');
+                    if (data.is_favorited) {
+                        icon.className = 'bi bi-heart-fill';
+                        icon.style.color = '#EF4444';
+                        btn.title = 'Remove from Saved';
+                    } else {
+                        icon.className = 'bi bi-heart';
+                        icon.style.color = '#6B7280';
+                        btn.title = 'Save to Favorites';
+                    }
+                }
+            })
+            .catch(err => console.error(err));
+        }
+
         function updateSort(value) {
             const url = new URL(window.location.href);
             url.searchParams.set('sort', value);

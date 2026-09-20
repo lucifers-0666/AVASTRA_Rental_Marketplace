@@ -44,6 +44,11 @@ $ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
                 <i class="bi bi-search"></i> Find Spaces
             </a>
         </li>
+        <li>
+            <a href="<?= APP_URL; ?>/user/favorites.php" class="<?= $currentScript === 'favorites.php' ? 'active' : ''; ?>">
+                <i class="bi bi-heart"></i> Saved Spaces
+            </a>
+        </li>
 
         <!-- BOOKINGS -->
         <li class="sidebar-section-title">Bookings</li>
@@ -92,6 +97,11 @@ $ownerPendingCount = (int) $ownerPendingStmt->fetchColumn();
         <li>
             <a href="<?= APP_URL; ?>/user/profile.php" class="<?= $currentScript === 'profile.php' ? 'active' : ''; ?>">
                 <i class="bi bi-person"></i> Profile
+            </a>
+        </li>
+        <li>
+            <a href="<?= APP_URL; ?>/user/complaints.php" class="<?= $currentScript === 'complaints.php' ? 'active' : ''; ?>">
+                <i class="bi bi-shield-exclamation"></i> My Complaints
             </a>
         </li>
         <li>

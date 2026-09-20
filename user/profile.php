@@ -24,15 +24,13 @@ $user = $stmt->fetch();
 
 $initials = strtoupper(substr($user['full_name'], 0, 1) . substr(strrchr($user['full_name'], ' ') ?: '', 1, 1));
 
-/* -----------------------------------------------------------
-   PROFILE COMPLETION — only counts fields that really exist
------------------------------------------------------------ */
 $checks = [
     'Profile photo'   => !empty($user['profile_image']) && $user['profile_image'] !== 'default-avatar.png',
     'Full name'       => !empty($user['full_name']),
     'Email verified'  => (bool) $user['email_verified'],
     'Phone number'    => !empty($user['phone']),
     'Location'        => !empty($user['city']) && !empty($user['state']),
+    'Address'         => !empty($user['address']),
 ];
 $completedCount = count(array_filter($checks));
 $percent        = (int) round($completedCount / count($checks) * 100);
@@ -115,13 +113,23 @@ $unreadNotifCount = 0; // used by topbar.php
                         </div>
                     </div>
 
+                    <?php if (!empty($user['address'])): ?>
+                    <div class="contact-row">
+                        <i class="bi bi-house"></i>
+                        <div style="flex:1;">
+                            <div class="c-label">Street Address</div>
+                            <div class="c-value"><?= htmlspecialchars($user['address']); ?></div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
                     <div class="contact-row">
                         <i class="bi bi-geo-alt"></i>
                         <div style="flex:1;">
                             <div class="c-label">Location</div>
                             <div class="c-value">
                                 <?php if ($user['city'] && $user['state']): ?>
-                                    <?= htmlspecialchars($user['city'] . ', ' . $user['state']); ?>
+                                    <?= htmlspecialchars($user['city'] . ', ' . $user['state']); ?><?= !empty($user['zip_code']) ? ' - ' . htmlspecialchars($user['zip_code']) : ''; ?>
                                 <?php else: ?>
                                     <span class="c-missing">Not added yet</span>
                                 <?php endif; ?>

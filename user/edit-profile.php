@@ -29,8 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $fullName = trim($_POST['full_name'] ?? '');
     $phone    = trim($_POST['phone'] ?? '');
+    $address  = trim($_POST['address'] ?? '');
     $city     = trim($_POST['city'] ?? '');
     $state    = trim($_POST['state'] ?? '');
+    $zipCode  = trim($_POST['zip_code'] ?? '');
     $profileImage = $user['profile_image']; // keep existing unless a new one is uploaded
 
     if ($fullName === '') {
@@ -72,16 +74,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             UPDATE users
             SET full_name = :full_name,
                 phone = :phone,
+                address = :address,
                 city = :city,
                 state = :state,
+                zip_code = :zip_code,
                 profile_image = :profile_image
             WHERE id = :id
         ");
         $update->execute([
             ':full_name'     => $fullName,
             ':phone'         => $phone,
+            ':address'       => $address,
             ':city'          => $city,
             ':state'         => $state,
+            ':zip_code'      => $zipCode,
             ':profile_image' => $profileImage,
             ':id'            => $userId,
         ]);
@@ -93,8 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // re-fill with what the user just typed, not stale DB data, so errors don't wipe the form
     $user['full_name']     = $fullName;
     $user['phone']         = $phone;
+    $user['address']       = $address;
     $user['city']          = $city;
     $user['state']         = $state;
+    $user['zip_code']      = $zipCode;
     $user['profile_image'] = $profileImage;
 }
 
@@ -195,17 +203,31 @@ $bookingsReceived = (int) $bookingReceivedStmt->fetchColumn();
                         </div>
 
                         <div class="edit-field-row">
+                            <i class="bi bi-house"></i>
+                            <label class="field-label" for="address">Street Address</label>
+                            <input type="text" id="address" name="address" class="field-input"
+                                value="<?= htmlspecialchars($user['address'] ?? ''); ?>" placeholder="e.g. Flat 402, Sunshine Residency, Linking Road">
+                        </div>
+
+                        <div class="edit-field-row">
                             <i class="bi bi-geo-alt"></i>
                             <label class="field-label" for="city">City</label>
                             <input type="text" id="city" name="city" class="field-input"
-                                value="<?= htmlspecialchars($user['city'] ?? ''); ?>">
+                                value="<?= htmlspecialchars($user['city'] ?? ''); ?>" placeholder="e.g. Mumbai">
                         </div>
 
                         <div class="edit-field-row">
                             <i class="bi bi-map"></i>
                             <label class="field-label" for="state">State</label>
                             <input type="text" id="state" name="state" class="field-input"
-                                value="<?= htmlspecialchars($user['state'] ?? ''); ?>">
+                                value="<?= htmlspecialchars($user['state'] ?? ''); ?>" placeholder="e.g. Maharashtra">
+                        </div>
+
+                        <div class="edit-field-row">
+                            <i class="bi bi-pin-map"></i>
+                            <label class="field-label" for="zip_code">PIN Code</label>
+                            <input type="text" id="zip_code" name="zip_code" class="field-input"
+                                value="<?= htmlspecialchars($user['zip_code'] ?? ''); ?>" placeholder="e.g. 400050">
                         </div>
 
                         <button type="submit" class="btn btn-primary-avastra" style="margin-top:1rem;">
